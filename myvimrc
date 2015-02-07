@@ -1,0 +1,45 @@
+" **************************************************************************** "
+"                                                                              "
+"                                                         :::      ::::::::    "
+"    .myvimrc                                           :+:      :+:    :+:    "
+"                                                     +:+ +:+         +:+      "
+"    By: zaz <zaz@staff.42.fr>                      +#+  +:+       +#+         "
+"                                                 +#+#+#+#+#+   +#+            "
+"    Created: 2013/06/15 12:36:36 by zaz               #+#    #+#              "
+"    Updated: 2015/02/07 14:52:07 by ggilaber         ###   ########.fr        "
+"                                                                              "
+" **************************************************************************** "
+
+"Put your custom Vim configuration here
+
+call pathogen#infect()
+call pathogen#helptags()
+"let NERDTreeShowHidden=1
+
+set number
+
+syntax on
+
+"set colorcolumn=80
+au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%>80v.\+', -1)
+
+set list
+set listchars=tab:\|\ 
+
+set mouse=a
+
+" Raccourcis clavier
+map <Tab> <c-y>,i
+nmap <silent> <S-n> :NERDTreeToggle<CR>
+map <S-n> :NERDTree<CR>
+nmap <S-Up> <C-w>k
+nmap <S-Down> <C-w>j
+nmap <S-Left> <C-w>h
+nmap <S-Right> <C-w>l
+
+"Better command completion
+"set wildmenu
+"set wildmode=list:longest
+
+"Show current line
+"set cursorline
