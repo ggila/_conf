@@ -6,7 +6,7 @@
 "    By: zaz <zaz@staff.42.fr>                      +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2013/06/15 12:36:36 by zaz               #+#    #+#              "
-"    Updated: 2015/02/07 14:52:07 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/02/06 19:29:19 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -20,7 +20,7 @@ set number
 
 syntax on
 
-"set colorcolumn=80
+""set colorcolumn=80
 au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%>80v.\+', -1)
 
 set list
@@ -36,6 +36,7 @@ nmap <S-Up> <C-w>k
 nmap <S-Down> <C-w>j
 nmap <S-Left> <C-w>h
 nmap <S-Right> <C-w>l
+nmap <S-n>ew <C-w>s<C-w>v<S-Down><C-w>v<S-n>:Tagbar<CR>
 
 "Better command completion
 "set wildmenu

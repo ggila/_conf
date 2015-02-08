@@ -1,4 +1,4 @@
-PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/texbin:$HOME/.brew/bin
+PATH=~/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/usr/texbin:$HOME/.brew/bin
 HISTFILE=~/.zshrc_history
 SAVEHIST=5000
 HISTSIZE=5000
@@ -20,19 +20,19 @@ export MAIL
 #Color
 autoload -U colors && colors
 
+PS1="%{$fg[red]%}%m %{$fg[green]%}%~%{$reset_color%}|%"
+#
+##ALIAS
+alias ..='cd ..'
+alias ...='cd../..'
+alias dd='clear'
+
 function gc
 {
 	dir="$1";
 	git clone https://github.com/ggila/"$1".git;
 	cd "$1";
 }
-
-PS1="%{$fg[red]%}%m %{$fg[yellow]%}%~ %{$reset_color%}%% "
-#
-##ALIAS
-alias ..='cd ..'
-alias ...='cd../..'
-alias dd='clear'
 
 man() {
 	env \
