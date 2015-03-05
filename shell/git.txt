@@ -1,0 +1,9 @@
+config
+cuisine
+etude
+fractol
+ft_ls
+libft
+mygithubpage
+push_swap
+toolbox

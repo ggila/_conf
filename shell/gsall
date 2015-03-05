@@ -1,0 +1,7 @@
+cat ./config/shell/git.txt | while read ligne
+
+do
+	cd "$ligne"
+	git status
+	cd ..
+done
