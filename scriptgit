@@ -1,0 +1,9 @@
+
+test -d gggit || mkdir gggit
+
+cd gggit
+
+cat ../git.txt | while read ligne
+do
+	git clone https://github.com/ggila/"$ligne".git >> /dev/null
+done
