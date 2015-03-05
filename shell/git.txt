@@ -3,6 +3,7 @@ cuisine
 etude
 fractol
 ft_ls
+game_2048
 libft
 mygithubpage
 push_swap
