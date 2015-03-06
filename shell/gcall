@@ -1,10 +1,20 @@
 test -d gggit || mkdir gggit
 
+echo "gcall"
+
 cd gggit
+
+git clone https://github.com/ggila/libft.git
 
 cat ../git.txt | while read ligne
 do
-	git clone https://github.com/ggila/"$ligne".git >> /dev/null
+	git clone https://github.com/ggila/"$ligne".git
+	cd "$ligne"
+	rm -rf libft
+	ln -l ../libft/libft
+	cd..
 done
 
-cp config/shell/gsall .
+ln -s config/shell/gsall gsall
+ln -s config/shell/zshrc .zshrc
+source .zshrc

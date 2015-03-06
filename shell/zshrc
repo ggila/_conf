@@ -23,6 +23,7 @@ autoload -U colors && colors
 PS1="%{$fg[red]%}%m %{$fg[green]%}%~%{$reset_color%}|%"
 #
 ##ALIAS
+alias ll='ls -l'
 alias ..='cd ..'
 alias ...='cd../..'
 alias dd='clear'
