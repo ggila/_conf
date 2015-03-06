@@ -2,11 +2,12 @@ cat ./config/shell/git.txt | while read ligne
 
 do
 	cd "$ligne"
-	pwd
+	echo "$ligne"
 	git status
 	cd ..
 done
 
 cd libft
+echo "libft"
 git status
 cd ..

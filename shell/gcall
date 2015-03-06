@@ -9,12 +9,10 @@ git clone https://github.com/ggila/libft.git
 cat ../git.txt | while read ligne
 do
 	git clone https://github.com/ggila/"$ligne".git
-	cd "$ligne"
-	rm -rf libft
-	ln -l ../libft/libft
-	cd..
+#	cd "$ligne"
+#	rm -rf libft
+#	ln -s ../libft/ libft
+#	cd ..
 done
 
 ln -s config/shell/gsall gsall
-ln -s config/shell/zshrc .zshrc
-source .zshrc
