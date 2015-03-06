@@ -16,3 +16,5 @@ do
 done
 
 ln -s config/shell/gsall gsall
+ln -s config/shell/zshrcl .zshrc
+ln -s config/vim/vimrc .vimrc
