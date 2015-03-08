@@ -15,6 +15,8 @@ do
 #	cd ..
 done
 
+chmod 777 *
+
 ln -s config/shell/gsall gsall
 ln -s config/shell/zshrcl .zshrc
 ln -s config/vim/vimrc .vimrc
