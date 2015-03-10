@@ -27,17 +27,15 @@ map <S-Right> <Esc><C-w>l
 map <S-v> <C-W>v
 map <S-s> <C-W>s
 map <S-c> <C-W>c
-map <S-8> <C-W>+
-map <S-2> <C-W>-
-map <S-6> <C-W>>
-map <S-4> <C-W><
+
+let mapleader = ","
 
 " Print
-map str<CR> oft_putstr("");<ESC>F"
-map nl<CR> str<CR>i\n<ESC>
-map nbr<CR> oft_putnbr();<ESC>F(
-map slim<CR> str<CR>i----------------------<ESC>
-map bnbr<CR> byeknbr<CR>p<ESC>kstr<CR>hpf"i : <ESC>k
-map bstr<CR> byestr<CR>pkstr<CR>pf"i : <ESC>k
+map <leader>str<CR> oft_putstr("");<ESC>F"
+map <leader>nl<CR> str<CR>i\n<ESC>
+map <leader>nbr<CR> oft_putnbr();<ESC>F(
+map <leader>slim<CR> str<CR>i----------------------<ESC>
+map <leader>bnbr<CR> byeknbr<CR>p<ESC>kstr<CR>hpf"i : <ESC>k
+map <leader>bstr<CR> byestr<CR>pkstr<CR>pf"i : <ESC>k
 
 map <S-t> :Tagbar<CR>
