@@ -1,20 +1,9 @@
-" **************************************************************************** "
-"                                                                              "
-"                                                         :::      ::::::::    "
-"    .myvimrc                                           :+:      :+:    :+:    "
-"                                                     +:+ +:+         +:+      "
-"    By: zaz <zaz@staff.42.fr>                      +#+  +:+       +#+         "
-"                                                 +#+#+#+#+#+   +#+            "
-"    Created: 2013/06/15 12:36:36 by zaz               #+#    #+#              "
-"    Updated: 2015/02/06 19:29:19 by ggilaber         ###   ########.fr        "
-"                                                                              "
-" **************************************************************************** "
-
-"Put your custom Vim configuration here
 
 call pathogen#infect()
 call pathogen#helptags()
 "let NERDTreeShowHidden=1
+
+" Map <S-n> :NERDTreeToggle<CR>
 
 set tabstop=4
 set autoindent
@@ -27,30 +16,28 @@ set mouse=a
 ""set colorcolumn=80
 " au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%=80v.\+', -1)
 
-" Raccourcis clavier
+" emmet
 map <Tab> <c-y>,i
+
+" Multiscreen
 map <S-Up> <Esc><C-w>k
 map <S-Down> <Esc><C-w>j
 map <S-Left> <Esc><C-w>h
 map <S-Right> <Esc><C-w>l
-map <S-c> <Esc>:edit src/<Space>
-map <S-h> <Esc>:edit inc/<Space>
-map <S-W> <C-W>=
 map <S-v> <C-W>v
 map <S-s> <C-W>s
 map <S-c> <C-W>c
-map <S-i> <C-W>+
-map <S-k> <C-W>-
-map <S-l> <C-W>>
-map <S-j> <C-W><
-map <S-n> :NERDTreeToggle<CR>
+map <S-8> <C-W>+
+map <S-2> <C-W>-
+map <S-6> <C-W>>
+map <S-4> <C-W><
+
+" Print
+map str<CR> oft_putstr("");<ESC>F"
+map nl<CR> str<CR>i\n<ESC>
+map nbr<CR> oft_putnbr();<ESC>F(
+map slim<CR> str<CR>i----------------------<ESC>
+map bnbr<CR> byeknbr<CR>p<ESC>kstr<CR>hpf"i : <ESC>k
+map bstr<CR> byestr<CR>pkstr<CR>pf"i : <ESC>k
+
 map <S-t> :Tagbar<CR>
-
-
-
-"Better command completion
-"set wildmenu
-"set wildmode=list:longest
-
-"Show current line
-"set cursorline
