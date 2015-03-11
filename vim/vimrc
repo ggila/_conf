@@ -16,14 +16,16 @@ set mouse=a
 ""set colorcolumn=80
 " au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%=80v.\+', -1)
 
+ab main int<TAB>main(void ac, void av)<CR>{<CR><TAB>(void)ac;<CR>(void)av;<CR><CR>return (0);<CR><BACKSPACE>}<CR><ESC><UP><UP><UP>
+
 " emmet
 map <Tab> <c-y>,i
 
 " Multiscreen
-map <S-Up> <Esc><C-w>k
-map <S-Down> <Esc><C-w>j
-map <S-Left> <Esc><C-w>h
-map <S-Right> <Esc><C-w>l
+map! <S-Up> <Esc><C-w>k
+map! <S-Down> <Esc><C-w>j
+map! <S-Left> <Esc><C-w>h
+map! <S-Right> <Esc><C-w>l
 map <S-v> <C-W>v
 map <S-s> <C-W>s
 map <S-c> <C-W>c
@@ -31,11 +33,11 @@ map <S-c> <C-W>c
 let mapleader = ","
 
 " Print
-map <leader>str<CR> oft_putstr("");<ESC>F"
-map <leader>nl<CR> str<CR>i\n<ESC>
-map <leader>nbr<CR> oft_putnbr();<ESC>F(
-map <leader>slim<CR> str<CR>i----------------------<ESC>
-map <leader>bnbr<CR> byeknbr<CR>p<ESC>kstr<CR>hpf"i : <ESC>k
-map <leader>bstr<CR> byestr<CR>pkstr<CR>pf"i : <ESC>k
+map ,str<CR> oft_putstr("");<ESC>F"
+map ,nl<CR> ,str<CR>i\n<ESC>
+map ,nbr<CR> oft_putnbr();<ESC>F(
+map ,slim<CR> ,str<CR>i----------------------<ESC>
+map ,dnbr<CR> byek,nbr<CR>p<ESC>k,str<CR>hpf"i : <ESC>k
+map ,dstr<CR> bye,str<CR>pk,str<CR>pf"i : <ESC>k
 
 map <S-t> :Tagbar<CR>
