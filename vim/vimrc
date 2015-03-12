@@ -22,6 +22,10 @@ ab main int<TAB>main(void ac, void av)<CR>{<CR><TAB>(void)ac;<CR>(void)av;<CR><C
 map <Tab> <c-y>,i
 
 " Multiscreen
+map <S-k> <Esc><C-w>k
+map <S-j> <Esc><C-w>j
+map <S-h> <Esc><C-w>h
+map <S-l> <Esc><C-w>l
 map! <S-Up> <Esc><C-w>k
 map! <S-Down> <Esc><C-w>j
 map! <S-Left> <Esc><C-w>h
@@ -33,11 +37,23 @@ map <S-c> <C-W>c
 let mapleader = ","
 
 " Print
-map ,str<CR> oft_putstr("");<ESC>F"
-map ,nl<CR> ,str<CR>i\n<ESC>
-map ,nbr<CR> oft_putnbr();<ESC>F(
-map ,slim<CR> ,str<CR>i----------------------<ESC>
-map ,dnbr<CR> byek,nbr<CR>p<ESC>k,str<CR>hpf"i : <ESC>k
-map ,dstr<CR> bye,str<CR>pk,str<CR>pf"i : <ESC>k
+map <S-H> 0
+map  <S-L> $
+map <leader>str<CR> oft_putstr("");<ESC>F"
+map <leader>nl<CR> ,str<CR>i\n<ESC>
+map <leader>nbr<CR> oft_putnbr();<ESC>F(
+map <leader>slim<CR> ,str<CR>i----------------------<ESC>
+map <leader>dnbr<CR> byek,nbr<CR>p<ESC>k,str<CR>hpf"i : <ESC>k
+map <leader>dstr<CR> bye,str<CR>pk,str<CR>pf"i : <ESC>k
 
+" \""(){}<>
+map <leader>" viw<ESC>a"<ESC>hbi"<ESC>lel
+map <leader>( viw<ESC>a)<ESC>hbi(<ESC>lel
+map <leader>[ viw<ESC>a]<ESC>hbi[<ESC>lel
+map <leader>< viw<ESC>a><ESC>hbi<<ESC>lel
 map <S-t> :Tagbar<CR>
+
+map ,vrc <ESC>:w<CR>:source vimrc<CR>
+imap jk <ESC>
+
+inoremap <ESC>
