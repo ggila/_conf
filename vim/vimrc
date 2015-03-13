@@ -38,7 +38,7 @@ let mapleader = ","
 
 " Print
 map <S-H> 0
-map  <S-L> $
+map <S-L> $
 map <leader>str<CR> oft_putstr("");<ESC>F"
 map <leader>nl<CR> ,str<CR>i\n<ESC>
 map <leader>nbr<CR> oft_putnbr();<ESC>F(
@@ -55,5 +55,6 @@ map <S-t> :Tagbar<CR>
 
 map ,vrc <ESC>:w<CR>:source vimrc<CR>
 imap jk <ESC>
+imap kj <ESC>
 
 inoremap <ESC>
