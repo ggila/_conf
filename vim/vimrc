@@ -47,14 +47,22 @@ map <leader>dnbr<CR> byek,nbr<CR>p<ESC>k,str<CR>hpf"i : <ESC>k
 map <leader>dstr<CR> bye,str<CR>pk,str<CR>pf"i : <ESC>k
 
 " \""(){}<>
-map <leader>" viw<ESC>a"<ESC>hbi"<ESC>lel
-map <leader>( viw<ESC>a)<ESC>hbi(<ESC>lel
-map <leader>[ viw<ESC>a]<ESC>hbi[<ESC>lel
-map <leader>< viw<ESC>a><ESC>hbi<<ESC>lel
+noremap <leader>" viw<ESC>a"<ESC>hbi"<ESC>lel
+noremap <leader>( viw<ESC>a)<ESC>hbi(<ESC>lel
+noremap <leader>[ viw<ESC>a]<ESC>hbi[<ESC>lel
+noremap <leader>< viw<ESC>a><ESC>hbi<<ESC>lel
+
+
+inoremap <C-s> <ESC>:w<CR>
 map <S-t> :Tagbar<CR>
 
 map ,vrc <ESC>:w<CR>:source vimrc<CR>
-imap jk <ESC>
-imap kj <ESC>
+inoremap jk <ESC>
+inoremap kj <ESC>
 
-inoremap <ESC>
+" useless keys
+imap <ESC> <NOP>
+imap <UP> <NOP>
+imap <DOWN> <NOP>
+imap <LEFT> <NOP>
+imap <RIGHT> <NOP>

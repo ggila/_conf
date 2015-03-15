@@ -33,7 +33,6 @@ function gc
 {
 	dir="$1";
 	git clone https://github.com/ggila/"$1".git;
-	cd "$1";
 }
 
 man() {
