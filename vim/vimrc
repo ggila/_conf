@@ -22,17 +22,13 @@ ab main int<TAB>main(void ac, void av)<CR>{<CR><TAB>(void)ac;<CR>(void)av;<CR><C
 map <Tab> <c-y>,i
 
 " Multiscreen
-map <S-k> <Esc><C-w>k
-map <S-j> <Esc><C-w>j
-map <S-h> <Esc><C-w>h
-map <S-l> <Esc><C-w>l
-map! <S-Up> <Esc><C-w>k
-map! <S-Down> <Esc><C-w>j
-map! <S-Left> <Esc><C-w>h
-map! <S-Right> <Esc><C-w>l
-map <S-v> <C-W>v
-map <S-s> <C-W>s
-map <S-c> <C-W>c
+noremap <C-k> <Esc><C-w>k
+noremap <C-j> <Esc><C-w>j
+noremap <C-h> <Esc><C-w>h
+noremap <C-l> <Esc><C-w>l
+noremap <S-v> <C-W>v
+noremap <S-s> <C-W>s
+noremap <S-c> <C-W>c
 
 let mapleader = ","
 
@@ -53,7 +49,6 @@ noremap <leader>[ viw<ESC>a]<ESC>hbi[<ESC>lel
 noremap <leader>< viw<ESC>a><ESC>hbi<<ESC>lel
 
 
-inoremap <C-s> <ESC>:w<CR>
 map <S-t> :Tagbar<CR>
 
 map ,vrc <ESC>:w<CR>:source vimrc<CR>
@@ -61,8 +56,19 @@ inoremap jk <ESC>
 inoremap kj <ESC>
 
 " useless keys
-imap <ESC> <NOP>
-imap <UP> <NOP>
-imap <DOWN> <NOP>
-imap <LEFT> <NOP>
-imap <RIGHT> <NOP>
+map <ESC> <NOP>
+map <UP> <NOP>
+map <DOWN> <NOP>
+map <LEFT> <NOP>
+map <RIGHT> <NOP>
+map! <ESC> <NOP>
+map! <UP> <NOP>
+map! <DOWN> <NOP>
+map! <LEFT> <NOP>
+map! <RIGHT> <NOP>
+
+"insert ctype
+noremap <leader>ti 0i<TAB>int<TAB>;<ESC>i
+noremap <leader>tv 0i<TAB>void<TAB>;<ESC>i
+noremap <leader>tc 0i<TAB>char<TAB>;<ESC>i
+noremap <leader>td 0i<TAB>double<TAB>;<ESC>i
