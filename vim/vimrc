@@ -12,6 +12,9 @@ syntax on
 set list
 set listchars=tab:\|\ 
 set mouse=a
+set ruler
+
+so ~/.vim/bundle/42header/plugin/make_header.vim
 
 ""set colorcolumn=80
 " au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%=80v.\+', -1)
@@ -54,21 +57,13 @@ map <S-t> :Tagbar<CR>
 map ,vrc <ESC>:w<CR>:source vimrc<CR>
 inoremap jk <ESC>
 inoremap kj <ESC>
-
-" useless keys
-map <ESC> <NOP>
-map <UP> <NOP>
-map <DOWN> <NOP>
-map <LEFT> <NOP>
-map <RIGHT> <NOP>
-map! <ESC> <NOP>
-map! <UP> <NOP>
-map! <DOWN> <NOP>
-map! <LEFT> <NOP>
-map! <RIGHT> <NOP>
+inoremap qq <TAB>
 
 "insert ctype
 noremap <leader>ti 0i<TAB>int<TAB>;<ESC>i
 noremap <leader>tv 0i<TAB>void<TAB>;<ESC>i
 noremap <leader>tc 0i<TAB>char<TAB>;<ESC>i
 noremap <leader>td 0i<TAB>double<TAB>;<ESC>i
+
+noremap <S-UP> ?^$<CR>
+noremap <S-DOWN> /^$<CR>
