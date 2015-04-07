@@ -19,7 +19,10 @@ so ~/.vim/bundle/42header/plugin/make_header.vim
 ""set colorcolumn=80
 " au BufWinEnter * let w:m1=matchadd('ErrorMsg', '\%=80v.\+', -1)
 
-ab main int<TAB>main(void ac, void av)<CR>{<CR><TAB>(void)ac;<CR>(void)av;<CR><CR>return (0);<CR><BACKSPACE>}<CR><ESC><UP><UP><UP>
+ab main int<TAB>main(int ac, char **av)<CR>{<CR><TAB>(void)ac;<CR>(void)av;<CR><CR>return (0);<CR><BACKSPACE>}<CR><ESC><UP><UP><UP>
+ab whi int<TAB>i;<CR>i = ;<CR>while (++i < )<CR>{<CR>}<CR>
+ab cr <CR
+ab tab <TAB
 
 " emmet
 map <Tab> <c-y>,i
@@ -51,12 +54,17 @@ noremap <leader>( viw<ESC>a)<ESC>hbi(<ESC>lel
 noremap <leader>[ viw<ESC>a]<ESC>hbi[<ESC>lel
 noremap <leader>< viw<ESC>a><ESC>hbi<<ESC>lel
 
+"comment
+noremap cc 0i//<ESC>
+noremap cd 0i/*<ESC>
+noremap cf $a*/<ESC>
 
 map <S-t> :Tagbar<CR>
 
-map ,vrc <ESC>:w<CR>:source vimrc<CR>
+map ,vrc <ESC>:w<CR>:source ~/config/vim/vimrc<CR>
 inoremap jk <ESC>
 inoremap kj <ESC>
+inoremap aa <ESC>
 inoremap qq <TAB>
 
 "insert ctype
