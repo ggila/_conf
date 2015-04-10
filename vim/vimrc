@@ -25,7 +25,7 @@ ab cr <CR
 ab tab <TAB
 
 " emmet
-map <Tab> <c-y>,i
+noremap <Tab> <c-y>,i
 
 " Multiscreen
 noremap <C-k> <Esc><C-w>k
@@ -49,6 +49,8 @@ map <leader>dnbr<CR> byek,nbr<CR>p<ESC>k,str<CR>hpf"i : <ESC>k
 map <leader>dstr<CR> bye,str<CR>pk,str<CR>pf"i : <ESC>k
 
 " \""(){}<>
+inoremap [[ []<ESC>i
+inoremap ]] {<CR>}<ESC>O
 noremap <leader>" viw<ESC>a"<ESC>hbi"<ESC>lel
 noremap <leader>( viw<ESC>a)<ESC>hbi(<ESC>lel
 noremap <leader>[ viw<ESC>a]<ESC>hbi[<ESC>lel
@@ -75,3 +77,10 @@ noremap <leader>td 0i<TAB>double<TAB>;<ESC>i
 
 noremap <S-UP> ?^$<CR>
 noremap <S-DOWN> /^$<CR>
+
+"PHP
+noremap <leader>php i#!/usr/bin/php<CR><?PHP<CR><CR><CR>?><ESC><UP>
+noremap vv bi$<ESC>
+inoremap 44 $
+noremap 5 %
+inoremap 4a $array[]<ESC>i
