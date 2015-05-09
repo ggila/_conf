@@ -1,9 +1,0 @@
-config
-cuisine
-etude
-fractol
-ft_ls
-game_2048
-mygithubpage
-push_swap
-toolbox
