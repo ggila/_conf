@@ -1,6 +1,15 @@
 *
-
+#GIT
 !.gitignore
+
+#VIM
 !.vimrc
+!.viminfo
+!.vimfiletype/
+!.vimfiletype/**
+
+#CHROME
 !bookmarks.html
+
+#ZSH
 !.zshrc
