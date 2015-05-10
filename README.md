@@ -1,0 +1,2 @@
+git repositery :
+~/.git

@@ -1,12 +1,14 @@
+
 *
+
 #GIT
 !.gitignore
+!README.md
 
 #VIM
 !.vimrc
 !.viminfo
 !.vimfiletype/
-!.vimfiletype/**
 
 #ignore vim files .*.sw*
 .*.swp
