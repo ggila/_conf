@@ -8,6 +8,9 @@
 !.vimfiletype/
 !.vimfiletype/**
 
+#ignore vim files .*.sw*
+.*.swp
+
 #CHROME
 !bookmarks.html
 

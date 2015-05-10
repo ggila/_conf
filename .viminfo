@@ -8,7 +8,7 @@
 # hlsearch on (H) or off (h):
 ~h
 # Last Search Pattern:
-~Msle0~/---------------------------------------------------------------
+~MSle0~/sdz
 
 # Last Substitute Search Pattern:
 ~MSle0&ngoguey
@@ -17,28 +17,33 @@
 $
 
 # Command Line History (newest to oldest):
+:wq
 :q
 :w
-:wq
-:!ls
 :q!
-:e ex8.sql
-:set paste
+:help expr-quote
+:help `<
+:help map.txt
 :help
-:w ex7.sql
-:w ex6.sql
-:so ~/.vimrc
-:bn
-:w!
-:e ex5.sql
-:w ex5.sql
-:set nowrap
-:ls
-:bd! ex3.sql
-:e ex4.sql
-:w ex4.sql
+:help map
+:inoremap cr <CR ><LEFT><BACKSPACE><RIGHT>
+:inoremap cr <CR ><LEFT><BACKSPACE>a
+:inoremap cr <CR ><ESC><BACKSPACE>a
+:inoremap cr <CR>
+:inoremap cr \<CR\>
+:qall!
+:e t
+:e t.c
+:messages
+:echom "sa"
+:noremap tt :echo "sa"<cr>
 
 # Search String History (newest to oldest):
+? \$\(cursor\|select\)\$
+?/sdz
+?/nore
+??^$
+?/rgz
 ? ---------------------------------------------------------------
 ?/""
 ? ngoguey
@@ -54,11 +59,6 @@ $
 ?/aliv
 ? is_alive
 ??__con
-?/tion _pos
-?/_pos
-?/sfga
-? color
-? volor
 
 # Expression History (newest to oldest):
 
@@ -68,50 +68,87 @@ $
 
 # Registers:
 "0	LINE	0
-	SELECT * FROM pet;
-	---------------------------------------------------------------
+	.*.swp
 ""1	LINE	0
-	---------------------------------------------------------------
-	SELECT * FROM person_pet;
+	.vimfiletype/.*.swp
 "2	LINE	0
-	---------------------------------------------------------------
-"3	LINE	0
-	SELECT * FROM person_pet;
-"4	LINE	0
-	DROP TABLE person;
-	DROP TABLE pet;
-"5	LINE	0
-	DROP TABLE person_pet;
-	.read src
-"6	LINE	0
+	#ignore vim files .*.sw*
+	.*.swp
+	.vimfiletype/.*.swp
 	
-	SELECT * FROM person;
+"3	LINE	0
+	#ignore vim files .*.sw*
+	.*.swp
+"4	LINE	0
+	
+"5	LINE	0
+	int
+"6	LINE	0
+	img 
 "7	LINE	0
-	.read 02__table.sql
+	imr
 "8	LINE	0
-	---------------------------------------------------------------
+	<img src="" alt="">
 "9	LINE	0
-	---------------------------------------------------------------
+	:echom "messages:"
 "-	CHAR	0
-	p
+	/
 
 # File marks:
-'V  51  0  ~/.vimrc
-'0  39  0  ~/.vimrc
-'1  24  0  ~/learning/04_delete.sql
-'2  1  0  ~/learnsql/00_all_tuto
-'3  35  0  ~/learnsql/04_delete.sql
-'4  116  0  ~/learnsql/ex8.sql
-'5  28  2  ~/learnsql/03_select.sql
-'6  23  24  ~/learnsql/02_insert_into.sql
-'7  27  0  ~/learnsql/01_create_table.sql
-'8  1  1  ~/learnsql/02_insert_into.sql
-'9  1  0  ~/learnsql/ex2.sql
+'V  46  0  ~/.vimrc
+'Z  25  0  ~/.zshrc
+'0  13  0  ~/.gitignore
+'1  11  0  ~/.gitignore
+'2  5  12  ~/.gitignore
+'3  5  4  ~/.gitignore
+'4  1  0  ~/.gitignore
+'5  5  0  ~/.gitignore
+'6  14  18  ~/learning/todo
+'7  1  10  ~/learning/vim/test.vimrc
+'8  1  0  ~/learning/vim/test
+'9  2  0  ~/learning/vim/test
 
 # Jumplist (newest first):
--'  39  0  ~/.vimrc
--'  4  1  ~/.gitignore
+-'  13  0  ~/.gitignore
 -'  1  0  ~/.gitignore
+-'  11  0  ~/.gitignore
+-'  5  0  ~/.gitignore
+-'  14  18  ~/learning/todo
+-'  5  9  ~/learning/todo
+-'  1  0  ~/learning/todo
+-'  1  10  ~/learning/vim/test.vimrc
+-'  1  0  ~/learning/vim/test
+-'  2  0  ~/learning/vim/test
+-'  25  0  ~/.zshrc
+-'  1  0  ~/.zshrc
+-'  1  0  ~/learning/vim/t
+-'  6  0  ~/learning/vim/t.c
+-'  1  0  ~/learning/vim/t.c
+-'  1  0  ~/learning/vim/t.html
+-'  1  0  ~/learning/vim/e
+-'  2  10  ~/learning/vim/test.html
+-'  3  10  ~/learning/vim/test.html
+-'  1  10  ~/learning/vim/test.html
+-'  4  10  ~/learning/vim/test.html
+-'  3  96  ~/learning/vim/autocmd_popular
+-'  1  0  ~/learning/vim/autocmd_popular
+-'  2  30  ~/learning/vim/ab_imap
+-'  1  0  ~/learning/vim/ab_imap
+-'  3  16  ~/learning/vim/echo_echom
+-'  1  0  ~/learning/vim/echo_echom
+-'  4  0  ~/learning/vim/echo_echom
+-'  5  0  ~/learning/vim/echo_echom
+-'  8  0  ~/et.c
+-'  1  0  ~/et.c
+-'  13  0  ~/.vimrc
+-'  17  0  ~/.vimrc
+-'  1  0  ~/.vimrc
+-'  1  0  ~/.vimfiletype/php.vimrc
+-'  22  0  ~/.vimfiletype/c.vimrc
+-'  39  0  ~/.vimrc
+-'  2  0  ~/.vimrc
+-'  16  0  ~/.gitignore
+-'  38  0  ~/.vimrc
 -'  24  0  ~/learning/04_delete.sql
 -'  46  13  ~/learning/04_delete.sql
 -'  49  0  ~/learning/04_delete.sql
@@ -148,8 +185,7 @@ $
 -'  67  34  ~/learnsql/ex6.sql
 -'  1  0  ~/learnsql/ex6.sql
 -'  64  8  ~/learnsql/ex5.sql
--'  16  9  ~/.vimrc
--'  86  0  ~/.vimrc
+-'  62  0  ~/.vimrc
 -'  60  59  ~/learnsql/ex5.sql
 -'  47  12  ~/learnsql/ex5.sql
 -'  48  0  ~/learnsql/ex5.sql
@@ -158,7 +194,7 @@ $
 -'  18  0  ~/learnsql/ex5.sql
 -'  1  1  ~/learnsql/ex5.sql
 -'  44  0  ~/learnsql/ex4.sql
--'  51  0  ~/.vimrc
+-'  46  0  ~/.vimrc
 -'  51  0  ~/learnsql/ex5.sql
 -'  39  1  ~/learnsql/ex4.sql
 -'  34  0  ~/learnsql/ex4.sql
@@ -168,67 +204,278 @@ $
 -'  32  0  ~/learnsql/ex2.sql
 -'  30  1  ~/learnsql/ex2.sql
 -'  28  20  ~/learnsql/ex2.sql
--'  25  1  ~/learnsql/ex2.sql
--'  23  0  ~/learnsql/ex2.sql
--'  26  1  ~/learnsql/ex2.sql
--'  21  13  ~/learnsql/ex2.sql
--'  19  1  ~/learnsql/ex2.sql
--'  14  0  ~/learnsql/ex2.sql
--'  19  1  ~/learnsql/ex1.sql
--'  16  0  ~/learnsql/ex1.sql
--'  15  0  ~/learnsql/ex1.sql
--'  8  0  ~/learnsql/ex1.sql
--'  7  0  ~/learnsql/ex1.sql
--'  1  0  ~/learnsql/ex1.sql
--'  52  0  ~/.vimrc
--'  6  1  ~/learnsql/ex1.sql
--'  71  16  ~/.vimrc
--'  1  0  ~/.vimrc
--'  1  0  ~/mamp/apps/Awesome_Starship_Battles/t.php
--'  2  1  ~/mamp/apps/Awesome_Starship_Battles/t.php
--'  32  25  ~/.zshrc
--'  1  0  ~/.zshrc
--'  2  0  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/Army.class.php
--'  1  0  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/Army.class.php
--'  3  0  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/AWeapon.class.php
--'  1  0  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/AWeapon.class.php
--'  2  0  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/AShip.class.php
--'  1  0  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/AShip.class.php
--'  104  0  /usr/share/vim/vim73/doc/help.txt
--'  1  0  /usr/share/vim/vim73/doc/help.txt
--'  1  0  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Larva.class.php
--'  1  4  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Battle_cruiser.class.php
--'  12  0  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/weapons/Curse_All.class.php
--'  1  0  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/weapons/Curse_All.class.php
--'  13  0  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/weapons/Curse_All.class.php
--'  10  1  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/weapons/Curse_All.class.php
--'  7  26  ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/weapons/Curse_All.class.php
--'  2  74  ~/mamp/apps/Awesome_Starship_Battles/conf/httpd-prefix.conf
--'  3  63  ~/mamp/apps/Awesome_Starship_Battles/conf/httpd-prefix.conf
--'  4  63  ~/mamp/apps/Awesome_Starship_Battles/conf/httpd-vhosts.conf
--'  6  94  ~/mamp/apache2/conf/bitnami/bitnami-apps-vhosts.conf
--'  1  0  ~/mamp/apache2/conf/bitnami/bitnami-apps-vhosts.conf
+-'  1  0  ~/learning/vim/t.html
 
 # History of marks within files (newest to oldest):
 
 > ~/.gitignore
-	"	4	1
-	^	4	2
-	.	6	1
+	"	13	0
+	.	13	0
+	+	5	7
+	+	16	1
+	+	7	8
+	+	2	2
+	+	5	2
+	+	14	5
+	+	17	0
+	+	14	0
+	+	5	0
+	+	2	0
+	+	10	22
+	+	10	0
+	+	8	14
+	+	9	14
+	+	5	22
+	+	5	5
+	+	5	19
+	+	5	0
+	+	5	0
+	+	5	0
+	+	11	0
+	+	13	0
+
+> ~/learning/todo
+	"	14	18
+	^	14	19
+	.	14	18
+	+	2	17
+	+	3	0
+	+	4	2
+	+	8	10
+	+	2	10
+	+	5	2
+	+	14	18
+
+> /usr/share/vim/vim73/doc/motion.txt
+	"	918	36
+	j	17	0
+
+> /usr/share/vim/vim73/doc/eval.txt
+	"	1023	13
+
+> ~/learning/vim/test.vimrc
+	"	1	10
+	^	1	11
+	.	1	10
+	+	1	10
+
+> ~/learning/vim/test
+	"	1	0
+	^	1	0
+	.	1	0
+	+	1	0
+
+> /usr/share/vim/vim73/doc/help.txt
+	"	124	0
+
+> /usr/share/vim/vim73/doc/map.txt
+	"	45	0
+
+> ~/.zshrc
+	"	25	0
+	^	32	26
+	.	32	25
+	+	35	19
+	+	36	23
+	+	28	14
+	+	33	0
+	+	32	25
+
+> ~/learning/vim/t.c
+	"	6	0
+	^	8	0
+	.	8	0
+	+	1	27
+	+	8	0
+
+> ~/learning/vim/t
+	"	1	0
+	^	1	0
+	.	1	0
+	+	1	0
+
+> ~/learning/vim/t.html
+	"	1	0
+	.	1	0
+	+	1	0
+	+	1	0
+	+	1	0
+
+> ~/learning/vim/e
+	"	1	0
+	.	1	0
+	+	1	0
+
+> ~/learning/vim/autocmd_popular
+	"	3	96
+	^	3	97
+	.	3	96
+	+	1	40
+	+	3	96
+
+> ~/learning/vim/test.html
+	"	2	10
+	^	3	3
+	.	2	0
+	+	1	4
+	+	4	0
+	+	1	0
+	+	2	2
+	+	3	0
+	+	2	0
+
+> ~/.vimfiletype/c.vimrc
+	"	21	0
+	.	22	0
+	+	2	38
+	+	5	0
+	+	3	0
 	+	4	7
-	+	6	1
+	+	12	0
+	+	11	0
+	+	22	0
+	+	17	0
+	+	16	0
+	+	22	0
+	+	22	0
+	+	22	0
+
+> ~/n.c
+	"	1	0
 
 > ~/.vimrc
-	"	39	0
-	^	16	10
-	.	16	9
-	+	83	7
-	+	84	0
-	+	85	0
-	+	86	0
-	+	87	10
-	+	83	8
-	+	16	9
+	"	22	35
+	^	22	36
+	.	22	35
+	+	67	7
+	+	67	0
+	+	67	0
+	+	67	0
+	+	67	10
+	+	67	8
+	+	20	9
+	+	32	0
+	+	32	0
+	+	52	0
+	+	52	0
+	+	51	0
+	+	48	0
+	+	51	0
+	+	57	0
+	+	62	0
+	+	62	30
+	+	67	0
+	+	64	0
+	+	64	0
+	+	64	9
+	+	64	10
+	+	62	10
+	+	62	9
+	+	67	0
+	+	67	0
+	+	2	0
+	+	62	0
+	+	35	0
+	+	34	7
+	+	46	10
+	+	9	0
+	+	36	0
+	+	4	0
+	+	36	0
+	+	36	9
+	+	36	1
+	+	1	9
+	+	37	2
+	+	46	2
+	+	46	2
+	+	62	0
+	+	9	0
+	+	9	0
+	+	26	0
+	+	37	0
+	+	28	0
+	+	60	7
+	+	67	0
+	+	49	0
+	+	47	3
+	+	48	3
+	+	46	12
+	+	22	47
+	+	24	0
+	+	22	37
+	+	24	43
+	+	26	1
+	+	1	0
+	+	26	0
+	+	64	0
+	+	21	18
+	+	27	14
+	+	30	0
+	+	31	7
+	+	32	1
+	+	34	1
+	+	36	0
+	+	46	0
+	+	27	0
+	+	28	11
+	+	29	27
+	+	28	37
+	+	29	42
+	+	8	7
+	+	27	0
+	+	5	0
+	+	19	33
+	+	24	52
+	+	62	0
+	+	62	0
+	+	61	0
+	+	64	0
+	+	24	49
+	+	23	0
+	+	22	35
+
+> ~/.vimfiletype/vim.vimrc
+	"	1	0
+	.	1	0
+	+	1	45
+	+	1	44
+	+	1	0
+
+> ~/te.c
+	"	1	0
+	^	8	0
+	.	8	0
+	+	8	0
+
+> ~/learning/vim/ab_imap
+	"	2	30
+	^	2	31
+	.	2	31
+	+	1	44
+	+	2	33
+	+	2	31
+
+> ~/learning/vim/echo_echom
+	"	3	16
+	^	3	17
+	.	3	16
+	+	1	9
+	+	5	0
+	+	2	5
+	+	4	8
+	+	4	0
+	+	3	16
+
+> ~/et.c
+	"	8	0
+	^	8	0
+	.	8	0
+	+	8	0
+
+> ~/.vimfiletype/php.vimrc
+	"	1	0
+	.	1	0
+	+	1	0
 
 > ~/learning/04_delete.sql
 	"	24	0
@@ -421,9 +668,6 @@ $
 	+	32	22
 	+	39	0
 
-> /usr/share/vim/vim73/doc/help.txt
-	"	53	0
-
 > ~/learnsql/ex7.sql
 	"	69	0
 	^	61	0
@@ -585,16 +829,6 @@ $
 	+	4	1
 	+	2	1
 	+	1	0
-
-> ~/.zshrc
-	"	32	25
-	^	32	26
-	.	32	25
-	+	35	19
-	+	36	23
-	+	28	14
-	+	33	0
-	+	32	25
 
 > ~/mamp/apps/Awesome_Starship_Battles/.git/COMMIT_EDITMSG
 	"	15	14
@@ -1180,519 +1414,3 @@ $
 	+	11	0
 	+	10	0
 	+	9	0
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/Curse_All.class.php
-	"	11	0
-	^	10	28
-	.	9	0
-	+	11	1
-	+	11	1
-	+	11	1
-	+	11	1
-	+	11	1
-	+	10	25
-	+	7	47
-	+	10	25
-	+	7	8
-	+	8	8
-	+	9	7
-	+	10	7
-	+	11	9
-	+	11	9
-	+	11	9
-	+	11	9
-	+	11	9
-	+	7	25
-	+	8	13
-	+	9	19
-	+	10	22
-	+	9	9
-	+	10	18
-	+	11	0
-	+	10	0
-	+	9	0
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/Electric_Mist.class.php
-	"	13	2
-	^	13	3
-	.	13	2
-	+	6	0
-	+	13	0
-	+	6	7
-	+	7	0
-	+	6	12
-	+	7	10
-	+	8	17
-	+	9	0
-	+	2	1
-	+	13	2
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/Glave_Wurm.class.php
-	"	7	8
-	^	6	9
-	.	8	0
-	+	4	15
-	+	6	27
-	+	8	16
-	+	7	17
-	+	9	22
-	+	8	15
-	+	6	7
-	+	7	0
-	+	6	14
-	+	7	14
-	+	8	10
-	+	6	27
-	+	7	16
-	+	8	14
-	+	9	17
-	+	10	0
-	+	7	0
-	+	9	0
-	+	8	0
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/Lanzer_Torpedos.class.php
-	"	10	0
-	^	10	5
-	.	8	0
-	+	4	19
-	+	6	31
-	+	7	17
-	+	8	15
-	+	9	22
-	+	8	16
-	+	7	17
-	+	6	14
-	+	7	7
-	+	6	8
-	+	7	8
-	+	8	8
-	+	6	32
-	+	7	18
-	+	8	16
-	+	9	10
-	+	7	15
-	+	9	8
-	+	11	0
-	+	9	0
-	+	8	0
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/Suicide.class.php
-	"	10	0
-	^	6	1
-	.	8	0
-	+	7	17
-	+	9	25
-	+	10	1
-	+	10	1
-	+	10	1
-	+	10	1
-	+	10	1
-	+	6	7
-	+	7	7
-	+	8	7
-	+	9	7
-	+	10	9
-	+	10	9
-	+	10	9
-	+	10	9
-	+	10	9
-	+	6	0
-	+	7	0
-	+	6	9
-	+	7	9
-	+	8	9
-	+	9	9
-	+	8	11
-	+	7	13
-	+	6	13
-	+	9	20
-	+	8	13
-	+	7	15
-	+	6	15
-	+	10	0
-	+	10	0
-	+	9	0
-	+	8	0
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/Super_Heavy_Artillery.class.php
-	"	18	3
-	^	18	4
-	.	18	3
-	+	6	0
-	+	2	1
-	+	18	3
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/Yamato_Gun.class.php
-	"	8	0
-	^	9	9
-	.	8	0
-	+	1	0
-	+	4	18
-	+	6	31
-	+	8	16
-	+	9	24
-	+	7	11
-	+	10	1
-	+	10	1
-	+	10	1
-	+	10	1
-	+	7	18
-	+	10	1
-	+	10	1
-	+	9	26
-	+	7	18
-	+	6	17
-	+	7	16
-	+	8	16
-	+	7	17
-	+	6	18
-	+	9	21
-	+	10	0
-	+	8	0
-	+	6	0
-	+	5	0
-	+	6	7
-	+	7	1
-	+	8	1
-	+	9	0
-	+	10	2
-	+	10	2
-	+	10	2
-	+	10	2
-	+	10	2
-	+	8	3
-	+	9	10
-	+	8	5
-	+	7	11
-	+	8	8
-	+	9	17
-	+	7	7
-	+	8	7
-	+	9	19
-	+	10	0
-	+	10	1
-	+	10	1
-	+	10	0
-	+	9	14
-	+	8	10
-	+	7	8
-	+	8	0
-
-> ~/Awesome_Starship_Battles/htdocs/classes/AWeapon.class.php
-	"	13	0
-	^	12	1
-	.	9	17
-	+	9	1
-	+	9	1
-	+	10	1
-	+	10	1
-	+	10	1
-	+	8	1
-	+	8	1
-	+	15	1
-	+	16	1
-	+	16	1
-	+	17	1
-	+	17	1
-	+	10	1
-	+	17	0
-	+	25	0
-	+	25	1
-	+	25	1
-	+	25	1
-	+	23	1
-	+	23	1
-	+	25	0
-	+	26	1
-	+	26	0
-	+	33	1
-	+	43	0
-	+	29	16
-	+	31	24
-	+	31	24
-	+	31	24
-	+	31	24
-	+	31	23
-	+	31	23
-	+	31	22
-	+	27	46
-	+	19	22
-	+	8	0
-	+	9	0
-	+	10	0
-	+	10	0
-	+	8	0
-	+	15	0
-	+	16	0
-	+	17	0
-	+	19	0
-	+	23	0
-	+	25	0
-	+	24	0
-	+	26	26
-	+	27	54
-	+	30	18
-	+	31	17
-	+	23	20
-	+	22	50
-	+	23	48
-	+	15	31
-	+	16	37
-	+	8	18
-	+	9	17
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/Lanzer_Torpedos
-	"	1	0
-
-> ~/Awesome_Starship_Battles/htdocs/classes/_complet_AWepon.php
-	"	1	0
-
-> /private/tmp/a_sup/ex04/Tyrion.class.php
-	"	1	0
-
-> /private/tmp/a_sup/ex04/test.php
-	"	1	0
-
-> /private/tmp/a_sup/ex04/Lannister.class.php
-	"	1	0
-
-> /private/tmp/a_sup/ex03/House.class.php
-	"	1	0
-
-> /private/tmp/a_sup/ex02/Targaryen.class.php
-	"	9	70
-
-> /private/tmp/a_sup/ex00/Tyrion.class.php
-	"	1	0
-
-> ~/Awesome_Starship_Battles/htdocs/test
-	"	1	0
-
-> ~/Awesome_Starship_Battles/htdocs/Weapon.class.php
-	"	13	1
-	^	64	1
-	.	64	0
-	+	46	42
-	+	45	42
-	+	50	25
-	+	51	27
-	+	64	0
-	+	50	1
-	+	53	7
-	+	53	33
-	+	53	1
-	+	53	0
-	+	52	0
-	+	53	19
-	+	9	15
-	+	12	21
-	+	13	0
-	+	47	0
-	+	50	0
-	+	17	0
-	+	48	0
-	+	48	0
-	+	34	0
-	+	33	0
-	+	29	33
-	+	30	0
-	+	25	0
-	+	28	0
-	+	30	0
-	+	18	14
-	+	9	0
-	+	16	0
-	+	7	22
-	+	23	0
-	+	22	30
-	+	23	12
-	+	53	24
-	+	53	0
-	+	64	0
-	+	37	0
-	+	37	13
-	+	37	11
-	+	53	14
-	+	37	15
-	+	53	0
-	+	53	0
-	+	55	55
-	+	63	28
-	+	55	8
-	+	55	84
-	+	57	9
-	+	55	62
-	+	56	0
-	+	55	25
-	+	56	17
-	+	57	22
-	+	56	13
-	+	58	5
-	+	59	5
-	+	60	5
-	+	61	5
-	+	63	28
-	+	58	16
-	+	56	17
-	+	57	22
-	+	58	12
-	+	59	12
-	+	60	12
-	+	61	12
-	+	63	35
-	+	59	21
-	+	60	14
-	+	61	21
-	+	62	14
-	+	63	14
-	+	63	23
-	+	63	22
-	+	66	0
-	+	65	0
-	+	22	0
-	+	23	0
-	+	25	0
-	+	26	0
-	+	27	0
-	+	29	0
-	+	30	0
-	+	31	0
-	+	23	0
-	+	25	0
-	+	26	0
-	+	27	0
-	+	28	0
-	+	29	0
-	+	30	0
-	+	31	2
-	+	30	2
-	+	29	2
-	+	27	2
-	+	26	2
-	+	25	2
-	+	23	2
-	+	64	0
-
-> ~/Awesome_Starship_Battles/htdocs/AShip.class.php
-	"	171	0
-	.	193	0
-	+	181	27
-	+	182	70
-	+	186	19
-	+	187	19
-	+	188	22
-	+	189	22
-	+	190	22
-	+	191	22
-	+	192	22
-	+	182	22
-	+	185	0
-	+	183	17
-	+	196	0
-	+	197	0
-	+	195	16
-	+	210	0
-	+	214	0
-	+	209	0
-	+	213	0
-	+	211	27
-	+	213	0
-	+	212	9
-	+	210	1
-	+	213	0
-	+	210	0
-	+	213	0
-	+	64	0
-	+	74	0
-	+	48	13
-	+	63	1
-	+	62	0
-	+	48	14
-	+	49	0
-	+	64	36
-	+	65	23
-	+	73	0
-	+	65	25
-	+	64	18
-	+	212	0
-	+	213	0
-	+	64	6
-	+	212	10
-	+	209	10
-	+	210	1
-	+	213	0
-	+	210	0
-	+	213	0
-	+	211	1
-	+	213	2
-	+	210	0
-	+	211	0
-	+	210	45
-	+	213	0
-	+	42	37
-	+	182	72
-	+	195	29
-	+	195	0
-	+	182	80
-	+	195	0
-	+	195	11
-	+	193	38
-	+	195	33
-	+	195	11
-	+	195	18
-	+	193	37
-	+	195	0
-	+	193	0
-	+	195	0
-	+	194	1
-	+	193	1
-	+	195	11
-	+	66	24
-	+	69	20
-	+	71	11
-	+	71	0
-	+	72	17
-	+	72	33
-	+	73	0
-	+	72	32
-	+	68	2
-	+	67	2
-	+	70	2
-	+	68	25
-	+	182	27
-	+	184	35
-	+	24	26
-	+	184	0
-	+	193	0
-	+	194	0
-	+	193	0
-	+	195	0
-	+	193	0
-	+	194	0
-	+	193	30
-	+	193	0
-	+	194	1
-	+	194	0
-	+	193	0
-	+	193	1
-	+	193	0
-
-> ~/Awesome_Starship_Battles/htdocs/Factory.class.php
-	"	17	0
-	^	16	3
-	.	15	18
-	+	5	12
-	+	8	21
-	+	9	15
-	+	10	15
-	+	12	15
-	+	13	16
-	+	5	17
-	+	8	26
-	+	9	15
-	+	10	15
-	+	12	15
-	+	13	16
-	+	14	17
-	+	15	18
