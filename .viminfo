@@ -18,9 +18,10 @@ $
 
 # Command Line History (newest to oldest):
 :wq
-:q
 :w
+:q
 :q!
+:sp
 :help expr-quote
 :help `<
 :help map.txt
@@ -67,55 +68,59 @@ $
 # Input Line History (newest to oldest):
 
 # Registers:
-"0	LINE	0
-	.*.swp
-""1	LINE	0
-	*
+""0	LINE	0
+	!.oblovim/
+"1	LINE	0
+	!.vim/
+	.vim/test/
 "2	LINE	0
-	!.vimfiletype/**
+	!.vim/
+	.vim/test/
 "3	LINE	0
-	.vimfiletype/.*.swp
+	*
 "4	LINE	0
+	!.vimfiletype/**
+"5	LINE	0
+	.vimfiletype/.*.swp
+"6	LINE	0
 	#ignore vim files .*.sw*
 	.*.swp
 	.vimfiletype/.*.swp
-	
-"5	LINE	0
-	#ignore vim files .*.sw*
-	.*.swp
-"6	LINE	0
 	
 "7	LINE	0
-	int
+	#ignore vim files .*.sw*
+	.*.swp
 "8	LINE	0
-	img 
+	
 "9	LINE	0
-	imr
+	int
 "-	CHAR	0
-	/
+	*
 
 # File marks:
 'V  46  0  ~/.vimrc
 'Z  25  0  ~/.zshrc
-'0  2  0  ~/.gitignore
-'1  12  0  ~/.gitignore
-'2  1  0  ~/README.md
-'3  2  5  ~/README.md
-'4  15  0  ~/.gitignore
-'5  13  0  ~/.gitignore
-'6  8  12  ~/.gitignore
-'7  8  4  ~/.gitignore
-'8  1  0  ~/.gitignore
-'9  8  0  ~/.gitignore
+'0  5  4  ~/README.md
+'1  12  9  ~/.gitignore
+'2  11  11  ~/.gitignore
+'3  1  0  ~/.gitignore
+'4  13  5  ~/.gitignore
+'5  13  9  ~/.gitignore
+'6  2  0  ~/.gitignore
+'7  13  0  ~/.gitignore
+'8  1  0  ~/README.md
+'9  2  5  ~/README.md
 
 # Jumplist (newest first):
--'  2  0  ~/.gitignore
--'  1  0  ~/.gitignore
--'  12  0  ~/.gitignore
+-'  5  4  ~/README.md
 -'  1  0  ~/README.md
+-'  12  9  ~/.gitignore
+-'  1  0  ~/.gitignore
+-'  11  11  ~/.gitignore
+-'  13  5  ~/.gitignore
+-'  2  0  ~/.gitignore
 -'  2  5  ~/README.md
--'  15  0  ~/.gitignore
--'  13  0  ~/.gitignore
+-'  14  0  ~/.gitignore
 -'  8  0  ~/.gitignore
 -'  14  18  ~/learning/todo
 -'  5  9  ~/learning/todo
@@ -151,7 +156,7 @@ $
 -'  22  0  ~/.vimfiletype/c.vimrc
 -'  39  0  ~/.vimrc
 -'  2  0  ~/.vimrc
--'  18  0  ~/.gitignore
+-'  17  0  ~/.gitignore
 -'  38  0  ~/.vimrc
 -'  24  0  ~/learning/04_delete.sql
 -'  46  13  ~/learning/04_delete.sql
@@ -204,31 +209,40 @@ $
 -'  34  0  ~/learnsql/ex4.sql
 -'  40  0  ~/learnsql/ex3.sql
 -'  40  0  ~/learnsql/ex2.sql
--'  39  16  ~/learnsql/ex2.sql
--'  32  0  ~/learnsql/ex2.sql
--'  30  1  ~/learnsql/ex2.sql
--'  28  20  ~/learnsql/ex2.sql
+-'  12  9  ~/.gitignore
+-'  1  0  ~/.gitignore
 
 # History of marks within files (newest to oldest):
 
+> ~/README.md
+	"	5	4
+	^	5	5
+	.	7	32
+	+	8	0
+	+	7	5
+	+	4	9
+	+	5	1
+	+	6	1
+	+	7	32
+
 > ~/.gitignore
-	"	2	0
-	^	3	0
-	.	2	0
+	"	12	9
+	^	12	10
+	.	12	10
 	+	8	7
-	+	18	1
+	+	17	1
 	+	10	8
 	+	4	2
 	+	8	2
-	+	16	5
-	+	19	0
-	+	16	0
+	+	15	5
+	+	18	0
+	+	15	0
 	+	8	0
 	+	4	0
-	+	12	22
-	+	12	0
+	+	13	22
+	+	13	0
 	+	11	14
-	+	12	14
+	+	13	14
 	+	8	22
 	+	8	5
 	+	8	19
@@ -236,17 +250,17 @@ $
 	+	8	0
 	+	8	0
 	+	13	0
-	+	15	0
-	+	12	0
+	+	14	0
+	+	13	0
 	+	6	0
 	+	1	0
 	+	2	0
-
-> ~/README.md
-	"	1	0
-	^	2	6
-	.	3	0
-	+	3	0
+	+	13	9
+	+	13	0
+	+	11	10
+	+	13	0
+	+	11	9
+	+	12	10
 
 > ~/learning/todo
 	"	14	18
