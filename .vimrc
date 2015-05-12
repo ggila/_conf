@@ -21,10 +21,10 @@ set ruler
 map <leader>wr <ESC>:set wrap!<CR>
 
 " source type.vimrc
-autocmd BufNewFile,BufRead  *.vimrc so ~/.vimfiletype/vim.vimrc
-autocmd FileType c so ~/.vimfiletype/c.vimrc
-autocmd FileType html so ~/.vimfiletype/html.vimrc
-autocmd FileType php so ~/.vimfiletype/php.vimrc
+autocmd BufNewFile,BufRead  *.vimrc so ~/.oblovim/filetype/vim.vimrc
+autocmd FileType c so ~/.oblovim/filetype/c.vimrc
+autocmd FileType html so ~/.oblovim/filetype/html.vimrc
+autocmd FileType php so ~/.oblovim/filetype/php.vimrc
 
 " source config
 map <leader>vrc <ESC>:w<CR>:source ~/.vimrc<CR>
@@ -43,8 +43,8 @@ noremap <C-l> <Esc><C-w>l
 " deplacement
 noremap <S-H> 0
 noremap <S-L> $
-noremap <S-UP> ?^$<CR>
-noremap <S-DOWN> /^$<CR>
+noremap <S-K> ?^$<CR>
+noremap <S-J> /^$<CR>
 
 " \""(){}<>
 inoremap [[ []<ESC>i
@@ -58,6 +58,9 @@ noremap <leader>< viw<ESC>a><ESC>hbi<<ESC>lel
 inoremap jk <ESC>
 inoremap kj <ESC>
 inoremap aa <ESC>
+
+"subsitute
+xnoremap <leader>s :s~~~g<LEFT><LEFT><LEFT>
 
 " Hi
 echo "obloti"
