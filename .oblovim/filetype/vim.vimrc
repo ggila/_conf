@@ -1,5 +1,6 @@
 " special character
 inoremap <buffer> cr <CR ><LEFT><BACKSPACE><RIGHT>
+inoremap <buffer> esc <ESC ><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> left <LEFT ><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> right <RIGHT ><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> up <UP ><LEFT><BACKSPACE><RIGHT>

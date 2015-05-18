@@ -24,10 +24,13 @@ PS1="%{$fg[red]%}%m %{$fg[green]%}%~%{$reset_color%}|%"
 #
 ##ALIAS
 alias ll='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
 alias ..='cd ..'
 alias ...='cd ../..'
 alias dd='clear'
 alias oldvim='/usr/bin/vim'
+alias szsh='source ~/.zshrc'
 
 function gc
 {

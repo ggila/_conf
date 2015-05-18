@@ -8,10 +8,10 @@
 # hlsearch on (H) or off (h):
 ~h
 # Last Search Pattern:
-~MSle0~/sdz
+~MSle0~/s.L
 
 # Last Substitute Search Pattern:
-~MSle0&ngoguey
+~MSle0&\n\n
 
 # Last Substitute String:
 $
@@ -19,47 +19,106 @@ $
 # Command Line History (newest to oldest):
 :wq
 :w
-:q
+:xmap w @a
+:set paste
 :q!
-:sp
-:help expr-quote
-:help `<
-:help map.txt
-:help
+:q
+:colorscheme darkblue
+:'<,'>s/}//
+:'<,'>s/^1\.[12]\.[1-9]\. //
+:'<,'>s/^1\.[12]\.[1-9] //
+:'<,'>s/^1\.[12]\. /\\subsubsection{/
+:'<,'>s/1\.[12]\. /\\subsubsection{/
+:'<,'>s/ [12]\. /\\section{/
+:map cc A;<ESC>0i\{}<ESC><LEFT>i
+:e test.tex
+:colorscheme pablo
+:e memoire.tex
+:sp test.tex
+:colorscheme blue
+:e
+:'<,'>q
+:%s/\n\n/\n/g
+:w memoire.tex
+:echo $type
+:wq!
+:w!
+:s/X/Y/
+:bn
+:ls
+:e! Color.class.php
+:e Color.class.php
+:set incsearch
+:set incserach
+:s/\/\+| DYNAMIC.*/\/\/ DYNAMIC/
+:s/\/\+\tDYNAMIC.*/\/\/ DYNAMIC/
+:s/\/*\tDYNAMIC.*/\/\/ DYNAMIC/
+:so %
+:res
+:help map-overview
 :help map
-:inoremap cr <CR ><LEFT><BACKSPACE><RIGHT>
-:inoremap cr <CR ><LEFT><BACKSPACE>a
-:inoremap cr <CR ><ESC><BACKSPACE>a
-:inoremap cr <CR>
-:inoremap cr \<CR\>
-:qall!
-:e t
-:e t.c
-:messages
-:echom "sa"
-:noremap tt :echo "sa"<cr>
+:help unmap
+:grep noremap
+:cn
+:helpg map
+:helpg noremap
+:e ~/.oblovim/filetype/vim.vimrc
+:map
+:help helpgrep
+:help normal
+:help grep
 
 # Search String History (newest to oldest):
+?/s.L
+??^[^\t]
+?/^[^\t]
+??[^\t]
+??^d
+?/^d
+?/__ma
+??Makefile
+??^def
+??def
+??def\t
+??def:
+? ^1\.[12]\.[1-9]\. 
+? ^1\.[12]\.[1-9] 
+? ^1\.[12]\. 
+? 1\.[12]\. 
+?  [12]\. 
+?/j
+? \n\n
+?/tion\.
+?/ion\.
+?/ance\.
+?/que.
+?/res de vie.
+?/_to
+?/_yp
+?/-to
+? X
+?/X/Y
+?/^[^\t]\+\t.\+
+?/^
+? \/\+| DYNAMIC.*
+?/^\/\+|
+?/^\/\+
+??^\t\+
+?/^\t\+
+? \/\+\tDYNAMIC.*
+?/\/
+? \/*\tDYNAMIC.*
+?/^$
+??^$
+??undo
+??^1
+??=$^1
+??=====
 ? \$\(cursor\|select\)\$
 ?/sdz
 ?/nore
-??^$
 ?/rgz
 ? ---------------------------------------------------------------
-?/""
-? ngoguey
-? ,
-? ' \t=>
-? '\t=>
-? '\t\t=>
-? ^\t\t\t'
-? >dam
-? _PC
-? _PC_damage
-? ^[^\s]+'
-?/aliv
-? is_alive
-??__con
 
 # Expression History (newest to oldest):
 
@@ -68,165 +127,152 @@ $
 # Input Line History (newest to oldest):
 
 # Registers:
-""0	LINE	0
-	!.oblovim/
-"1	LINE	0
-	!.vim/
-	.vim/test/
+"0	LINE	0
+	alias la='ls -l'
+""1	LINE	0
+	introduction
 "2	LINE	0
-	!.vim/
-	.vim/test/
+	index.txt
 "3	LINE	0
-	*
+	Selon nos apports théoriques, l’institution tendrait à compenser ce déficit symbolique.   Malgré cette ressource considérée comme contenante, pourquoi le sujet se livre t-il 
 "4	LINE	0
-	!.vimfiletype/**
+	
 "5	LINE	0
-	.vimfiletype/.*.swp
+	
 "6	LINE	0
-	#ignore vim files .*.sw*
-	.*.swp
-	.vimfiletype/.*.swp
 	
 "7	LINE	0
-	#ignore vim files .*.sw*
-	.*.swp
+	
 "8	LINE	0
 	
 "9	LINE	0
-	int
+	
+"a@	CHAR	0
+	0i�kbj
+"q	CHAR	0
+	akjdd
 "-	CHAR	0
-	*
+	.txt
 
 # File marks:
-'V  46  0  ~/.vimrc
+'V  41  0  ~/.vimrc
 'Z  25  0  ~/.zshrc
-'0  5  4  ~/README.md
-'1  12  9  ~/.gitignore
-'2  11  11  ~/.gitignore
-'3  1  0  ~/.gitignore
-'4  13  5  ~/.gitignore
-'5  13  9  ~/.gitignore
-'6  2  0  ~/.gitignore
-'7  13  0  ~/.gitignore
-'8  1  0  ~/README.md
-'9  2  5  ~/README.md
+'0  12  0  ~/.gitignore
+'1  2  0  ~/learning/latex/memoire/memoire/index.txt
+'2  33  26  ~/.zshrc
+'3  6  782  ~/learning/latex/memoire/memoire/introduction.txt
+'4  15  0  ~/learning/latex/memoire/memoire/resume
+'5  1  0  ~/learning/latex/memoire/memoire/introduction.txt
+'6  1  0  ~/.oblovim/filetype
+'7  1  0  ~/learning/latex/memoire/makelatex.py
+'8  83  0  ~/learning/python/makemake.py
+'9  8  0  ~/learning/latex/memoire/makelatex.py
 
 # Jumplist (newest first):
--'  5  4  ~/README.md
--'  1  0  ~/README.md
--'  12  9  ~/.gitignore
+-'  12  0  ~/.gitignore
 -'  1  0  ~/.gitignore
--'  11  11  ~/.gitignore
--'  13  5  ~/.gitignore
--'  2  0  ~/.gitignore
--'  2  5  ~/README.md
--'  14  0  ~/.gitignore
--'  8  0  ~/.gitignore
--'  14  18  ~/learning/todo
--'  5  9  ~/learning/todo
--'  1  0  ~/learning/todo
--'  1  10  ~/learning/vim/test.vimrc
--'  1  0  ~/learning/vim/test
--'  2  0  ~/learning/vim/test
--'  25  0  ~/.zshrc
--'  1  0  ~/.zshrc
--'  1  0  ~/learning/vim/t
--'  6  0  ~/learning/vim/t.c
--'  1  0  ~/learning/vim/t.c
--'  1  0  ~/learning/vim/t.html
--'  1  0  ~/learning/vim/e
--'  2  10  ~/learning/vim/test.html
--'  3  10  ~/learning/vim/test.html
--'  1  10  ~/learning/vim/test.html
--'  4  10  ~/learning/vim/test.html
--'  3  96  ~/learning/vim/autocmd_popular
--'  1  0  ~/learning/vim/autocmd_popular
--'  2  30  ~/learning/vim/ab_imap
--'  1  0  ~/learning/vim/ab_imap
--'  3  16  ~/learning/vim/echo_echom
--'  1  0  ~/learning/vim/echo_echom
--'  4  0  ~/learning/vim/echo_echom
--'  5  0  ~/learning/vim/echo_echom
--'  8  0  ~/et.c
--'  1  0  ~/et.c
--'  13  0  ~/.vimrc
--'  17  0  ~/.vimrc
--'  1  0  ~/.vimrc
--'  1  0  ~/.vimfiletype/php.vimrc
--'  22  0  ~/.vimfiletype/c.vimrc
--'  39  0  ~/.vimrc
--'  2  0  ~/.vimrc
--'  17  0  ~/.gitignore
--'  38  0  ~/.vimrc
--'  24  0  ~/learning/04_delete.sql
--'  46  13  ~/learning/04_delete.sql
--'  49  0  ~/learning/04_delete.sql
--'  1  0  ~/learning/04_delete.sql
--'  1  0  ~/learnsql/00_all_tuto
--'  35  0  ~/learnsql/04_delete.sql
--'  31  0  ~/learnsql/04_delete.sql
--'  1  0  ~/learnsql/04_delete.sql
--'  116  0  ~/learnsql/ex8.sql
--'  106  0  ~/learnsql/ex8.sql
--'  1  0  ~/learnsql/ex8.sql
--'  24  3  ~/learnsql/04_delete.sql
--'  28  2  ~/learnsql/03_select.sql
--'  29  0  ~/learnsql/03_select.sql
--'  1  0  ~/learnsql/03_select.sql
--'  23  24  ~/learnsql/02_insert_into.sql
--'  1  0  ~/learnsql/02_insert_into.sql
--'  27  0  ~/learnsql/01_create_table.sql
--'  28  0  ~/learnsql/01_create_table.sql
--'  1  0  ~/learnsql/01_create_table.sql
--'  1  0  ~/learnsql/ex2.sql
--'  54  0  ~/learnsql/ex8.sql
--'  118  0  ~/learnsql/ex8.sql
--'  102  17  ~/learnsql/ex8.sql
--'  126  0  ~/learnsql/ex8.sql
--'  30  0  ~/learnsql/ex8.sql
--'  78  0  ~/learnsql/ex8.sql
--'  77  0  ~/learnsql/ex8.sql
--'  31  0  ~/learnsql/ex8.sql
--'  2  0  ~/learnsql/ex8.sql
--'  69  0  ~/learnsql/ex7.sql
--'  43  1  ~/learnsql/ex7.sql
--'  6  0  ~/learnsql/ex7.sql
--'  67  34  ~/learnsql/ex6.sql
--'  1  0  ~/learnsql/ex6.sql
--'  64  8  ~/learnsql/ex5.sql
--'  62  0  ~/.vimrc
--'  60  59  ~/learnsql/ex5.sql
--'  47  12  ~/learnsql/ex5.sql
--'  48  0  ~/learnsql/ex5.sql
--'  38  0  ~/learnsql/ex5.sql
--'  24  0  ~/learnsql/ex5.sql
--'  18  0  ~/learnsql/ex5.sql
--'  1  1  ~/learnsql/ex5.sql
--'  44  0  ~/learnsql/ex4.sql
--'  46  0  ~/.vimrc
--'  51  0  ~/learnsql/ex5.sql
--'  39  1  ~/learnsql/ex4.sql
--'  34  0  ~/learnsql/ex4.sql
--'  40  0  ~/learnsql/ex3.sql
--'  40  0  ~/learnsql/ex2.sql
--'  12  9  ~/.gitignore
--'  1  0  ~/.gitignore
+-'  2  0  ~/learning/latex/memoire/memoire/index.txt
+-'  1  0  ~/learning/latex/memoire/memoire/index.txt
+-'  33  26  ~/.zshrc
+-'  42  0  ~/.vimrc
+-'  6  782  ~/learning/latex/memoire/memoire/introduction.txt
+-'  7  0  ~/learning/latex/memoire/memoire/introduction.txt
+-'  4  180  ~/learning/latex/memoire/memoire/introduction.txt
+-'  1  103  ~/learning/latex/memoire/memoire/introduction.txt
+-'  15  0  ~/learning/latex/memoire/memoire/resume
+-'  1  0  ~/learning/latex/memoire/memoire/resume
+-'  1  0  ~/.oblovim/filetype
+-'  1  0  ~/learning/latex/memoire/makelatex.py
+-'  83  0  ~/learning/python/makemake.py
+-'  57  0  ~/learning/python/makemake.py
+-'  59  0  ~/learning/python/makemake.py
+-'  64  0  ~/learning/python/makemake.py
+-'  66  0  ~/learning/python/makemake.py
+-'  67  0  ~/learning/python/makemake.py
+-'  69  0  ~/learning/python/makemake.py
+-'  93  0  ~/learning/python/makemake.py
+-'  107  0  ~/learning/python/makemake.py
+-'  108  0  ~/learning/python/makemake.py
+-'  109  0  ~/learning/python/makemake.py
+-'  142  0  ~/learning/python/makemake.py
+-'  141  0  ~/learning/python/makemake.py
+-'  226  2  ~/learning/python/makemake.py
+-'  290  0  ~/learning/python/makemake.py
+-'  301  0  ~/learning/python/makemake.py
+-'  307  0  ~/learning/python/makemake.py
+-'  1  0  ~/learning/python/makemake.py
+-'  8  0  ~/learning/latex/memoire/makelatex.py
+-'  9  0  ~/learning/latex/memoire/makelatex.py
+-'  7  72  ~/learning/latex/memoire/remerciements
+-'  2  1  ~/learning/latex/memoire/remerciements
+-'  5  0  ~/learning/latex/memoire/remerciements
+-'  1  0  ~/learning/latex/memoire/remerciements
+-'  9  0  ~/learning/latex/test.tex
+-'  1  0  ~/learning/latex/test.tex
+-'  4  0  ~/learning/latex/memoire.tex
+-'  1  0  ~/learning/latex/memoire.tex
+-'  2  0  ~/learning/latex/memoire
+-'  17  363  ~/learning/latex/memoire
+-'  16  0  ~/learning/latex/memoire
+-'  15  10  ~/learning/latex/memoire
+-'  13  0  ~/learning/latex/memoire
+-'  28  0  ~/learning/latex/memoire
+-'  29  0  ~/learning/latex/memoire
+-'  12  0  ~/learning/latex/memoire
+-'  10  291  ~/learning/latex/memoire
+-'  9  549  ~/learning/latex/memoire
+-'  1  0  ~/learning/latex/memoire
+-'  1  3  ~/learning/.gitignore
+-'  2  13  ~/learning/latex/readme.md
+-'  1  0  ~/learning/latex/readme.md
+-'  15  8  ~/learning/latex/test.tex
+-'  19  2  ~/learning/python/formate.py
+-'  1  0  ~/learning/python/formate.py
+-'  38  5  ~/learning/php/Vector.class.php
+-'  33  1  ~/learning/php/Vector.class.php
+-'  35  2  ~/learning/php/Vector.class.php
+-'  37  2  ~/learning/php/Vector.class.php
+-'  39  1  ~/learning/php/Vector.class.php
+-'  31  34  ~/learning/php/Vector.class.php
+-'  1  0  ~/learning/php/Vector.class.php
+-'  16  26  ~/learning/README.md
+-'  1  12  ~/learning/README.md
+-'  2  32  ~/learning/README.md
+-'  62  38  ~/learning/php/Vertex.class.php
+-'  1  0  ~/learning/php/Vertex.class.php
+-'  16  0  ~/learning/php/ex01/main_01.php
+-'  1  0  ~/learning/php/ex01/main_01.php
+-'  75  1  ~/learning/php/Vertex.class.php
+-'  31  23  ~/learning/php/Vertex.class.php
+-'  32  23  ~/learning/php/Vertex.class.php
+-'  33  23  ~/learning/php/Vertex.class.php
+-'  30  23  ~/learning/php/Vertex.class.php
+-'  34  20  ~/learning/php/Vertex.class.php
+-'  22  9  ~/learning/php/Vertex.class.php
+-'  23  2  ~/learning/php/Vertex.class.php
+-'  25  17  ~/learning/php/Vertex.class.php
+-'  31  0  ~/learning/php/Color.class.php
+-'  18  1  ~/learning/php/Vertex.class.php
+-'  17  19  ~/learning/php/Vertex.class.php
+-'  2  0  ~/learning/php/Vertex.class.php
+-'  1  8  /media/gautier/GGILABER/index
+-'  137  48  /media/gautier/GGILABER/index
+-'  126  0  /media/gautier/GGILABER/index
+-'  98  0  /media/gautier/GGILABER/index
+-'  97  10  /media/gautier/GGILABER/index
+-'  89  0  /media/gautier/GGILABER/index
+-'  88  0  /media/gautier/GGILABER/index
+-'  87  0  /media/gautier/GGILABER/index
+-'  99  1  /media/gautier/GGILABER/index
+-'  81  0  /media/gautier/GGILABER/index
+-'  82  0  /media/gautier/GGILABER/index
+-'  80  0  /media/gautier/GGILABER/index
+-'  74  0  /media/gautier/GGILABER/index
 
 # History of marks within files (newest to oldest):
 
-> ~/README.md
-	"	5	4
-	^	5	5
-	.	7	32
-	+	8	0
-	+	7	5
-	+	4	9
-	+	5	1
-	+	6	1
-	+	7	32
-
 > ~/.gitignore
-	"	12	9
+	"	12	0
 	^	12	10
 	.	12	10
 	+	8	7
@@ -261,6 +307,885 @@ $
 	+	13	0
 	+	11	9
 	+	12	10
+
+> ~/learning/latex/memoire/memoire/index.txt
+	"	2	0
+	.	2	0
+	+	1	11
+	+	1	0
+	+	2	0
+
+> ~/.vimrc
+	"	42	0
+	^	41	12
+	.	31	0
+	+	43	0
+	+	46	0
+	+	52	0
+	+	59	0
+	+	59	30
+	+	64	0
+	+	61	0
+	+	61	0
+	+	61	9
+	+	61	10
+	+	59	10
+	+	59	9
+	+	64	0
+	+	64	0
+	+	1	0
+	+	59	0
+	+	30	0
+	+	29	7
+	+	41	10
+	+	4	0
+	+	31	0
+	+	1	0
+	+	31	0
+	+	31	9
+	+	31	1
+	+	1	9
+	+	31	2
+	+	41	2
+	+	41	2
+	+	59	0
+	+	4	0
+	+	4	0
+	+	21	0
+	+	31	0
+	+	23	0
+	+	55	7
+	+	64	0
+	+	44	0
+	+	42	3
+	+	43	3
+	+	41	12
+	+	17	47
+	+	19	0
+	+	17	37
+	+	19	43
+	+	21	1
+	+	1	0
+	+	21	0
+	+	61	0
+	+	16	18
+	+	22	14
+	+	25	0
+	+	26	7
+	+	27	1
+	+	29	1
+	+	31	0
+	+	41	0
+	+	22	0
+	+	23	11
+	+	23	27
+	+	23	37
+	+	23	42
+	+	3	7
+	+	22	0
+	+	1	0
+	+	14	33
+	+	19	52
+	+	59	0
+	+	59	0
+	+	56	0
+	+	61	0
+	+	19	49
+	+	18	0
+	+	17	35
+	+	60	12
+	+	1	0
+	+	57	0
+	+	19	0
+	+	19	49
+	+	20	24
+	+	21	27
+	+	22	26
+	+	20	24
+	+	21	27
+	+	22	26
+	+	20	33
+	+	21	36
+	+	22	35
+	+	21	36
+	+	20	33
+	+	19	50
+	+	14	0
+	+	17	0
+	+	41	11
+	+	1	0
+	+	23	0
+	+	39	11
+	+	40	11
+	+	42	11
+	+	31	0
+
+> ~/.zshrc
+	"	33	26
+	^	33	27
+	.	33	26
+	+	38	19
+	+	39	23
+	+	30	14
+	+	36	0
+	+	35	25
+	+	27	7
+	+	28	16
+	+	27	14
+	+	33	26
+
+> ~/learning/latex/memoire/memoire/introduction.txt
+	"	6	782
+	.	7	0
+	+	1	84
+	+	8	298
+	+	1	84
+	+	1	172
+	+	1	263
+	+	1	302
+	+	1	389
+	+	1	475
+	+	7	347
+	+	7	700
+	+	7	1149
+	+	8	87
+	+	8	175
+	+	8	259
+	+	1	172
+	+	1	172
+	+	1	263
+	+	1	302
+	+	3	0
+	+	2	0
+	+	4	180
+	+	4	180
+	+	4	0
+	+	4	93
+	+	4	277
+	+	4	366
+	+	5	0
+	+	5	304
+	+	8	259
+	+	9	0
+	+	8	87
+	+	7	1149
+	+	9	0
+	+	8	0
+	+	7	971
+	+	7	971
+	+	8	0
+	+	8	0
+	+	7	786
+	+	5	1086
+	+	7	0
+	+	5	202
+	+	7	0
+
+> ~/learning/latex/memoire/memoire/resume
+	"	15	0
+	^	32	80
+	.	1	0
+	+	32	0
+	+	1	0
+	+	2	0
+	+	3	0
+	+	4	0
+	+	5	0
+	+	6	0
+	+	7	0
+	+	8	0
+	+	9	0
+	+	10	0
+	+	11	0
+	+	12	0
+	+	13	0
+	+	14	0
+	+	15	0
+	+	16	0
+	+	17	0
+	+	18	0
+	+	19	0
+	+	20	0
+	+	21	0
+	+	22	0
+	+	23	0
+	+	24	0
+	+	25	0
+	+	26	0
+	+	27	0
+	+	28	0
+	+	29	0
+	+	30	0
+	+	31	0
+	+	32	0
+	+	1	0
+
+> ~/learning/latex/memoire/makelatex.py
+	"	1	0
+	^	4	25
+	.	4	24
+	+	6	0
+	+	2	0
+	+	6	10
+	+	6	0
+	+	6	0
+	+	6	3
+	+	6	0
+	+	6	0
+	+	6	0
+	+	6	0
+	+	12	0
+	+	6	0
+	+	6	26
+	+	6	0
+	+	3	8
+	+	6	28
+	+	7	14
+	+	12	0
+	+	12	0
+	+	11	16
+	+	12	0
+	+	6	29
+	+	7	10
+	+	10	15
+	+	7	1
+	+	8	30
+	+	10	17
+	+	4	13
+	+	5	0
+	+	4	24
+
+> ~/learning/latex/doc.tex
+	"	3	0
+	^	34	38
+	.	34	37
+	+	1	32
+	+	1	29
+	+	2	16
+	+	4	15
+	+	5	26
+	+	7	9
+	+	35	12
+	+	1	36
+	+	7	0
+	+	4	0
+	+	5	0
+	+	12	0
+	+	9	20
+	+	7	11
+	+	12	0
+	+	4	0
+	+	5	0
+	+	7	0
+	+	6	12
+	+	12	0
+	+	12	302
+	+	12	0
+	+	11	0
+	+	35	9
+	+	9	21
+	+	35	0
+	+	13	24
+	+	33	0
+	+	15	0
+	+	34	0
+	+	33	29
+	+	32	0
+	+	31	49
+	+	32	0
+	+	31	0
+	+	15	38
+	+	31	56
+	+	30	0
+	+	16	0
+	+	16	98
+	+	18	30
+	+	19	33
+	+	20	21
+	+	21	51
+	+	22	34
+	+	24	118
+	+	25	46
+	+	26	99
+	+	27	87
+	+	28	42
+	+	29	84
+	+	18	0
+	+	19	26
+	+	18	23
+	+	20	14
+	+	21	44
+	+	22	27
+	+	25	39
+	+	26	92
+	+	27	80
+	+	28	35
+	+	29	77
+	+	14	0
+	+	16	0
+	+	15	13
+	+	23	0
+	+	25	9
+	+	26	0
+	+	27	10
+	+	27	0
+	+	26	0
+	+	27	0
+	+	29	0
+	+	28	0
+	+	29	0
+	+	30	0
+	+	29	88
+	+	28	46
+	+	27	91
+	+	25	38
+	+	10	0
+	+	11	0
+	+	10	11
+	+	18	23
+	+	19	26
+	+	20	14
+	+	21	0
+	+	22	27
+	+	25	39
+	+	26	92
+	+	27	80
+	+	28	35
+	+	29	77
+	+	34	37
+
+> ~/learning/latex/test.tex
+	"	1	0
+	^	1	0
+	.	1	0
+	+	25	0
+	+	1	0
+
+> ~/learning/python/makemake.py
+	"	1	0
+	^	142	0
+	.	142	0
+	+	142	0
+	m	32	0
+
+> ~/learning/python/formate.py
+	"	1	0
+	.	20	0
+	+	20	0
+
+> ~/learning/latex/memoire.tex
+	"	25	0
+	^	2	1
+	.	2	0
+	+	2	0
+
+> ~/learning/latex/memoire/remerciements
+	"	7	72
+	^	7	101
+	.	7	100
+	+	7	93
+	+	7	0
+	+	6	0
+	+	5	98
+	+	5	0
+	+	1	0
+	+	1	92
+	+	1	194
+	+	1	91
+	+	1	261
+	+	2	116
+	+	2	206
+	+	2	286
+	+	2	116
+	+	5	98
+	+	5	98
+	+	6	3
+	+	7	100
+
+> ~/learning/latex/memoire
+	"	2	0
+	^	2	1
+	.	2	0
+	+	29	0
+	+	29	0
+	+	2	36
+	+	3	15
+	+	5	21
+	+	20	26
+	+	22	41
+	+	26	88
+	+	26	14
+	+	7	302
+	+	7	10
+	+	8	0
+	+	9	14
+	+	9	0
+	+	9	549
+	+	9	0
+	+	9	0
+	+	12	0
+	+	10	0
+	+	10	485
+	+	11	1
+	+	10	0
+	+	11	0
+	+	12	0
+	+	12	212
+	+	29	0
+	+	29	0
+	+	11	672
+	+	15	0
+	+	14	0
+	+	13	0
+	+	14	0
+	+	15	214
+	+	16	0
+	+	16	138
+	+	17	0
+	+	17	647
+	+	18	0
+	+	15	0
+	+	16	0
+	+	17	0
+	+	18	0
+	+	19	0
+	+	24	0
+	+	28	0
+	+	2	0
+
+> ~/learning/.gitignore
+	"	1	3
+	^	1	4
+	.	1	3
+	+	1	3
+
+> ~/learning/latex/readme.md
+	"	2	13
+	^	2	14
+	.	2	13
+	+	1	0
+	+	2	13
+
+> ~/learning/php/Vector.class.php
+	"	38	5
+	^	35	33
+	.	34	53
+	+	5	11
+	+	13	0
+	+	16	15
+	+	21	0
+	+	18	32
+	+	18	32
+	+	20	0
+	+	19	1
+	+	17	0
+	+	28	0
+	+	29	0
+	+	31	43
+	+	22	8
+	+	42	0
+	+	32	11
+	+	42	12
+	+	38	34
+	+	42	1
+	+	38	0
+	+	32	0
+	+	42	0
+	+	38	0
+	+	42	0
+	+	31	39
+	+	31	0
+	+	41	0
+	+	35	10
+	+	36	9
+	+	37	10
+	+	36	10
+	+	33	28
+	+	34	53
+
+> ~/piscine_php/j06_PHP_Objet_1/ex02/Vector.class.php
+	"	18	0
+
+> ~/learning/README.md
+	"	16	26
+	^	1	13
+	.	7	23
+	+	1	0
+	+	7	0
+	+	14	0
+	+	16	0
+	+	42	0
+	+	42	0
+	+	42	0
+	+	17	9
+	+	1	0
+	+	14	0
+	+	22	0
+	+	23	8
+	+	32	6
+	+	24	8
+	+	42	0
+	+	8	0
+	+	7	0
+	+	13	0
+	+	18	0
+	+	29	0
+	+	12	4
+	+	13	9
+	+	7	10
+	+	2	26
+	+	1	13
+	+	7	18
+	+	8	14
+	+	12	13
+	+	13	16
+	+	14	13
+	+	16	13
+	+	23	15
+	+	24	9
+	+	23	17
+	+	24	17
+	+	34	1
+	+	33	24
+	+	34	17
+	+	42	0
+	+	4	13
+	+	2	26
+	+	5	26
+	+	2	26
+	+	5	21
+	+	6	0
+	+	8	0
+	+	11	0
+	+	14	0
+	+	15	0
+	+	30	0
+	+	31	0
+	+	20	0
+	+	21	0
+	+	13	0
+	+	13	0
+	+	13	0
+	+	2	0
+	+	42	0
+	+	48	26
+	+	7	26
+	+	13	30
+	+	15	11
+	+	16	27
+	+	28	24
+	+	30	13
+	+	13	0
+	+	38	0
+	+	30	13
+	+	15	0
+	+	14	0
+	+	40	0
+	+	13	0
+	+	14	0
+	+	16	35
+	+	19	19
+	+	21	24
+	+	23	30
+	+	13	0
+	+	36	0
+	+	1	0
+	+	8	0
+	+	7	33
+	+	21	15
+	+	22	27
+	+	21	11
+	+	14	29
+	+	7	23
+
+> ~/learning/php/Vertex.class.php
+	"	62	38
+	^	75	2
+	.	62	38
+	+	2	0
+	+	6	0
+	+	8	0
+	+	6	8
+	+	11	0
+	+	11	0
+	+	55	0
+	+	56	0
+	+	90	0
+	+	11	0
+	+	8	0
+	+	11	0
+	+	10	0
+	+	11	0
+	+	11	0
+	+	12	0
+	+	11	0
+	+	12	32
+	+	36	32
+	+	46	25
+	+	2	0
+	+	12	34
+	+	14	32
+	+	15	1
+	+	11	0
+	+	17	19
+	+	36	1
+	+	22	8
+	+	42	12
+	+	11	0
+	+	6	2
+	+	11	2
+	+	36	2
+	+	23	43
+	+	25	0
+	+	26	20
+	+	25	41
+	+	26	41
+	+	27	41
+	+	28	20
+	+	27	20
+	+	23	0
+	+	22	10
+	+	36	2
+	+	22	0
+	+	30	23
+	+	31	0
+	+	34	62
+	+	30	23
+	+	31	23
+	+	32	23
+	+	30	48
+	+	31	0
+	+	35	0
+	+	27	0
+	+	37	43
+	+	38	47
+	+	37	0
+	+	23	0
+	+	12	0
+	+	8	0
+	+	6	0
+	+	41	2
+	+	38	0
+	+	40	0
+	+	45	0
+	+	43	10
+	+	44	11
+	+	43	11
+	+	42	34
+	+	43	36
+	+	44	36
+	+	43	13
+	+	44	13
+	+	38	43
+	+	40	0
+	+	40	0
+	+	40	0
+	+	39	0
+	+	49	0
+	+	48	6
+	+	48	68
+	+	49	10
+	+	69	15
+	+	74	0
+	+	73	0
+	+	24	0
+	+	48	2
+	+	49	2
+	+	62	38
+
+> ~/learning/php/ex01/main_01.php
+	"	16	0
+	.	16	0
+	+	16	0
+
+> ~/learning/php/Color.class.php
+	"	31	0
+	^	2	0
+	.	3	0
+	+	43	28
+	+	48	3
+	+	48	70
+	+	3	0
+
+> /media/gautier/GGILABER/index
+	"	1	8
+	^	220	36
+	.	220	36
+	+	30	60
+	+	31	28
+	+	32	38
+	+	31	54
+	+	37	0
+	+	38	0
+	+	38	0
+	+	38	41
+	+	38	41
+	+	37	35
+	+	38	0
+	+	37	12
+	+	38	40
+	+	39	0
+	+	41	0
+	+	42	0
+	+	42	0
+	+	42	0
+	+	42	0
+	+	41	30
+	+	42	0
+	+	43	0
+	+	42	31
+	+	43	0
+	+	41	11
+	+	42	11
+	+	41	32
+	+	42	33
+	+	60	0
+	+	61	0
+	+	60	14
+	+	71	0
+	+	72	0
+	+	73	0
+	+	72	38
+	+	71	47
+	+	71	47
+	+	72	14
+	+	73	0
+	+	80	0
+	+	81	0
+	+	80	13
+	+	87	0
+	+	88	0
+	+	88	0
+	+	88	0
+	+	87	0
+	+	88	0
+	+	87	9
+	+	89	0
+	+	88	29
+	+	87	31
+	+	88	0
+	+	89	0
+	+	97	0
+	+	98	0
+	+	99	0
+	+	98	0
+	+	98	0
+	+	97	47
+	+	98	32
+	+	99	33
+	+	98	0
+	+	99	0
+	+	100	0
+	+	102	0
+	+	102	49
+	+	103	0
+	+	104	0
+	+	103	37
+	+	104	0
+	+	105	0
+	+	118	0
+	+	121	0
+	+	123	0
+	+	121	45
+	+	123	29
+	+	126	0
+	+	126	0
+	+	138	0
+	+	137	0
+	+	139	0
+	+	141	0
+	+	141	39
+	+	139	42
+	+	137	40
+	+	159	0
+	+	161	0
+	+	159	37
+	+	161	39
+	+	194	0
+	+	196	0
+	+	198	0
+	+	194	77
+	+	196	92
+	+	198	78
+	+	218	0
+	+	220	0
+	+	218	36
+	+	220	36
+
+> ~/piscine_php/j06_PHP_Objet_1/ex01/Vertex.class.php
+	"	84	0
+
+> ~/learning/regex/README.md
+	"	5	71
+	^	5	72
+	.	5	71
+	+	3	17
+	+	6	0
+	+	6	0
+	+	1	0
+	+	5	71
+
+> ~/learning/regex/ex01.reg
+	"	5	14
+	.	5	0
+	+	1	40
+	+	6	0
+	+	6	0
+	+	2	0
+	+	6	0
+	+	3	0
+	+	4	0
+	+	5	0
+
+> ~/.oblovim/filetype/vim.vimrc
+	"	11	0
+	.	12	0
+	+	11	54
+	+	12	0
+
+> /usr/share/vim/vim74/doc/change.txt
+	"	1294	0
+
+> /usr/share/vim/vim74/doc/map.txt
+	"	412	10
+
+> ~/.vim/doc/NERD_tree.txt
+	"	43	0
+
+> /usr/share/vim/vim74/doc/arabic.txt
+	"	67	13
+
+> /usr/share/vim/vim74/doc/quickfix.txt
+	"	563	2
+
+> /usr/share/vim/vim74/doc/various.txt
+	"	199	6
+
+> /usr/share/vim/vim74/doc/helphelp.txt
+	"	42	1
+
+> ~/.oblovim/filetype/c.vimrc
+	"	2	0
+
+> ~/.oblovim/filetype/.vimrc
+	"	1	0
+
+> ~/.oblovim/filetype/html.vimrc
+	"	3	18
+
+> ~/.oblovim/filetype/new.html
+	"	1	0
+
+> ~/README.md
+	"	5	4
+	^	5	5
+	.	7	32
+	+	8	0
+	+	7	5
+	+	4	9
+	+	5	1
+	+	6	1
+	+	7	32
 
 > ~/learning/todo
 	"	14	18
@@ -298,16 +1223,6 @@ $
 
 > /usr/share/vim/vim73/doc/map.txt
 	"	45	0
-
-> ~/.zshrc
-	"	25	0
-	^	32	26
-	.	32	25
-	+	35	19
-	+	36	23
-	+	28	14
-	+	33	0
-	+	32	25
 
 > ~/learning/vim/t.c
 	"	6	0
@@ -370,97 +1285,6 @@ $
 
 > ~/n.c
 	"	1	0
-
-> ~/.vimrc
-	"	22	35
-	^	22	36
-	.	22	35
-	+	67	7
-	+	67	0
-	+	67	0
-	+	67	0
-	+	67	10
-	+	67	8
-	+	20	9
-	+	32	0
-	+	32	0
-	+	52	0
-	+	52	0
-	+	51	0
-	+	48	0
-	+	51	0
-	+	57	0
-	+	62	0
-	+	62	30
-	+	67	0
-	+	64	0
-	+	64	0
-	+	64	9
-	+	64	10
-	+	62	10
-	+	62	9
-	+	67	0
-	+	67	0
-	+	2	0
-	+	62	0
-	+	35	0
-	+	34	7
-	+	46	10
-	+	9	0
-	+	36	0
-	+	4	0
-	+	36	0
-	+	36	9
-	+	36	1
-	+	1	9
-	+	37	2
-	+	46	2
-	+	46	2
-	+	62	0
-	+	9	0
-	+	9	0
-	+	26	0
-	+	37	0
-	+	28	0
-	+	60	7
-	+	67	0
-	+	49	0
-	+	47	3
-	+	48	3
-	+	46	12
-	+	22	47
-	+	24	0
-	+	22	37
-	+	24	43
-	+	26	1
-	+	1	0
-	+	26	0
-	+	64	0
-	+	21	18
-	+	27	14
-	+	30	0
-	+	31	7
-	+	32	1
-	+	34	1
-	+	36	0
-	+	46	0
-	+	27	0
-	+	28	11
-	+	29	27
-	+	28	37
-	+	29	42
-	+	8	7
-	+	27	0
-	+	5	0
-	+	19	33
-	+	24	52
-	+	62	0
-	+	62	0
-	+	61	0
-	+	64	0
-	+	24	49
-	+	23	0
-	+	22	35
 
 > ~/.vimfiletype/vim.vimrc
 	"	1	0
@@ -1001,415 +1825,3 @@ $
 	+	9	0
 	+	7	0
 	+	18	1
-
-> ~/Staship_Battles/htdocs/classes/ships/Battle_Cruiser.class.php
-	"	1	4
-	^	15	24
-	.	11	37
-	+	18	0
-	+	17	1
-	+	7	0
-	+	2	0
-	+	4	0
-	+	18	1
-	+	8	5
-	+	9	6
-	+	10	0
-	+	9	1
-	+	10	1
-	+	11	1
-	+	12	1
-	+	13	1
-	+	14	1
-	+	15	1
-	+	17	0
-	+	17	0
-	+	16	0
-	+	7	0
-	+	11	0
-	+	9	0
-	+	5	19
-	+	7	29
-	+	5	12
-	+	11	56
-	+	15	23
-	+	7	0
-	+	11	37
-
-> ~/Staship_Battles/htdocs/classes/ships/Brood_Lord.class.php
-	"	1	0
-	.	7	0
-	+	7	0
-	+	17	0
-	+	7	0
-	+	11	0
-	+	9	0
-	+	7	0
-
-> ~/Staship_Battles/htdocs/classes/ships/Larva.class.php
-	"	1	0
-	.	7	0
-	+	7	0
-	+	17	0
-	+	7	0
-	+	11	0
-	+	9	0
-	+	7	0
-
-> ~/Staship_Battles/htdocs/classes/ships/Medivac.class.php
-	"	1	0
-	.	7	0
-	+	7	0
-	+	11	0
-	+	9	0
-	+	7	0
-	+	16	0
-	+	17	0
-	+	7	0
-
-> ~/Staship_Battles/htdocs/classes/ships/Mutalisk.class.php
-	"	1	0
-	.	7	0
-	+	7	0
-	+	11	0
-	+	9	0
-	+	7	0
-	+	16	0
-	+	17	0
-	+	7	0
-
-> ~/Staship_Battles/htdocs/classes/ships/Overlord.class.php
-	"	1	0
-	.	7	0
-	+	7	0
-	+	11	0
-	+	9	0
-	+	16	0
-	+	7	0
-	+	17	0
-	+	7	0
-
-> ~/Staship_Battles/htdocs/classes/ships/Viking.class.php
-	"	1	0
-	.	7	0
-	+	7	0
-	+	16	1
-	+	17	0
-	+	16	0
-	+	7	0
-	+	11	0
-	+	9	0
-	+	7	0
-
-> ~/Staship_Battles/htdocs/classes/AShip.class.php
-	"	1	4
-	.	34	0
-	+	16	0
-	+	21	0
-	+	21	0
-	+	21	20
-	+	21	20
-	+	21	0
-	+	19	0
-	+	17	0
-	+	21	0
-	+	21	0
-	+	21	25
-	+	21	0
-	+	21	21
-	+	21	0
-	+	21	0
-	+	21	0
-	+	21	20
-	+	21	10
-	+	21	14
-	+	21	11
-	+	21	37
-	+	21	11
-	+	21	0
-	+	5	40
-	+	21	40
-	+	21	36
-	+	30	0
-	+	12	19
-	+	14	0
-	+	16	18
-	+	16	23
-	+	17	19
-	+	15	15
-	+	15	15
-	+	14	19
-	+	6	17
-	+	12	0
-	+	11	0
-	+	15	0
-	+	13	0
-	+	16	0
-	+	18	0
-	+	16	24
-	+	19	0
-	+	7	21
-	+	21	0
-	+	21	0
-	+	30	0
-	+	21	0
-	+	21	0
-	+	37	0
-	+	36	0
-	+	37	37
-	+	38	0
-	+	39	0
-	+	21	29
-	+	21	40
-	+	21	31
-	+	21	31
-	+	21	33
-	+	21	23
-	+	21	0
-	+	21	21
-	+	21	0
-	+	31	0
-	+	21	43
-	+	21	0
-	+	23	0
-	+	92	0
-	+	72	0
-	+	73	0
-	+	141	0
-	+	141	14
-	+	141	14
-	+	141	14
-	+	141	19
-	+	141	14
-	+	141	0
-	+	72	0
-	+	72	0
-	+	72	0
-	+	72	0
-	+	73	0
-	+	120	0
-	+	126	14
-	+	127	19
-	+	128	14
-	+	131	0
-	+	129	15
-	+	130	15
-	+	131	14
-	+	123	66
-	+	132	0
-	+	133	0
-	+	132	30
-	+	133	17
-	+	10	9
-	+	72	0
-	+	33	28
-	+	34	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Banshee.class.php
-	"	2	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Battle_cruiser.class.php
-	"	14	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Brood_Lord.class.php
-	"	7	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Cuirasse_Imperial.class.php
-	"	1	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Destroyer_Imperial.class.php
-	"	3	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Fregate_Imperiale.class.php
-	"	1	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Hand_Of_The_Emperor.class.php
-	"	1	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Larva.class.php
-	"	1	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Medivac.class.php
-	"	1	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Mutalisk.class.php
-	"	1	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/Overlord.class.php
-	"	1	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/ships/RnD_Workshop.class.php
-	"	1	0
-
-> ~/mamp/apps/Awesome_Starship_Battles/htdocs/classes/weapons/Curse_All.class.php
-	"	12	0
-	^	10	2
-	.	10	1
-	+	7	1
-	+	8	1
-	+	9	1
-	+	10	1
-
-> ~/mamp/apps/Awesome_Starship_Battles/conf/httpd-app.conf
-	"	12	11
-	^	2	63
-	.	2	62
-	+	2	62
-
-> ~/mamp/apps/Awesome_Starship_Battles/conf/httpd-prefix.conf
-	"	2	74
-	.	5	39
-	+	2	64
-	+	3	63
-	+	5	39
-
-> ~/mamp/apps/Awesome_Starship_Battles/conf/httpd-vhosts.conf
-	"	2	19
-	.	5	41
-	+	4	46
-	+	5	41
-
-> ~/mamp/apache2/conf/bitnami/bitnami-apps-vhosts.conf
-	"	6	94
-	^	6	95
-	.	6	94
-	+	6	94
-
-> ~/mamp/apache2/conf/bitnami/bitnami.conf
-	"	68	0
-
-> ~/Awesome_Starship_Battles/conf_ngoguey/httpd-app.conf
-	"	9	21
-
-> ~/Awesome_Starship_Battles/conf_wide-aze/httpd-app.conf
-	"	9	21
-
-> ~/Awesome_Starship_Battles/diff
-	"	1	0
-
-> ~/Staship_Battles/htdocs/classes/weapons/Boson_plasma.class.php
-	"	1	0
-	.	9	0
-	+	9	0
-
-> ~/Staship_Battles/htdocs/classes/ships/checkout
-	"	2	4
-	^	25	1
-	.	5	0
-	+	25	0
-	+	5	0
-
-> ~/Staship_Battles/htdocs/classes/ships/Hand_Of_The_Emperor.class.php
-	"	1	0
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/ATS_Laser_Battery.class.php
-	"	8	1
-	^	9	9
-	.	8	0
-	+	4	22
-	+	6	18
-	+	7	17
-	+	8	16
-	+	9	23
-	+	8	15
-	+	10	1
-	+	9	24
-	+	7	17
-	+	8	16
-	+	6	15
-	+	7	7
-	+	8	7
-	+	9	1
-	+	10	3
-	+	10	3
-	+	10	3
-	+	10	3
-	+	10	3
-	+	7	14
-	+	8	12
-	+	9	19
-	+	6	35
-	+	7	16
-	+	8	15
-	+	6	0
-	+	10	0
-	+	10	0
-	+	10	1
-	+	10	1
-	+	7	8
-	+	8	8
-	+	9	8
-	+	10	0
-	+	9	0
-	+	8	0
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/Boson_plasma.class.php
-	"	10	0
-	^	9	9
-	.	8	0
-	+	9	22
-	+	9	17
-	+	8	0
-	+	9	0
-	+	7	0
-	+	9	25
-	+	10	1
-	+	10	1
-	+	10	1
-	+	10	1
-	+	10	1
-	+	10	1
-	+	10	1
-	+	6	7
-	+	7	0
-	+	6	12
-	+	7	12
-	+	8	10
-	+	9	22
-	+	8	16
-	+	7	17
-	+	6	30
-	+	10	0
-	+	6	8
-	+	7	8
-	+	8	8
-	+	9	8
-	+	10	0
-	+	9	0
-	+	8	0
-
-> ~/Awesome_Starship_Battles/htdocs/classes/weapons/Broodling_strike.class.php
-	"	10	0
-	.	10	0
-	+	4	21
-	+	6	33
-	+	6	56
-	+	9	22
-	+	8	16
-	+	6	56
-	+	6	7
-	+	6	46
-	+	8	7
-	+	9	7
-	+	10	9
-	+	10	9
-	+	10	9
-	+	10	9
-	+	10	9
-	+	6	0
-	+	6	39
-	+	8	0
-	+	9	0
-	+	10	2
-	+	10	2
-	+	10	2
-	+	10	2
-	+	10	2
-	+	10	0
-	+	10	1
-	+	10	1
-	+	10	0
-	+	6	37
-	+	7	20
-	+	8	19
-	+	10	0

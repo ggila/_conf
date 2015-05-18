@@ -20,6 +20,7 @@ autocmd BufNewFile,BufRead  *.vimrc so ~/.oblovim/filetype/vim.vimrc
 autocmd FileType c so ~/.oblovim/filetype/c.vimrc
 autocmd FileType html so ~/.oblovim/filetype/html.vimrc
 autocmd FileType php so ~/.oblovim/filetype/php.vimrc
+autocmd FileType python so ~/.oblovim/filetype/python.vimrc
 
 " source config
 map <leader>vrc <ESC>:w<CR>:source ~/.vimrc<CR>
