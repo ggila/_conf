@@ -106,5 +106,5 @@ function _ps1_git()
 # Zsh
 function precmd()
 {
-	export PROMPT="%F{grey}%m %F{green}%~%f `_ps1_git "%F{green}" "%F{red}" "%f"`|"
+	export PROMPT="%F{grey}%m %F{green}%\->%f `_ps1_git "%F{green}" "%F{red}" "%f"`|"
 };
