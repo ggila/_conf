@@ -97,7 +97,7 @@ function _ps1_git()
 			PRINT=$PRINT"$2?"
 		fi
 		if [[ "${#PRINT}" -gt "0" ]]; then
-			printf "%s " "$PRINT$3"
+			printf "|%s| " "$PRINT$3"
 		fi
 		_ps1_git_rev "$1" "$2" "$3" `git rev-list --left-right --count origin...HEAD 2> /dev/null || echo "0 0"`
 	fi
@@ -106,5 +106,5 @@ function _ps1_git()
 # Zsh
 function precmd()
 {
-	export PROMPT="%F{grey}%m %F{green}%\->%f `_ps1_git "%F{green}" "%F{red}" "%f"`|"
+	export PROMPT="%F{blue}%m%f%F{blue} @ %f%F{cyan}%~%f `_ps1_git "%F{blue}" "%F{cyan}" "%f"`"
 };
