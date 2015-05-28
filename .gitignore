@@ -5,11 +5,9 @@
 !.gitignore
 !README.md
 
-.viminfo
 
 #VIM
 !.vimrc
-!.viminfo
 !.oblovim/
 !.oblovim/**
 
