@@ -18,6 +18,8 @@ map <leader>wr <ESC>:set wrap!<CR>
 " color
 colorscheme peachpuff
 
+so ~/.oblovim/grep-operator.vim
+
 " source type.vimrc
 autocmd BufNewFile,BufRead  *.vimrc so ~/.oblovim/filetype/vim.vimrc
 autocmd FileType c so ~/.oblovim/filetype/c.vimrc
