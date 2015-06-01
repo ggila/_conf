@@ -30,6 +30,8 @@ alias dd='clear'
 alias szsh='source ~/.zshrc'
 alias gs='git status'
 alias gss='git status --porcelain'
+alias gp='git push'
+alias ga='git add'
 
 function ll
 {
@@ -45,6 +47,11 @@ function gc
 {
 	dir="$1";
 	git clone https://github.com/ggila/"$1".git;
+}
+
+function gcm
+{
+	git commit -m "$1"
 }
 
 man() {
