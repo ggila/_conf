@@ -29,6 +29,7 @@ alias ...='cd ../..'
 alias dd='clear'
 alias szsh='source ~/.zshrc'
 alias gs='git status'
+alias gss='git status --porcelain'
 
 function ll
 {
