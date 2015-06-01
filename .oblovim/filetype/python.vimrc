@@ -1,4 +1,7 @@
 colorscheme darkblue
 
-noremap cc 0i#<ESC>
-inoremap <TAB>  <SPACE><SPACE><SPACE><SPACE>
+set expandtab
+set shiftwidth=4
+set softtabstop=4
+
+noremap <buffer> cc 0i#<ESC>
