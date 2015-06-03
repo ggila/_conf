@@ -4,4 +4,4 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 
-noremap <buffer> cc 0i#<ESC>
+nnoremap <expr><buffer> cc getline('.') =~# '^#' ? '0x' : '0i#<ESC>'
