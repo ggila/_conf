@@ -1,0 +1,43 @@
+" option
+set tabstop=4
+set autoindent
+set number
+syntax on
+set list
+set listchars=tab:\|\ 
+set mouse=a
+set ruler
+set incsearch
+
+map <leader>wr <ESC>:set wrap!<CR>
+
+" color
+colorscheme peachpuff
+
+" source type.vimrc
+autocmd BufNewFile,BufRead  *.vimrc so ~/.oblovim/filetype/vim.vimrc
+autocmd FileType c so ~/oblovim/filetype/c.vimrc
+autocmd FileType html so ~/oblovim/filetype/html.vimrc
+autocmd FileType php so ~/oblovim/filetype/php.vimrc
+autocmd FileType python so ~/oblovim/filetype/python.vimrc
+autocmd FileType cpp so ~/oblovim/filetype/cpp.vimrc
+
+" mapleader
+let mapleader = ","
+
+" edit config
+map <leader>vrc <ESC>:w<CR>:e ~/oblovim/myvimrc<CR>
+map <leader>zrc <ESC>:w<CR>:e ~/.zshrc<CR>
+
+" multiscreen
+noremap <C-k> <Esc><C-w>k
+noremap <C-j> <Esc><C-w>j
+noremap <C-h> <Esc><C-w>h
+noremap <C-l> <Esc><C-w>l
+
+" escape keys
+inoremap jk <ESC>
+inoremap kj <ESC>
+
+" hi
+echo "oblovim"

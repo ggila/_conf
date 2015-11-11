@@ -1,7 +1,0 @@
-os.dirlist
-os.listdir()
-import os
-os.listdir()
-os.listdir(.)
-os.listdir('.')
-dd
