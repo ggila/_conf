@@ -6,7 +6,7 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/11/12 03:26:31 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/11/12 14:51:43 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -57,6 +57,6 @@ echo "oblovim"
 
 augroup cHeader
 	autocmd!
+	autocmd BufNewfile,FileType  c,cpp execute "normal! :Stdheader\<CR>ddG"
 	autocmd BufNewFile *.{h,hpp} call Insertgates()
-	autocmd BufNewfile,FileType  c,cpp execute "normal! :Stdheader\<CR>d"
 augroup END

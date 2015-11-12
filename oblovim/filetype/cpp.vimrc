@@ -6,13 +6,12 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:26 by ggilaber          #+#    #+#              "
-"    Updated: 2015/11/12 02:31:28 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/11/12 15:12:01 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
-ab <buffer> stdcout std::cout <<
-ab <buffer> stdstr std::string
-ab <buffer> stdendl std::endl
+inoremap <buffer> sss std::
+inoremap <buffer> _print std::cout<SPACE><<<SPACE><SPACE><<std::endl;<ESC>F<SPACE>i
 
 python import vim
 
@@ -28,9 +27,3 @@ vim.current.buffer.append("")
 vim.current.buffer.append("#endif")
 endPython
 endfunction
-
-"augroup Insertgates
-"	autocmd!
-"	autocmd BufNewFile * echom "blabla"
-"	autocmd BufNewFile *.hpp call <SID>Insertgates()
-"augroup END
