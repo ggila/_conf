@@ -1,1 +1,1 @@
-oblovim/oblovimrc
+oblovim/oblo.vimrc
