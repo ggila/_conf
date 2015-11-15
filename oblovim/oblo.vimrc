@@ -6,7 +6,7 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/11/12 03:26:31 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/11/15 06:22:27 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -20,6 +20,7 @@ set listchars=tab:\|\
 set mouse=a
 set ruler
 set incsearch
+set nobackup
 
 map <leader>wr <ESC>:set wrap!<CR>
 
@@ -55,8 +56,8 @@ inoremap kj <ESC>
 " hi
 echo "oblovim"
 
-augroup cHeader
-	autocmd!
-	autocmd BufNewFile *.{h,hpp} call Insertgates()
-	autocmd BufNewfile,FileType  c,cpp execute "normal! :Stdheader\<CR>d"
-augroup END
+" augroup cHeader
+" 	autocmd!
+" 	autocmd BufNewfile,FileType  c,cpp execute "normal! :Stdheader\<CR>ddG"
+" 	autocmd BufNewFile *.{h,hpp} call Insertgates()
+" augroup END
