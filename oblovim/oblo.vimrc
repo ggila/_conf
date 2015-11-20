@@ -6,7 +6,7 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/11/15 06:33:31 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/11/20 09:00:46 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -61,3 +61,8 @@ echo "oblovim"
 " 	autocmd BufNewfile,FileType  c,cpp execute "normal! :Stdheader\<CR>ddG"
 " 	autocmd BufNewFile *.{h,hpp} call Insertgates()
 " augroup END
+
+
+function! NewMake()
+	r ~/config/oblovim/patron/Makefile
+endfunction
