@@ -6,7 +6,7 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/11/20 09:00:46 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/11/23 08:15:56 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -56,13 +56,36 @@ inoremap kj <ESC>
 " hi
 echo "oblovim"
 
-" augroup cHeader
-" 	autocmd!
-" 	autocmd BufNewfile,FileType  c,cpp execute "normal! :Stdheader\<CR>ddG"
-" 	autocmd BufNewFile *.{h,hpp} call Insertgates()
-" augroup END
+python import vim
 
+function! InsertGates()
+python << endPython
+hpp = vim.current.buffer.name
+hpp = hpp[hpp.rfind('/') + 1:]
+hpp = hpp.upper()
+hpp = hpp.replace('.', '_')
+vim.current.buffer.append("#ifndef " + hpp)
+vim.current.buffer.append("# define " + hpp)
+vim.current.buffer.append("")
+vim.current.buffer.append("#endif")
+endPython
+endfunction
 
 function! NewMake()
 	r ~/config/oblovim/patron/Makefile
 endfunction
+
+function! NewMain()
+	r ~/config/oblovim/patron/main.c
+	Stdheader
+endfunction
+
+function! NewHeader()
+	call InsertGates()
+	Stdheader
+endfunction
+
+" new file
+noremap <leader>nM :call NewMake()<CR>
+noremap <leader>nm :call NewMain()<CR>
+noremap <leader>nh :call NewHeader()<CR>

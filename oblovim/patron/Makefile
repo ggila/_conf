@@ -22,8 +22,8 @@ NAME = hello
 
 # Source
 C_DIR = src
-C_FILE = hello.c\
-	main.c
+C_FILE = main.c
+
 SRC = $(addprefix $(C_DIR)/, $(C_FILE))
 
 H_DIR = inc
@@ -41,13 +41,13 @@ CC = gcc
 # C flags
 FLAGS = -Wall -Wextra -Werror
 
-# Linking flags
-# LD_FLAGS =
+# Lib
+# LIB =
 
 
 all: $(NAME)
 
-$(NAME): $(O_DIR) $(OBJ)
+$(NAME): $(OBJ) | $(O_DIR)
 	$(CC) -o $@ $(OBJ) $(FLAGS)
 
 $(O_DIR)/%.o : $(C_DIR)/%.c $(INC)

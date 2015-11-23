@@ -33,6 +33,7 @@ alias gs='git status'
 alias gss='git status --porcelain'
 alias gp='git push'
 alias ga='git add'
+alias proto='python ~/config/script/make_proto.py'
 
 ##mmv *.txt *.data
 autoload -U zmv
