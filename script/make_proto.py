@@ -42,7 +42,6 @@ def getProto(filename, rep):
         r = re.findall(pattern, f.read())
         if not r: return
         for elem in r: handleProto(elem, rep)
-    return
 
 def getDir(rep):
     global func
@@ -52,7 +51,6 @@ def getDir(rep):
     for f in os.listdir(rep):
         if os.path.isdir(rep + "/" + f) and f[0] != '.':
             getDir(rep + "/" + f)
-    return
 
 def countTab(string):
     global m
@@ -60,7 +58,7 @@ def countTab(string):
     return nb_tab - len(string) / 4
 
 getDir("./src")
-l = [a for a, b, c in func]
+l = [a for a, _, _ in func]
 
 m = max(map(len, l))
 
