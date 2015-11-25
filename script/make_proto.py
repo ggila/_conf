@@ -17,15 +17,18 @@ header = (
 pattern = re.compile('\n\n([^\n]+)\n{\n')
 
 tab = 0
+l = []
 
 def getProto(filename):
     global tab
+    global l
     string = ""
     with open(filename, "r") as f:
         r = re.findall(pattern, f.read())
         if not r: return string
         for elem in r:
             if "static" not in elem:
+                l.append(elem[:elem.find('\t')])
                 nb_tab = elem.count('\t')
                 if nb_tab > tab: tab = nb_tab
             prot = re.sub("[\t]+", "@", elem)
@@ -43,6 +46,11 @@ def getDir(rep):
             string += getDir(rep + "/" + f)
     return string
 
+def countTab(string):
+    global m
+    nb_tab = (m - 1) / 4 + 1
+    return nb_tab - len(string) / 4
+
 if not (os.path.exists("./src")):
     print "please change dir"
     exit(0)
@@ -54,6 +62,10 @@ proto += "\n#endif\n"
 proto = re.sub("\nstatic[^\n]+","",proto)
 proto = re.sub("\nint@main[^\n]+","",proto)
 proto = re.sub("@","\t",proto)
+
+m = max(map(len, l))
+print l
+print map(countTab, l)
 
 with open("./inc/proto.h", "w") as f:
     f.write(header)
