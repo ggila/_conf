@@ -1,5 +1,10 @@
 import os
 import re
+from subprocess import call
+
+if not (os.path.exists("./src")):
+    print "please change dir"
+    exit(0)
 
 header = (
 "/* ************************************************************************** */\n"
@@ -16,58 +21,68 @@ header = (
 
 pattern = re.compile('\n\n([^\n]+)\n{\n')
 
-tab = 0
-l = []
+func = []
 
-def getProto(filename):
-    global tab
-    global l
-    string = ""
+def handleProto(elem, rep):
+    global func
+    if "static" in elem: return
+    if "\tmain" in elem: return
+    l = elem.split('\t')
+    l = [elem for elem in l if len(elem)]
+    if len(l) != 2:
+        print elem
+        print "should be \'type[\\t]+func_name()\'"
+        return
+    func.append([l[0], l[1], rep])
+
+
+def getProto(filename, rep):
+    global func
     with open(filename, "r") as f:
         r = re.findall(pattern, f.read())
-        if not r: return string
-        for elem in r:
-            if "static" not in elem:
-                l.append(elem[:elem.find('\t')])
-                nb_tab = elem.count('\t')
-                if nb_tab > tab: tab = nb_tab
-            prot = re.sub("[\t]+", "@", elem)
-            string += prot + ";\n"
-    return string
+        if not r: return
+        for elem in r: handleProto(elem, rep)
+    return
 
 def getDir(rep):
-    string = ""
-    string += "\n/*\n** " + rep[2:] + "\n*/\n\n"
+    global func
     for f in os.listdir(rep):
         if not os.path.isdir(rep + "/" + f) and f[0] != '.':
-            string += getProto(rep + "/" + f)
+            getProto(rep + "/" + f, rep[2:])
     for f in os.listdir(rep):
         if os.path.isdir(rep + "/" + f) and f[0] != '.':
-            string += getDir(rep + "/" + f)
-    return string
+            getDir(rep + "/" + f)
+    return
 
 def countTab(string):
     global m
     nb_tab = (m - 1) / 4 + 1
     return nb_tab - len(string) / 4
 
-if not (os.path.exists("./src")):
-    print "please change dir"
-    exit(0)
-
-proto = "#ifndef PROTO_H\n# define PROTO_H\n"
-proto += getDir("./src")
-proto += "\n#endif\n"
-
-proto = re.sub("\nstatic[^\n]+","",proto)
-proto = re.sub("\nint@main[^\n]+","",proto)
-proto = re.sub("@","\t",proto)
+getDir("./src")
+l = [a for a, b, c in func]
 
 m = max(map(len, l))
-print l
-print map(countTab, l)
+
+def printProto(f):
+    global func
+    cur_dir = ""
+    for t, r, d in func:
+        if d != cur_dir:
+            f.write("\n/*\n** ")
+            f.write(d)
+            f.write("\n*/\n\n")
+            cur_dir = d
+        f.write(t)
+        f.write('\t' * countTab(t))
+        f.write(r)
+        f.write(";\n")
 
 with open("./inc/proto.h", "w") as f:
     f.write(header)
-    f.write(proto)
+    f.write("#ifndef PROTO_H\n# define PROTO_H\n")
+    printProto(f)
+    f.write("\n#endif\n")
 f.close()
+
+call(["norminette", "inc/proto.h"])
