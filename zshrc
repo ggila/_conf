@@ -127,3 +127,4 @@ function precmd()
 {
 	export PROMPT="%F{blue}%m%f%F{blue} @ %f%F{cyan}%~%f `_ps1_git "%F{blue}" "%F{cyan}" "%f"`"
 };
+exit

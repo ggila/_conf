@@ -30,7 +30,7 @@ def handleProto(elem, rep):
     l = elem.split('\t')
     l = [elem for elem in l if len(elem)]
     if len(l) != 2:
-        print elem
+        print elem, "in", rep
         print "should be \'type[\\t]+func_name()\'"
         return
     func.append([l[0], l[1], rep])
