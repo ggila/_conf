@@ -34,6 +34,7 @@ alias gss='git status --porcelain'
 alias gp='git push'
 alias ga='git add'
 alias proto='python ~/config/script/make_proto.py'
+alias errno='python ~/config/script/make_errno.py'
 
 ##mmv *.txt *.data
 autoload -U zmv
@@ -127,4 +128,3 @@ function precmd()
 {
 	export PROMPT="%F{blue}%m%f%F{blue} @ %f%F{cyan}%~%f `_ps1_git "%F{blue}" "%F{cyan}" "%f"`"
 };
-exit

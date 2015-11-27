@@ -6,7 +6,7 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/11/26 11:28:46 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/11/27 09:17:18 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -53,6 +53,7 @@ noremap <C-h> <Esc><C-w>h
 noremap <C-l> <Esc><C-w>l
 
 noremap <leader>wr <ESC>:set wrap!<CR>
+noremap <leader>sp <ESC>:set paste!<CR>
 
 " escape keys
 inoremap jk <ESC>
