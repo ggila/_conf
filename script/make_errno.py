@@ -23,7 +23,7 @@ header = (
 "/* ************************************************************************** */\n"
 "/*                                                                            */\n"
 "/*                                                        :::      ::::::::   */\n"
-"/*   error.h                                            :+:      :+:    :+:   */\n"
+"/*   {0}                                         :+:      :+:    :+:   */\n"
 "/*                                                    +:+ +:+         +:+     */\n"
 "/*   By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+        */\n"
 "/*                                                +#+#+#+#+#+   +#+           */\n"
@@ -33,10 +33,17 @@ header = (
 "/* ************************************************************************** */\n"
 "\n")
 
+
 doublincl = (
 "#ifndef ERROR_H\n"
 "# define ERROR_H\n"
 "\n")
+
+ft_errno = (
+"void	ft_errno(int error)\n"
+"{\n"
+"\twrite(1, g_errno[error].msg, g_errno[error].len);\n"
+"}\n")
 
 l = []
 
@@ -46,86 +53,36 @@ with open("./error.txt") as f:
         if len(l[-1]) != 2:
             print "wrong format:", line
 
-def writeIndex(f, a, index):
-    f.write("# define ")
-    f.write(a)
-    f.write(" ")
-    f.write(str(index))
-    f.write("\n")
-
-def writeMsg(f, a, b):
-    f.write("# define ")
-    f.write(a)
-    f.write("_MSG \"")
-    f.write(b[:-1])
-    f.write("\"\n")
-
-def writeLen(f, a, b):
-    f.write("# define ")
-    f.write(a)
-    f.write("_LEN ")
-    f.write(str(len(b)))
-    f.write("\n\n")
-
 with open("./inc/error.h", "w") as f:
-    f.write(header)
+    f.write(header.format("error.h   "))
     f.write(doublincl)
     index = 0
+    for a, _ in l:
+        f.write("#define {0} {1}\n".format(a, index))
+        index += 1
+    f.write("\n#endif\n")
+    f.close()
+
+with open("./src/libt/ft_errno.c") as f:
+    f.write(header.format("ft_erno.c"))
+    f.write("#include \"{0}\"\n\n". format(include))
+    f.write("static const t_error *g_errno[] =\n{\n")
     for a, b in l:
-        writeIndex(f, a, index)
-        writeMsg(f, a, b)
-        writeLen(f, a, b)
-        index += 1
-    f.write("#endif\n")
-    f.close()
+        msg = b.replace
+        f.write()
 
-def writeErrMsg(f, a):
-   f.write("\tg_errno[")
-   f.write(a)
-   f.write("].msg = ")
-   f.write(a)
-   f.write("_MSG;\n")
-
-def writeErrMsgLen(f, a):
-   f.write("\tg_errno[")
-   f.write(a)
-   f.write("].len = ")
-   f.write(a)
-   f.write("_LEN;\n")
-
-def writeAll(f):
-    index = 0
-    for a, _ in l:
-        if index % 12 == 0:
-            f.write("static void\tinit_errno_")
-            f.write(str(index / 12 + 1))
-            f.write("(void)\n{\n")
-        writeErrMsg(f, a)
-        writeErrMsgLen(f, a)
-        index += 1
-        if index % 12 == 0:
-            f.write("}\n\n")
-    if index % 12 != 0:
-        f.write("}\n\n")
-    f.write("void\t\tinit_errno(void)\n{\n")
-    for i in range((len(l) - 1) /12 + 1):
-        f.write("\tinit_errno_")
-        f.write(str(i + 1))
-        f.write("();\n")
-    f.write("}\n")
-
-def writeOne(f):
-    f.write("void\tinit_errno(void)\n{\n")
-    for a, _ in l:
-        writeErrMsg(f, a)
-        writeErrMsgLen(f, a)
-    f.write("}\n")
-
-with open("./src/init_errno.c", "w") as f:
-    f.write(header.replace('h','c'))
-    f.write("#include \"")
-    f.write(include.split('/')[-1])
-    f.write("\"\n\n")
-    if len(l) < 13: writeOne(f)
-    else: writeAll(f)
-    f.close()
+#def writeOne(f):
+#    f.write("void\tinit_errno(void)\n{\n")
+#    for a, _ in l:
+#        writeErrMsg(f, a)
+#        writeErrMsgLen(f, a)
+#    f.write("}\n")
+#
+#with open("./src/init_errno.c", "w") as f:
+#    f.write(header.replace('h','c'))
+#    f.write("#include \"")
+#    f.write(include.split('/')[-1])
+#    f.write("\"\n\n")
+#    if len(l) < 13: writeOne(f)
+#    else: writeAll(f)
+#    f.close()
