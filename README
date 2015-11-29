@@ -1,0 +1,15 @@
+config
+├── .git
+├── .gitignore
+├── oblovim
+│   ├── c_maker       /formating c project
+│   ├── cppMaker       /formating cpp project (init)
+│   ├── filetype       /vim config for specific file
+│   ├── oblo.vimrc       /my vimrc
+│   ├── patron        /file templates
+│   └── script
+│   └── func
+├── README
+├── script
+├── vimrc -> oblovim/oblo.vimrc
+└── zshrc
