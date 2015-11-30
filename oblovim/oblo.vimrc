@@ -6,7 +6,7 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/11/27 09:17:18 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/11/29 23:53:39 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -37,7 +37,6 @@ set listchars=tab:\|\
 
 set mouse=a
 set ruler
-set incsearch
 set nobackup
 
 " color
@@ -52,94 +51,43 @@ augroup autocom
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vimrc
 augroup END
 
+echom "adewd32"
 
 " mapleader
 let mapleader = ","
 
 " edit config
-map <leader>vrc <ESC>:w<CR>:e ~/config/vimrc<CR>
-map <leader>zrc <ESC>:w<CR>:e ~/zshrc<CR>
-map <leader>s <ESC> :bufdo so ~/config/vimrc<CR>
-
-" visual block
-" noremap <S-RIGHT> :call 
-vnoremap <C-h> <C-V>h
-vnoremap <C-j> <C-V>j
-vnoremap <C-k> <C-V>k
-vnoremap <C-l> <C-V>l
+noremap <leader>vrc <ESC>:w<CR>:e ~/config/vimrc<CR>
+noremap <leader>zrc <ESC>:w<CR>:e ~/zshrc<CR>
+noremap <leader>s <ESC> :bufdo so ~/config/vimrc<CR>
 
 " move window
-noremap <C-k> <Esc><C-w>k
-noremap <C-j> <Esc><C-w>j
-noremap <C-h> <Esc><C-w>h
-noremap <C-l> <Esc><C-w>l
+noremap <C-k> <C-w>k
+noremap <C-j> <C-w>j
+noremap <C-h> <C-w>h
+noremap <C-l> <C-w>l
 
 " new file in new window
-noremap <C-n>h :vsp<CR>:Explore<CR>/^\.\/<CR>
+noremap <C-n>h :vsp<CR>:e .<CR>/^\.\/<CR>
 noremap <C-n>l :rightb vsp<CR>:Explore<CR>/^\.\/<CR>
 noremap <C-n>k :sp<CR>:Explore<CR>/^\.\/<CR>
 noremap <C-p> <C-w>J
+
 " switch option
 noremap <leader>wr <ESC>:set wrap!<CR>
 noremap <leader>sp <ESC>:set paste!<CR>
+
+" hlsearch
+set incsearch
+noremap <leader>hls :set hlsearch!<CR>
 
 " escape keys
 inoremap jk <ESC>
 inoremap kj <ESC>
 vnoremap aa <ESC>
 
-python import vim
+" consult man
+so ~/config/oblovim/script/man.vim
 
-" Open new window with man page for word under cursor
-fun! ReadMan(section)
-	let s:man_word = expand('<cword>')
-	:exe ":wincmd n"
-	" (col -b is for formatting):
-	:exe ":r!man " . a:section . " " . s:man_word . " | col -b"
-	" delete first line
-	:exe ":goto"
-	:exe ":delete"
-	:exe ":set filetype=man"
-	" set scratch buf
-	:setlocal buftype=nofile
-	:setlocal bufhidden=hide
-	:setlocal noswapfile
-endfun
-
-noremap K :call ReadMan("")<CR>
-noremap @K :call ReadMan("2")<CR>
-noremap #K :call ReadMan("3")<CR>
-noremap $K :call ReadMan("4")<CR>
-noremap %K :call ReadMan("5")<CR>
-
-" Patron
-function! NewMake()
-	r ~/config/oblovim/patron/Makefile
-endfunction
-noremap <leader>nM :call NewMake()<CR>
-
-function! NewMain()
-	r ~/config/oblovim/patron/main.c
-	Stdheader
-endfunction
-noremap <leader>nm :call NewMain()<CR>
-
-"  Patron header 42
-function! NewHeader()
-	call HeaderIncl()
-	Stdheader
-endfunction
-
-noremap <leader>nh :call NewHeader()<CR>
-
-function! HeaderIncl()
-python << endPython
-hpp = vim.current.buffer.name
-hpp = hpp[hpp.rfind('/') + 1:]
-hpp = hpp.upper()
-hpp = hpp.replace('.', '_')
-vim.current.buffer.append("#ifndef " + hpp)
-vim.current.buffer.append("# define " + hpp)
-vim.current.buffer.append("\n#endif")
-endPython
-endfunction
+" template files
+so ~/config/oblovim/patron/patron.vim
