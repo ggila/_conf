@@ -3,14 +3,8 @@ HISTFILE=~/.zshrc_history
 SAVEHIST=5000
 HISTSIZE=5000
 
-export PYTHONSTARTUP=~/.pystartup
-
 setopt inc_append_history
 setopt share_history
-
-if [[ -f ~/.myzshrc ]]; then
-	source ~/.myzshrc
-fi
 
 USER=`/usr/bin/whoami`
 export USER
@@ -27,14 +21,11 @@ PS1="%{$fg[red]%}%m %{$fg[green]%}%~%{$reset_color%}|%"
 ##ALIAS
 alias ..='cd ..'
 alias ...='cd ../..'
-alias dd='clear'
-alias szsh='source ~/config/zshrc'
+alias s='source ~/config/zshrc'
 alias gs='git status'
 alias gss='git status --porcelain'
 alias gp='git push'
 alias ga='git add'
-alias proto='python ~/config/script/make_proto.py'
-alias errno='python ~/config/script/make_errno.py'
 
 ##mmv *.txt *.data
 autoload -U zmv
