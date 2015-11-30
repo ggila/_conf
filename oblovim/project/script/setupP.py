@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 import os
 import re
@@ -10,15 +11,47 @@ if len(sys.argv) != 2:
 
 pName = sys.argv[1]
 
-class FileSystem:
+print pName
+
+#├── .zshrc
+#├── script
+#│   ├── make_errno.py
+#│   ├── tree.py
+#|   ├── make_proto.py
+#|   ├── patron.vim
+#│   └── header.vim
+#└── Makefile
+#└── src
+#|   └── main.c
+#└── inc
+
+class File:
+    """
+    - type (src, obj,...)
+    - content
+    """
+
+
+class Project:
     """
     - pwd
-    - Dir
+    - listfile
+    - src
     """
 
+#    def setUpDir(self):
+#        os.system('cp -r  ~/config/oblovim/project/template/newP .')
+
+    def addFile(self):
+        os.system('cp -r ~/config/oblovim/project/script .')
+        os.system('cp -r ~/config/oblovim/project/zshrc .zshrc')
+        os.system('mkdir src')
+        os.system('cp -r ~/config/oblovim/project/template/main.c src/')
+
     def __init__(self):
-        self.pwd = 
+        self.name = pName
+        self.addFile()
+        
 
-os.system("cp -r ~/config/patron/newP ./{0}".format(pName))
 
-
+P = Project()

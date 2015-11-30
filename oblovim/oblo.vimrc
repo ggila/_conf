@@ -6,7 +6,7 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/11/30 03:25:36 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/11/30 07:58:11 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -38,6 +38,9 @@ set listchars=tab:\|\
 set mouse=a
 set ruler
 set nobackup
+
+" encoding
+set encoding=utf-8
 
 " color
 colorscheme peachpuff
@@ -89,6 +92,3 @@ vnoremap aa <ESC>
 
 " consult man
 so ~/config/oblovim/script/man.vim
-
-" template files
-so ~/config/oblovim/patron/patron.vim

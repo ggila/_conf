@@ -22,7 +22,7 @@ PS1="%{$fg[red]%}%m %{$fg[green]%}%~%{$reset_color%}|%"
 alias ..='cd ..'
 alias ...='cd ../..'
 alias s='source ~/config/zshrc'
-alias np='python setupP.py '
+alias np='python ~/config/oblovim/project/script/setupP.py '
 
 ##mmv *.txt *.data
 autoload -U zmv

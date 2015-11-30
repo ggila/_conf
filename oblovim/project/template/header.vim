@@ -1,9 +1,3 @@
-python import vim
-
-function! NewMake()
-	r ~/config/oblovim/patron/Makefile
-endfunction
-
 "  Patron header 42
 function! NewHeader()
 	call HeaderIncl()

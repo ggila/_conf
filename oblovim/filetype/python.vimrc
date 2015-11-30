@@ -6,10 +6,10 @@ setlocal softtabstop=4
 
 python import vim
 
-function! PyCommentLine()
+function! PyComment1Line()
 python << endPython
 line = vim.current.line
-if line[:1] == '2' : vim.current.line = line[1:]
+if line[:1] == '#' : vim.current.line = line[1:]
 else:  vim.current.line = '#' + line
 endPython
 endfunction
