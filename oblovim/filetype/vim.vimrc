@@ -13,3 +13,4 @@ inoremap <buffer> <leader> <leader ><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> bb <buffer ><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> c- <C -><LEFT><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> s- <S -><LEFT><LEFT><BACKSPACE><RIGHT>
+inoremap <buffer> << ,

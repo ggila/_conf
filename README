@@ -1,15 +1,37 @@
-config
-├── .git
-├── .gitignore
-├── oblovim
-│   ├── c_maker       /formating c project
-│   ├── cppMaker       /formating cpp project (init)
-│   ├── filetype       /vim config for specific file
-│   ├── oblo.vimrc       /my vimrc
-│   ├── patron        /file templates
-│   └── script
-│   └── func
+.
 ├── README
-├── script
+├── doc
+│   ├── gitignore.txt
+│   ├── gitinfo.txt
+│   ├── mymalloc.txt
+│   └── regex.vim
+├── gitconfig
+├── oblovim
+│   ├── cppMaker
+│   │   ├── class.py
+│   │   └── setget.py
+│   ├── filetype
+│   │   ├── c.vimrc
+│   │   ├── cpp.vimrc
+│   │   ├── html.vimrc
+│   │   ├── new.html
+│   │   ├── php.vimrc
+│   │   ├── python.vimrc
+│   │   └── vim.vimrc
+│   ├── oblo.vimrc
+│   ├── patron
+│   │   ├── Makefile
+│   │   ├── main.c
+│   │   └── patron.vim
+│   ├── project
+│   │   └── script
+│   │       ├── make_errno.py
+│   │       ├── make_proto.py
+│   │       ├── setupP.py
+│   │       └── tree.py
+│   └── script
+│       └── man.vim
 ├── vimrc -> oblovim/oblo.vimrc
 └── zshrc
+
+8 directories, 26 files
