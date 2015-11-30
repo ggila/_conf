@@ -6,7 +6,7 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/11/29 23:53:39 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/11/30 03:25:36 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -51,8 +51,6 @@ augroup autocom
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vimrc
 augroup END
 
-echom "adewd32"
-
 " mapleader
 let mapleader = ","
 
@@ -76,6 +74,9 @@ noremap <C-p> <C-w>J
 " switch option
 noremap <leader>wr <ESC>:set wrap!<CR>
 noremap <leader>sp <ESC>:set paste!<CR>
+
+" visual block replace
+vnoremap c mmod<C-v>`m
 
 " hlsearch
 set incsearch

@@ -22,10 +22,6 @@ PS1="%{$fg[red]%}%m %{$fg[green]%}%~%{$reset_color%}|%"
 alias ..='cd ..'
 alias ...='cd ../..'
 alias s='source ~/config/zshrc'
-alias gs='git status'
-alias gss='git status --porcelain'
-alias gp='git push'
-alias ga='git add'
 
 ##mmv *.txt *.data
 autoload -U zmv

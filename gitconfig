@@ -1,0 +1,16 @@
+[user]
+	name = ggila
+	email = gilaber@student.42.fr
+[core]
+	editor = vim
+[push]
+	default = matching
+[diff]
+	tool = vimdiff
+[alias]
+	s = status
+	ss = status --porcelain'
+	a = add
+	au = add -u
+	cm = commit -m
+	dl = difftool
