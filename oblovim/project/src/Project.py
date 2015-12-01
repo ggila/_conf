@@ -1,29 +1,32 @@
+import os
+import time
 import pickle
-import Header
-import File
+from File.File import File
 
 class Project:
     """
-    - pwd
-    - listfile
-    - src
-
-    - self.name = pName
-    - self.src = []
-    - self.inc = []
     """
 
-    self.src = set()
-    self.incLocal = set()
-    self.incSys = set()
+    src = set()
+    inc = set()
+    incLocal = set()
+    incSys = set()
+    lastUpdate = time.time()
 
     def checkSource(self, rep):
         """
                 travel through ./src/ and update attributes
         """
         for f in os.listdir(rep):
-            if not os.path.isdir(rep + '/' + f) and f[0] != '.' and f[-2:] == '.c':
-                self.readCFile(rep + "/" + f)
+            if not os.path.isdir(rep + '/' + f) and f[0] != '.':
+                s = 0
+                if not f in self.src:
+                    s = cFile(f)
+                elif:
+                    s = load(src)
+                    if s.lastUpdate > self.lastUpdate
+                        s
+
         for f in os.listdir(rep):
             if os.path.isdir(rep + '/' + f) and f[0] != '.':
                 self.checkSource(rep + "/" + f)
@@ -35,12 +38,10 @@ class Project:
                 3 write buffer
                 4 some test (make, src/test...)
         """
-        self.incLocal = set()
-        self.incSys = set()
-        self.checkSource(conf.src_dir)
+        self.checkSrc(conf.src_dir)
         print "loc : ", self.incLocal
         print "sys : ", self.incSys
-        self.makeHeader()
+#        self.makeHeader()
 #        self.makeMakefile()
 
     def initConfig(self):
@@ -48,7 +49,10 @@ class Project:
         f.write()
 
     def __init__(self):
+        self.inc_dir = './inc'
+        self.src_dir = './src'
+        print 'coucou'
 #       import config
-        self.update()
+#        self.update()
         
 P = Project()

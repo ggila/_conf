@@ -2,16 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import pickle
-import .project/config.py as conf
 
 class File:
 
     name = ""
-    di = ""
     path = ""
     typ = ""
     creator = ""
-    last_update = ""
+    lastUpdate = ""
     updator = ""
 
     def readFile(self):
@@ -27,7 +25,7 @@ class File:
 
     def save(self):
         f.open(self.path, "wb")
-        pickle.dump(self, proj_dir + tickle)
+        pickle.dump(self, '.project/' + name)
         f.close()
 
     def __init__(self, name, path):

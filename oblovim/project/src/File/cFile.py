@@ -1,5 +1,7 @@
 import 
 
+patternFunc = re.compile('\n(?!static)([^\n]+)\n{\n')
+
 class cFile(File):
 
     include = []

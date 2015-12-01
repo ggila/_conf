@@ -8,7 +8,6 @@ if not (os.path.exists("./src")):
     print "please change dir"
     exit(0)
 
-pattern = re.compile('\n\n([^\n]+)\n{\n')
 
 func = []
 
