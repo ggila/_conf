@@ -5,17 +5,19 @@ import os
 import re
 import sys
 
-#pName = sys.argv[1]
 includePattern = re.compile('#include ([<"])([^">]+)[">]')
 
 pName = os.getcwd()
 print (
-"name project : {0}\n"
+"project name: {0}\n"
 "user : {1}"
 .format(pName[pName.rfind('/') + 1:], os.environ['USER']))
 
 exit(0)
 
+#├── .project
+#│   ├── project.inst
+#│   └── header.vim
 #├── script
 #│   ├── make_errno.py
 #│   ├── tree.py
@@ -45,9 +47,6 @@ class Project:
     """
 
 
-
-#    def setUpDir(self):
-#        os.system('cp -r  ~/config/oblovim/project/template/newP .')
 
     def readCFile(self, path):
         """
