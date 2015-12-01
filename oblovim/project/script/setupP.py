@@ -5,14 +5,16 @@ import os
 import re
 import sys
 
-if len(sys.argv) != 2:
-    print "give me a name", 
-    exit(0)
-
-pName = sys.argv[1]
+#pName = sys.argv[1]
 includePattern = re.compile('#include ([<"])([^">]+)[">]')
 
-print pName
+pName = os.getcwd()
+print (
+"name project : {0}\n"
+"user : {1}"
+.format(pName[pName.rfind('/') + 1:], os.environ['USER']))
+
+exit(0)
 
 #├── script
 #│   ├── make_errno.py
@@ -25,11 +27,11 @@ print pName
 #└── inc
 #|   └── $(pName).h
 
-class File:
-    """
-    - type (src, obj,...)
-    - content
-    """
+#class File:
+#    """
+#    - type (src, obj,...)
+#    - content
+#    """
 
 
 class Project:
