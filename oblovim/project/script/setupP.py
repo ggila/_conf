@@ -76,13 +76,13 @@ class Project:
                 generate project header
         """
         with open("./inc/" + self.name + ".h", "w") as f:
-            f.write("#ifndef {0}_H\n".format(self.pName.upper())
-            f.write("# define {0}_H\n\n".format(self.pName.upper()))
-            for elem in this.incSys:
+            f.write("#ifndef {0}_H\n".format(self.name.upper()))
+            f.write("# define {0}_H\n\n".format(self.name.upper()))
+            for elem in self.incSys:
                 f.write('#include <{0}>\n'.format(elem))
             f.write("\n")
-            for elem in this.incLocal:
-                f.write('#include <{0}>\n'.format(elem))
+            for elem in self.incLocal:
+                f.write('#include "{0}"\n'.format(elem))
             f.write("\n#endif\n")
 
     def update(self):

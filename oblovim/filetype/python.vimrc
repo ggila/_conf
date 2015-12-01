@@ -36,7 +36,7 @@ for i in range(a, b):
 endPython
 endfunction
 
-noremap <buffer> co :call PyComment1Line()<CR>
+noremap <buffer> <leader><leader> :call PyComment1Line()<CR>
 vnoremap <buffer> c :call PyCommentVisual()<CR>
 vnoremap <buffer> u :call PyUncommentVisual()<CR>
 
