@@ -2,6 +2,12 @@ import
 
 patternFunc = re.compile('\n(?!static)([^\n]+)\n{\n')
 
+# Regex (compile with re.M flag for multiline)
+# Func:
+#       '(?:^|\n)(?!static)([^\n]+)\n{\n'
+# StaticFunc:
+#       '(?:^|\n)(?!static)([^\n]+)\n{\n'
+
 class cFile(File):
 
     include = []

@@ -5,6 +5,8 @@ import pickle
 
 class File:
 
+    rename = 0
+
     name = ""
     path = ""
     typ = ""
@@ -12,7 +14,7 @@ class File:
     lastUpdate = ""
     updator = ""
 
-    def readFile(self):
+    def readFile(eelf):
         f.open(self.path, "r")
         content = f.read()
         f.close()
@@ -28,6 +30,14 @@ class File:
         pickle.dump(self, '.project/' + name)
         f.close()
 
+    def checkHeader(self, name):
+        with open(name, 'r') as f:
+            head = [next(f) for f in range(13)]
+            for t
+
+
     def __init__(self, name, path):
         self.name = name
-        self.path = path
+        self.path = name(:name.rfind('/'))
+        self.typ = re.match('.*\.(.*)', name).group(1)
+        creator, lastUpdate, updator = self.checkHeader(name)

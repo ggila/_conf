@@ -6,7 +6,7 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/12/01 12:12:44 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/12/02 10:15:01 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -49,6 +49,7 @@ colorscheme peachpuff
 augroup autocom
 	autocmd!
 	autocmd BufNewFile,BufRead  *vimrc so ~/config/oblovim/filetype/vim.vimrc
+	autocmd bufwritepost *vimrc so ~/config/vimrc
 	autocmd FileType c so ~/config/oblovim/filetype/c.vimrc
 	autocmd FileType python so ~/config/oblovim/filetype/python.vimrc
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vimrc
@@ -56,17 +57,26 @@ augroup END
 
 " mapleader
 let mapleader = ","
+fun! SetConfigTab()
+	exe ":tabnew ~/config/zshrc"
+	exe ":set wrap!"
+	exe ":vsp ~/config/vimrc"
+	exe ":rightb vsp ~/config/oblovim/filetype/vim.vimrc"
+	exe ":sp ~/config/oblovim/filetype/cpp.vimrc"
+	exe ":sp ~/config/oblovim/filetype/python.vimrc"
+	exe ":sp ~/config/oblovim/filetype/c.vimrc"
+endfunc
 
 " edit config
-noremap <leader>vrc <ESC>:w<CR>:e ~/config/vimrc<CR>
-noremap <leader>zrc <ESC>:w<CR>:e ~/zshrc<CR>
-noremap <leader>s <ESC> :bufdo so ~/config/vimrc<CR>
+noremap <leader>vimrc :call SetConfigTab()<CR>
 
 " move window
 noremap <C-k> <C-w>k
 noremap <C-j> <C-w>j
 noremap <C-h> <C-w>h
 noremap <C-l> <C-w>l
+noremap <C-z>h :tabn<CR>
+noremap <C-z>l :tabp<CR>
 
 " new file in new window
 noremap <C-n>h :vsp<CR>:e .<CR>/^\.\/<CR>

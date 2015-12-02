@@ -1,3 +1,6 @@
+inoremap <buffer> <leader>print ft_printf(");<ESC>f)i
+
+
 python import vim
 
 " coment:
