@@ -6,14 +6,11 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/12/02 15:10:52 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/12/03 11:38:17 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
 ""scratch buffer:
-":setlocal buftype=nofile
-":setlocal bufhidden=hide
-":setlocal noswapfile
 "The buffer name can be used to identify the buffer, if you
 "give it a meaningful name.
 
@@ -102,3 +99,18 @@ vnoremap aa <ESC>
 
 " consult man
 so ~/config/oblovim/script/man.vim
+
+if filereadable("vimrc")
+	so vimrc
+endif
+
+func! SetScratchBuf()
+	setlocal buftype=nofile
+	setlocal bufhidden=hide
+	setlocal noswapfile
+endfunc
+
+" project plugin
+" if filereadable(".project/vimrc")
+" 	so .project/vimrc
+" endif
