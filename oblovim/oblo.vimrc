@@ -6,14 +6,9 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/12/03 11:38:17 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/12/05 14:45:06 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
-
-""scratch buffer:
-"The buffer name can be used to identify the buffer, if you
-"give it a meaningful name.
-
 
 "" dir settings
 ":setlocal buftype=nowrite
@@ -72,21 +67,30 @@ noremap <C-k> <C-w>k
 noremap <C-j> <C-w>j
 noremap <C-h> <C-w>h
 noremap <C-l> <C-w>l
-noremap <C-x>h :tabn<CR>
-noremap <C-x>l :tabp<CR>
+noremap <C-a> <C-w><C-p>
+
+" resize window
+" noremap <S-UP>
+" noremap <S-DOWN>
+" noremap <S-LEFT>
+" noremap <S-RIGHT>
+
+" move tab
+noremap <C-x>h :tabp<CR>
+noremap <C-x>l :tabn<CR>
 
 " new file in new window
-noremap <C-n>h :vsp<CR>:e .<CR>/^\.\/<CR>
-noremap <C-n>l :rightb vsp<CR>:Explore<CR>/^\.\/<CR>
-noremap <C-n>k :sp<CR>:Explore<CR>/^\.\/<CR>
-noremap <C-p> <C-w>J
+noremap <leader>hs :vsp<CR>:e 
+noremap <leader>ls :rightb vsp<CR>:e 
+noremap <leader>ks :sp<CR>:e 
+noremap <leader>js :rightb sp<CR>:e 
 
 " switch option
 noremap <leader>sw <ESC>:set wrap!<CR>
 noremap <leader>sp <ESC>:set paste!<CR>
 
 " visual block replace
-vnoremap c mmod<C-v>`m
+vnoremap c d<C-v>`>I
 
 " hlsearch
 set incsearch
