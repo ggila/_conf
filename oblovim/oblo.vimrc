@@ -6,7 +6,7 @@
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/12/05 14:45:06 by ggilaber         ###   ########.fr        "
+"    Updated: 2015/12/07 08:17:56 by ggilaber         ###   ########.fr        "
 "                                                                              "
 " **************************************************************************** "
 
@@ -70,10 +70,10 @@ noremap <C-l> <C-w>l
 noremap <C-a> <C-w><C-p>
 
 " resize window
-" noremap <S-UP>
-" noremap <S-DOWN>
-" noremap <S-LEFT>
-" noremap <S-RIGHT>
+noremap <S-UP> :res -5<CR>
+noremap <S-DOWN> :res +5<CR>
+noremap <S-LEFT> :vertical res -5<CR>
+noremap <S-RIGHT> :vertical res +5<CR>
 
 " move tab
 noremap <C-x>h :tabp<CR>
@@ -90,7 +90,7 @@ noremap <leader>sw <ESC>:set wrap!<CR>
 noremap <leader>sp <ESC>:set paste!<CR>
 
 " visual block replace
-vnoremap c d<C-v>`>I
+vnoremap r d<C-v>`>I
 
 " hlsearch
 set incsearch
@@ -113,6 +113,7 @@ func! SetScratchBuf()
 	setlocal bufhidden=hide
 	setlocal noswapfile
 endfunc
+noremap <leader>scr :e _scratch<CR>:call SetScratchBuf()<CR>
 
 " project plugin
 " if filereadable(".project/vimrc")
