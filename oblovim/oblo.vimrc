@@ -59,6 +59,7 @@ fun! SetConfigTab()
 	exe ":sp ~/config/oblovim/filetype/cpp.vimrc"
 	exe ":sp ~/config/oblovim/filetype/python.vimrc"
 	exe ":sp ~/config/oblovim/filetype/c.vimrc"
+	exe "normal! \<C-w>h"
 endfunc
 noremap <leader>vimrc :call SetConfigTab()<CR>
 
@@ -90,7 +91,7 @@ noremap <leader>sw <ESC>:set wrap!<CR>
 noremap <leader>sp <ESC>:set paste!<CR>
 
 " visual block replace
-vnoremap r d<C-v>`>I
+vnoremap rr d<C-v>`>I
 
 " hlsearch
 set incsearch
@@ -99,7 +100,6 @@ noremap <leader>hls :set hlsearch!<CR>
 " escape keys
 inoremap jk <ESC>
 inoremap kj <ESC>
-vnoremap aa <ESC>
 
 " consult man
 so ~/config/oblovim/script/man.vim
@@ -119,3 +119,22 @@ noremap <leader>scr :e _scratch<CR>:call SetScratchBuf()<CR>
 " if filereadable(".project/vimrc")
 " 	so .project/vimrc
 " endif
+
+fun! CompileOne()
+	let s:file = bufname('%')
+	if bufexists("_cc")
+		exe ":bw _cc"
+	endif
+	exe ":sp _cc"
+	setlocal buftype=nofile
+	setlocal bufhidden=hide
+	setlocal noswapfile
+	silent exe "normal! !!gcc -c ".s:file."\<CR>"
+	if (line('$') == 1)
+		exe "normal! !rm ".s:file[:-2]."o"."\<CR>"
+		exe ":bd"
+		echo 'ok'
+	endif
+endfunc
+
+noremap <leader>cc :call CompileOne()<CR>
