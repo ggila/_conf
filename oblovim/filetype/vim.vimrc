@@ -15,6 +15,7 @@ inoremap <buffer> c- <C -><LEFT><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> s- <S -><LEFT><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> << ,
 
+setlocal foldmethod=marker
 
 python import vim
 
