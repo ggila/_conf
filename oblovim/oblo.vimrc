@@ -31,6 +31,9 @@ set mouse=a
 set ruler
 set nobackup
 
+" status line
+set statusline=%f%=%b\ %y\ %l/%L(%p)
+
 " encoding
 set encoding=utf-8
 
