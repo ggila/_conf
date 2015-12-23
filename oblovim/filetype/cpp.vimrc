@@ -1,3 +1,5 @@
+let b:com = '//'
+
 inoremap <buffer> <leader>s std::
 inoremap <buffer> <leader>str std::string
 

@@ -1,7 +1,4 @@
-" **************************************************************************** "
-"                                          
-"    oblovimrc                                          :+:      :+:    :+:    "
-"                                                     +:+ +:+         +:+      "
+" **************************************************************************** " "                                          "    oblovimrc                                          :+:      :+:    :+:    " "                                                     +:+ +:+         +:+      "
 "    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
 "                                                 +#+#+#+#+#+   +#+            "
 "    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
@@ -11,7 +8,7 @@
 
 set foldlevelstart=0
 
-" option {{{
+" option  ------------------------------------------- {{{
 set autoindent
 set number
 syntax on
@@ -20,6 +17,8 @@ syntax on
 set tabstop=4
 set list
 set listchars=tab:\|\ 
+
+set incsearch
 
 set mouse=a
 set ruler
@@ -33,23 +32,22 @@ set encoding=utf-8
 
 " color
 colorscheme peachpuff
-" }}}
+"  ------------------------------------------- }}}
 
-" source filetype {{{
-augroup autocom
+" source filetype  ------------------------------------------- {{{
+augroup kindoffile
 	autocmd!
 	autocmd BufNewFile,BufRead  *vimrc so ~/config/oblovim/filetype/vim.vimrc
-	autocmd bufwritepost *vimrc so ~/config/vimrc
 	autocmd FileType c so ~/config/oblovim/filetype/c.vimrc
 	autocmd FileType python so ~/config/oblovim/filetype/python.vimrc
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vimrc
 augroup END
-" }}}
+"  ------------------------------------------- }}}
 
 " mapleader
 let mapleader = ","
 
-" edit config (set new tab)  {{{
+" edit config (set new tab)   ------------------------------------------- {{{
 fun! SetConfigTab()
 	exe ":tabnew ~/config/zshrc"
 	exe ":set wrap!"
@@ -60,11 +58,11 @@ fun! SetConfigTab()
 	exe ":sp ~/config/oblovim/filetype/c.vimrc"
 	exe "normal \<C-h>"
 endfunc
-" }}}
+"  ------------------------------------------- }}}
 
 noremap <leader>conf :call SetConfigTab()<CR>
 
-" Window management {{{
+" Window management  ------------------------------------------- {{{
 " move window
 noremap <C-k> <C-w>k
 noremap <C-j> <C-w>j
@@ -83,7 +81,7 @@ noremap <leader>hs :vsp<CR>:e
 noremap <leader>ls :rightb vsp<CR>:e 
 noremap <leader>ks :sp<CR>:e 
 noremap <leader>js :rightb sp<CR>:e 
-" }}}
+"  ------------------------------------------- }}}
 
 " move tab
 noremap + :tabp<CR>
@@ -92,34 +90,30 @@ noremap _ :tabn<CR>
 " switch option
 noremap <leader>sw <ESC>:set wrap!<CR>
 noremap <leader>sp <ESC>:set paste!<CR>
+noremap <leader>hls :set hlsearch!<CR>
 
 " visual block replace
 vnoremap rr d<C-v>`>I
-
-" hlsearch
-set incsearch
-noremap <leader>hls :set hlsearch!<CR>
 
 " escape keys
 inoremap jk <ESC>
 inoremap kj <ESC>
 
-" consult man
-so ~/config/oblovim/script/man.vim
-
+" Set scratch buffer  ------------------------------------------- {{{
 func! SetScratchBuf()
 	setlocal buftype=nofile
 	setlocal bufhidden=hide
 	setlocal noswapfile
 endfunc
+"  ------------------------------------------- }}}
 noremap <leader>scr :e _scratch<CR>:call SetScratchBuf()<CR>
 
-" project plugin
-" if filereadable(".project/vimrc")
-" 	so .project/vimrc
-" endif
+"project plugin
+"if filereadable(".project/vimrc")
+"	so .project/vimrc
+"endif
 
-" man {{{
+" man  ------------------------------------------- {{{
 " Open new window with man page for word under cursor
 fun! ReadMan(section)
 	let s:man_word = expand('<cword>')
@@ -135,8 +129,7 @@ fun! ReadMan(section)
 	:setlocal bufhidden=hide
 	:setlocal noswapfile
 endfun
-" }}}
-
+"  ------------------------------------------- }}}
 noremap K :call ReadMan("")<CR>
 noremap @K :call ReadMan("2")<CR>
 noremap #K :call ReadMan("3")<CR>
@@ -144,7 +137,7 @@ noremap $K :call ReadMan("4")<CR>
 noremap %K :call ReadMan("5")<CR>
 
 
-" Compile {{{
+" Compile  ------------------------------------------- {{{
 fun! CompileOne()
 	let l:file = bufname('%')
 	if bufexists("_cc")
@@ -156,11 +149,45 @@ fun! CompileOne()
 	setlocal noswapfile
 	silent exe "normal! !!gcc -c ".l:file."\<CR>"
 	if (line('$') == 1)
-		exe "normal! !rm ".l:file[:-2]."o"."\<CR>"
+		exe "normal! :!rm ".l:file[:-2]."o\<CR>"
 		exe ":bd"
 		echo 'ok'
 	endif
 endfunc
-" }}}
-
+"  ------------------------------------------- }}}
 noremap <leader>cc :call CompileOne()<CR>
+
+" Comment  ------------------------------------------- {{{
+func! Comment1Line()
+	let l:len = strlen(b:com) 
+	let l:line = getline('.')
+	if l:line[0:(l:len - 1)] ==# b:com
+		call setline('.', l:line[(l:len):])
+	else
+		call setline('.', b:com.l:line)
+	endif
+endfunc
+
+func! CommentVisual() range
+	let l:len = strlen(b:com) 
+	let l:line = getline('.')
+	for line in range (a:firstline, a:lastline)
+		if l:line[0:(l:len - 1)] !=# b:com
+			call setline('.', b:com.l:line)
+		endif
+	endfor
+endfunc
+
+func! UncommentVisual() range
+	let l:len = strlen(b:com) 
+	let l:line = getline('.')
+	for line in range (a:firstline, a:lastline)
+		if l:line[0:(l:len - 1)] !=# b:com
+			call setline('.', b:com.l:line)
+		endif
+	endfor
+endfunc
+"  ------------------------------------------- }}}
+noremap ; :call Comment1Line()<CR>
+vnoremap c :call CommentVisual()<CR>
+vnoremap u :call UncommentVisual()<CR>
