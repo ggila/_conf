@@ -2,6 +2,7 @@ let b:com = '#'
 
 colorscheme darkblue
 
+set foldlevelstart=1
 setlocal foldmethod=indent
 
 setlocal expandtab

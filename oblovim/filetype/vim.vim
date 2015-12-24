@@ -1,6 +1,6 @@
 augroup sourcing
 	autocmd!
-	autocmd bufwritepost *vimrc so ~/config/vimrc
+	autocmd BufWritePost vimrc so ~/config/vimrc
 augroup END
 
 let b:com = '"'
@@ -20,6 +20,5 @@ inoremap <buffer> lead <leader ><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> buf <buffer ><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> c- <C -><LEFT><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> s- <S -><LEFT><LEFT><BACKSPACE><RIGHT>
-inoremap <buffer> << ,
 
 setlocal foldmethod=marker

@@ -1,11 +1,3 @@
-" **************************************************************************** " "                                          "    oblovimrc                                          :+:      :+:    :+:    " "                                                     +:+ +:+         +:+      "
-"    By: ggilaber <ggilaber@student.42.fr>          +#+  +:+       +#+         "
-"                                                 +#+#+#+#+#+   +#+            "
-"    Created: 2015/11/12 02:31:18 by ggilaber          #+#    #+#              "
-"    Updated: 2015/12/07 08:17:56 by ggilaber         ###   ########.fr        "
-"                                                                              "
-" **************************************************************************** "
-
 set foldlevelstart=0
 
 " option  ------------------------------------------- {{{
@@ -37,13 +29,12 @@ colorscheme peachpuff
 " source filetype  ------------------------------------------- {{{
 augroup kindoffile
 	autocmd!
-	autocmd BufNewFile,BufRead  *vimrc so ~/config/oblovim/filetype/vim.vimrc
-	autocmd FileType c so ~/config/oblovim/filetype/c.vimrc
-	autocmd FileType python so ~/config/oblovim/filetype/python.vimrc
-	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vimrc
+	autocmd Filetype vim so ~/config/oblovim/filetype/vim.vim
+	autocmd FileType c so ~/config/oblovim/filetype/c.vim
+	autocmd FileType python so ~/config/oblovim/filetype/python.vim
+	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vim
 augroup END
 "  ------------------------------------------- }}}
-
 " mapleader
 let mapleader = ","
 
@@ -108,10 +99,11 @@ endfunc
 "  ------------------------------------------- }}}
 noremap <leader>scr :e _scratch<CR>:call SetScratchBuf()<CR>
 
-"project plugin
-"if filereadable(".project/vimrc")
-"	so .project/vimrc
-"endif
+"my own c project plugin  ------------------------------------------- {{{
+if isdirectory(".project")
+	so ~/config/oblovim/project.vim
+endif
+" }}}
 
 " man  ------------------------------------------- {{{
 " Open new window with man page for word under cursor
@@ -170,20 +162,17 @@ endfunc
 
 func! CommentVisual() range
 	let l:len = strlen(b:com) 
-	let l:line = getline('.')
-	for line in range (a:firstline, a:lastline)
-		if l:line[0:(l:len - 1)] !=# b:com
-			call setline('.', b:com.l:line)
-		endif
+	for lin in range (a:firstline, a:lastline)
+		call setline(lin, b:com.getline(lin))
 	endfor
 endfunc
 
 func! UncommentVisual() range
 	let l:len = strlen(b:com) 
-	let l:line = getline('.')
-	for line in range (a:firstline, a:lastline)
-		if l:line[0:(l:len - 1)] !=# b:com
-			call setline('.', b:com.l:line)
+	for lin in range (a:firstline, a:lastline)
+		let l:line = getline(lin)
+		if l:line[0:(l:len - 1)] ==# b:com
+			call setline(lin, l:line[(l:len):])
 		endif
 	endfor
 endfunc
