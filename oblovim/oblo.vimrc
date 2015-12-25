@@ -43,10 +43,10 @@ fun! SetConfigTab()
 	exe ":tabnew ~/config/zshrc"
 	exe ":set wrap!"
 	exe ":vsp ~/config/vimrc"
-	exe ":rightb vsp ~/config/oblovim/filetype/vim.vimrc"
-	exe ":sp ~/config/oblovim/filetype/cpp.vimrc"
-	exe ":sp ~/config/oblovim/filetype/python.vimrc"
-	exe ":sp ~/config/oblovim/filetype/c.vimrc"
+	exe ":rightb vsp ~/config/oblovim/filetype/vim.vim"
+	exe ":sp ~/config/oblovim/filetype/cpp.vim"
+	exe ":sp ~/config/oblovim/filetype/python.vim"
+	exe ":sp ~/config/oblovim/filetype/c.vim"
 	exe "normal \<C-h>"
 endfunc
 "  ------------------------------------------- }}}
@@ -68,10 +68,10 @@ noremap <S-LEFT> :vertical res -5<CR>
 noremap <S-RIGHT> :vertical res +5<CR>
 
 " new file in new window
-noremap <leader>hs :vsp<CR>:e 
-noremap <leader>ls :rightb vsp<CR>:e 
-noremap <leader>ks :sp<CR>:e 
-noremap <leader>js :rightb sp<CR>:e 
+noremap <leader>vsh :vsp<CR>:e 
+noremap <leader>vsl :rightb vsp<CR>:e 
+noremap <leader>sk :sp<CR>:e 
+noremap <leader>sj :rightb sp<CR>:e 
 "  ------------------------------------------- }}}
 
 " move tab
