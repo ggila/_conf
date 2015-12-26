@@ -105,19 +105,20 @@ function! MyTabLine()
 	return s
 endfunction
 " }}}
-call <SID>setup()
-set tabline=%!MyTabLine()
+if !exists('g:setproject')
+	call <SID>setup()
+	set tabline=%!MyTabLine()
+	let g:setproject = 1
+endif
 
 " get func name
 let g:type = '^[a-z_]\+\t\+\**'
 let g:funcname = '[a-zA-Z0-9_]\+'
 let g:args = '\%(const \)\?[a-z_]\+ \**[a-zA-Z0-9_]\+\%(, \)\?'
 
-let g:proto = g:type . g:funcname . '(\%(void\|\%(' . g:args . '\)\+\))'
+let g:proto = g:type . '\(' . g:funcname . '\)(\%(void\|\(' . g:args . '\)\+\))'
 
-noremap sss exe /.g:proto.<CR>
+let g:func = '\n' . g:proto[1:] . '\n{\n\(.*\n\)\{-}}\n'
+noremap sss /<C-r>=proto<CR><CR>
 " function test management --------------------------{{{
 " }}}
-
-:
-

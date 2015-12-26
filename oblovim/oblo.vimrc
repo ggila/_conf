@@ -58,6 +58,8 @@ endfunc
 noremap <leader>conf :call SetConfigTab()<CR>
 
 " Window management  ------------------------------------------- {{{
+noremap <leader>wd :windo
+
 " move window
 noremap <C-k> <C-w>k
 noremap <C-j> <C-w>j
@@ -78,14 +80,15 @@ noremap <leader>sk :sp<CR>:e
 noremap <leader>sj :rightb sp<CR>:e 
 "  ------------------------------------------- }}}
 
+noremap <leader>td :tabdo
 " move tab
 noremap + :tabn<CR>
 noremap _ :tabp<CR>
 
 " switch option
-noremap <leader>sw <ESC>:set wrap!<CR>
-noremap <leader>SW <ESC>:windo set wrap!<CR>
-noremap <leader>sp <ESC>:set paste!<CR>
+noremap <leader>sw :set wrap!<CR>
+noremap <leader>SW :tabdo windo set wrap!<CR>
+noremap <leader>sp :set paste!<CR>
 noremap <leader>hls :set hlsearch!<CR>
 
 " visual block replace
