@@ -17,7 +17,8 @@ set ruler
 set nobackup
 
 " status line
-set statusline=%f\ %m%r%=%b\ %y\ %l/%L(%p)
+set statusline=%f\ \ \ \ %y\ %m%r%=%b\ %l/%L(%p)
+set laststatus=2
 
 " encoding
 set encoding=utf-8
@@ -40,12 +41,15 @@ let mapleader = ","
 
 " edit config (set new tab)   ------------------------------------------- {{{
 fun! SetConfigTab()
-	exe ":tabnew ~/config/zshrc"
+	exe ":tabnew"
 	exe ":set wrap!"
-	exe ":vsp ~/config/vimrc"
+	exe ":e ~/config/vimrc"
 	exe ":rightb vsp ~/config/oblovim/filetype/vim.vim"
+	exe ":rightb vsp ~/config/oblovim/filetype/python.vim"
+"	exe ":rightb vsp ~/config/oblovim/project.vim"
+"	exe "normal \<C-h>"
 	exe ":sp ~/config/oblovim/filetype/cpp.vim"
-	exe ":sp ~/config/oblovim/filetype/python.vim"
+	exe "normal \<C-h>"
 	exe ":sp ~/config/oblovim/filetype/c.vim"
 	exe "normal \<C-h>"
 endfunc
@@ -75,11 +79,12 @@ noremap <leader>sj :rightb sp<CR>:e
 "  ------------------------------------------- }}}
 
 " move tab
-noremap + :tabp<CR>
-noremap _ :tabn<CR>
+noremap + :tabn<CR>
+noremap _ :tabp<CR>
 
 " switch option
 noremap <leader>sw <ESC>:set wrap!<CR>
+noremap <leader>SW <ESC>:windo set wrap!<CR>
 noremap <leader>sp <ESC>:set paste!<CR>
 noremap <leader>hls :set hlsearch!<CR>
 

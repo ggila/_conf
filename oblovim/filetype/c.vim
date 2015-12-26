@@ -7,4 +7,3 @@ function! NewMain()
 	r ~/config/oblovim/patron/main.c
 	Stdheader
 endfunction
-

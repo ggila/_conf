@@ -1,10 +1,11 @@
-let pname = fnamemodify(getcwd(), ":t")
-let nb_column = 3
+set foldlevelstart=0
 
-"if argc()
-"	exe 'tabedit'
-"endif
+" globalvariable ----------------------------------- {{{
+let g:pname = fnamemodify(getcwd(), ":t")
+let g:nb_column = 3
+" }}}
 
+" setup tab --------------------------------- {{{
 " set nb_column windows
 func! s:setcol()
 	let l:i = 1
@@ -14,7 +15,7 @@ func! s:setcol()
 	endwhile
 endfunc
 
-" go first cfile column
+" move to nbcol windows on left-handside
 func! s:gofirst(nbcol)
 	let l:i = 0
 	while l:i < (a:nbcol - 1)
@@ -28,21 +29,21 @@ func! s:dispdir(hfile, cfiles)
 	let l:nbcol = g:nb_column
 	call s:setcol()
 	if len(a:hfile)
-		let l:nbcol = g:nb_column - 1
 		exe 'edit '.a:hfile
+		exe 'vertical resize 50'
 		exe "normal \<C-w>l"
+		let l:nbcol -= 1
 	endif
-	let l:count = 0
+	let l:count = 1
 	for elem in a:cfiles
-		echo elem
 		if l:count > l:nbcol
 			exe 'sp'
 		endif
 		exe 'edit '.elem
-		exe "normal \<C-w>l"
-		if l:count % l:nbcol == 0
+		if (l:count % l:nbcol) == 0
 			call s:gofirst(l:nbcol)
-			return
+		else
+			exe "normal \<C-w>l"
 		endif
 		let l:count += 1
 	endfor
@@ -56,6 +57,67 @@ func! s:setup()
 	endif
 	let l:cfiles = split(globpath('src', '*.c'))
 	call s:dispdir('inc/'.g:pname.'.h', l:cfiles)
+	for elem in l:dir
+		exe 'tabedit'
+		let l:header = globpath(elem, '*.h')
+		let l:cfiles = split(globpath(elem, '*.c'))
+		call s:dispdir(l:header, l:cfiles)
+	endfor
+	call SetConfigTab()
+	exe 'tabe ~/config/oblovim/project.vim'
+	exe 'tabn'
 endfunc
 
-noremap aaa :call <SID>setup()<CR>
+" get tab name from a random buffer in that tab
+func! s:gettabname(buflist, winnr)
+	let file = bufname(a:buflist[a:winnr - 1])
+	let file = fnamemodify(file, ':h:t')
+	if file == ''
+		let file = '[No Name]'
+	elseif file ==# 'inc' || file ==# 'src'
+		let file = 'main'
+	elseif file ==# 'oblovim'
+		let file = 'project.vim'
+	elseif file ==# 'filetype' || file == 'config'
+		let file = 'vimrc'
+	endif
+	return file
+endfunc
+
+" set line tab
+function! MyTabLine()
+	let s = ''
+	let t = tabpagenr()
+	let i = 1
+	while i <= tabpagenr('$')
+		let buflist = tabpagebuflist(i)
+		let winnr = tabpagewinnr(i)
+		let s .= (i == t ? '%1*' : '%2*')
+		let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+		let s .= '%' . i . 'T'
+		let s .= i . ': '
+		let s .= s:gettabname(buflist, winnr)
+		let s .= ' |%*'
+		let i = i + 1
+	endwhile
+	let s .= '%T%#TabLineFill#%='
+	let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+	return s
+endfunction
+" }}}
+call <SID>setup()
+set tabline=%!MyTabLine()
+
+" get func name
+let g:type = '^[a-z_]\+\t\+\**'
+let g:funcname = '[a-zA-Z0-9_]\+'
+let g:args = '\%(const \)\?[a-z_]\+ \**[a-zA-Z0-9_]\+\%(, \)\?'
+
+let g:proto = g:type . g:funcname . '(\%(void\|\%(' . g:args . '\)\+\))'
+
+noremap sss exe /.g:proto.<CR>
+" function test management --------------------------{{{
+" }}}
+
+:
+
