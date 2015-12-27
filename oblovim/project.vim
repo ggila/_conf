@@ -136,6 +136,7 @@ endfunc
 
 func! GetFuncDir()
 	let l:f = s:getproto(matchlist(getline('.'), g:proto))
+	let l:f.file = expand('%')
 	let l:f.body = ""
 	let l:nb_lin = line('.') + 2
 	let l:lin = getline(l:nb_lin)
@@ -147,20 +148,31 @@ func! GetFuncDir()
 	return l:f
 endfunc
 
-func! s:seeFunc()
+func! s:getfuncfromdict(str)
 	let l:i = 0
-	let l:f = expand("<cword>")
-	while g:func[l:i].func !=# l:f
+	while g:func[l:i].func !=# a:str
 		let l:i += 1
 	endwhile
-	let l:fu = g:func[l:i]
-	let l:str = l:fu.ret . ' ' . l:fu.func . '(' . join(l:fu.args, ', ') . ")\n"
+	return g:func[l:i]
+endfunc
+
+func! s:seeFunc()
+	let l:fu = s:getfuncfromdict(expand("<cword>"))
+	let l:str = "in: " . l:fu.file . "\n"
+	let l:str .= l:fu.ret . ' ' . l:fu.func . '(' . join(l:fu.args, ', ') . ")\n"
 	let l:str .= "{\n" . l:fu.body . "}\n"
 	echo l:str
+endfunc
+
+func! s:editFunc()
+	let l:fu = s:getfuncfromdict(expand("<cword>"))
+	exe ":sp " . l:fu.file
+	call search(l:fu.func)
 endfunc
 " }}}
 
 noremap <leader>see :call <SID>seeFunc()<CR>
+noremap <leader>edit :call <SID>editFunc()<CR>
 
 tabdo windo
 \ if &filetype ==# 'c' |
