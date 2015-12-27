@@ -87,7 +87,7 @@ noremap _ :tabp<CR>
 
 " switch option
 noremap <leader>sw :set wrap!<CR>
-noremap <leader>SW :tabdo windo set wrap!<CR>
+noremap <leader>SW :tabdo windo set wrap!<CR>1gt
 noremap <leader>sp :set paste!<CR>
 noremap <leader>hls :set hlsearch!<CR>
 
