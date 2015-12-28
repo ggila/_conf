@@ -65,7 +65,7 @@ noremap <C-k> <C-w>k
 noremap <C-j> <C-w>j
 noremap <C-h> <C-w>h
 noremap <C-l> <C-w>l
-noremap <C-a> <C-w><C-p>
+noremap <C-q> <C-w><C-p>
 
 " resize window
 noremap <S-UP> :res -5<CR>
@@ -84,6 +84,15 @@ noremap <leader>td :tabdo
 " move tab
 noremap + :tabn<CR>
 noremap _ :tabp<CR>
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
 
 " switch option
 noremap <leader>sw :set wrap!<CR>

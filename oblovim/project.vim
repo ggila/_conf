@@ -154,18 +154,21 @@ func! s:isheader()
 	return 1
 endfunc!
 
-func! Saveheader()
+func! s:saveheader()
 	let l:filename = matchstr(getline(4), '\/\*\s\{3}\zs\S\+')
 	let l:owner = matchstr(getline(6), 'By: \zs\S\+\s\S\+')
-	let l:updator = matchstr(getline(6), 'Created: \zs\S\+\s\S\+\s\S\+\s\S\+')
-	let l:creator = matchstr(getline(6), 'Updated: \zs\S\+\s\S\+\s\S\+\s\S\+')
+	let l:updator = matchstr(getline(8), 'Created: \zs\S\+\s\S\+\s\S\+\s\S\+')
+	let l:creator = matchstr(getline(9), 'Updated: \zs\S\+\s\S\+\s\S\+\s\S\+')
+	let l:save = join([l:filename, l:owner, l:updator, l:creator], "\n")
+	silent exe ':!echo ' . shellescape(l:save) . ' > .project/' . expand('%')
+	exe ':redraw!'
 endfunc
 " }}}
 
-"tabdo windo
-"\ if s:isheader() |
-"\     call s:saveheader()| exe '1,11d'| call append(0, b:com . ' 42stdheader')
-"\ endif
+tabdo windo
+\ if s:isheader() |
+\     call s:saveheader()| exe '1,11d'| call append(0, b:com . ' 42stdheader') |
+\ endif
 
 " get function --------------------------{{{
 let g:type = '^[a-z_]\+\t\+\**'
