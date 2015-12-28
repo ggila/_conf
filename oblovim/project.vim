@@ -130,7 +130,7 @@ endif
 "/* ************************************************************************** */
 "/*                                                                            */
 "/*                                                        :::      ::::::::   */
-"/*   file-name                                           :+:      :+:    :+:   */
+"/*   filename                                           :+:      :+:    :+:   */
 "/*                                                    +:+ +:+         +:+     */
 "/*   By: username <username@student.42.fr>          +#+  +:+       +#+        */
 "/*                                                +#+#+#+#+#+   +#+           */
@@ -154,21 +154,55 @@ func! s:isheader()
 	return 1
 endfunc!
 
-func! s:saveheader()
+func! s:miniheader()
 	let l:filename = matchstr(getline(4), '\/\*\s\{3}\zs\S\+')
 	let l:owner = matchstr(getline(6), 'By: \zs\S\+\s\S\+')
 	let l:updator = matchstr(getline(8), 'Created: \zs\S\+\s\S\+\s\S\+\s\S\+')
 	let l:creator = matchstr(getline(9), 'Updated: \zs\S\+\s\S\+\s\S\+\s\S\+')
-	let l:save = join([l:filename, l:owner, l:updator, l:creator], "\n")
-	silent exe ':!echo ' . shellescape(l:save) . ' > .project/' . expand('%')
-	exe ':redraw!'
+	return [l:filename, l:owner, l:updator, l:creator]
+endfunc
+
+func! s:isminiheader()
+	if match(getline(1), '\/\/ \S\+') == -1
+		return 0
+	elseif match(getline(2), '\/\/ \S\+\s\S\+') == -1
+		return 0
+	elseif match(getline(3), '\/\/ \S\+\s\S\+\s\S\+\s\S\+') == -1
+		return 0
+	elseif match(getline(4), '\/\/ \S\+\s\S\+\s\S\+\s\S\+') == -1
+		return 0
+	endif
+	return 1
+endfunc
+
+func! s:setminiheader()
+	call setline(1, '// ' . expand('%:p'))
+	call setline(2, '// ggilaber <ggilaber@student.42.fr>')
+	call setline(3, '// '.strftime("%Y/%m/%d %H:%M:%S").' by ggilaber')
+	call setline(4, '// '.strftime("%Y/%m/%d %H:%M:%S").' by ggilaber')
+endfunc
+
+func! s:editheader()
+	if getline(1) == '// header'
+		call s:setminiheader()
+	elseif s:isminiheader()
+		call setline(4, '// '.strftime("%Y/%m/%d %H:%M:%S")." by ggilaber")
+	endif
 endfunc
 " }}}
 
 tabdo windo
 \ if s:isheader() |
-\     call s:saveheader()| exe '1,11d'| call append(0, b:com . ' 42stdheader') |
+\     let s:mh = map(s:miniheader(), 'b:com . " " . v:val')|
+\     exe '1,11d' |
+\     call append(0, s:mh) |
+\     unlet s:mh |
 \ endif
+
+augroup saveheader
+	autocmd!
+	autocmd BufWritePre * :call s:editheader()
+augroup END
 
 " get function --------------------------{{{
 let g:type = '^[a-z_]\+\t\+\**'
