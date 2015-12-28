@@ -55,12 +55,19 @@ endfunc
 " read src dir and edit all files
 func! s:setup()
 	let l:dir = split(globpath('src', '*[^c]'))
+	if !isdirectory('.project/src')
+		exe ':!mkdir .project/src'
+	endif
 	if count(l:dir, 'src/lib')
 		call remove(l:dir, index(l:dir, 'src/lib'))
 	endif
 	let l:cfiles = split(globpath('src', '*.c'))
+	exe ':tabedit'
 	call s:dispdir('inc/'.g:pname.'.h', l:cfiles)
 	for elem in l:dir
+		if !isdirectory('.project/' . elem)
+			exe ':!mkdir .project/' . elem
+		endif
 		exe 'tabedit'
 		let l:header = globpath(elem, '*.h')
 		let l:cfiles = split(globpath(elem, '*.c'))
@@ -99,7 +106,11 @@ function! MyTabLine()
 		let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
 		let s .= '%' . i . 'T'
 		let s .= i . ': '
-		let s .= s:gettabname(buflist, winnr)
+		if i == 1
+			let s .= 'work'
+		else
+			let s .= s:gettabname(buflist, winnr)
+		endif
 		let s .= ' |%*'
 		let i = i + 1
 	endwhile
@@ -109,10 +120,52 @@ function! MyTabLine()
 endfunction
 " }}}
 if !exists('g:setproject')
-	call <SID>setup()
+	silent call <SID>setup()
 	set tabline=%!MyTabLine()
 	let g:setproject = 1
 endif
+
+" header  --------------------------{{{
+" standard 42 header look:
+"/* ************************************************************************** */
+"/*                                                                            */
+"/*                                                        :::      ::::::::   */
+"/*   file-name                                           :+:      :+:    :+:   */
+"/*                                                    +:+ +:+         +:+     */
+"/*   By: username <username@student.42.fr>          +#+  +:+       +#+        */
+"/*                                                +#+#+#+#+#+   +#+           */
+"/*   Created: 2015/11/27 07:44:23 by creatorname       #+#    #+#             */
+"/*   Updated: 2015/12/07 07:36:23 by updatorname      ###   ########.fr       */
+"/*                                                                            */
+"/* ************************************************************************** */
+func! s:isheader()
+	let l:l1 = '/* ************************************************************************** */'
+	let l:l2 = '/*                                                                            */'
+	let l:l3 = '/*                                                        :::      ::::::::   */'
+	let l:l5 = '/*                                                    +:+ +:+         +:+     */'
+	let l:l7 = '/*                                                +#+#+#+#+#+   +#+           */'
+	let l:l10 = '/*                                                                            */'
+	let l:l11 = '/* ************************************************************************** */'
+	for [i, l] in [[1,l:l1],[2,l:l2],[3,l:l3],[5,l:l5],[7,l:l7],[10,l:l10],[11,l:l11]]
+		if getline(i) !=# l
+			return 0
+		endif
+	endfor
+	return 1
+endfunc!
+
+func! Saveheader()
+	let l:filename = matchstr(getline(4), '\/\*\s\{3}\zs\S\+')
+	let l:owner = matchstr(getline(6), 'By: \zs\S\+\s\S\+')
+	let l:updator = matchstr(getline(6), 'Created: \zs\S\+\s\S\+\s\S\+\s\S\+')
+	let l:creator = matchstr(getline(6), 'Updated: \zs\S\+\s\S\+\s\S\+\s\S\+')
+endfunc
+" }}}
+
+"tabdo windo
+"\ if s:isheader() |
+"\     call s:saveheader()| exe '1,11d'| call append(0, b:com . ' 42stdheader')
+"\ endif
 
 " get function --------------------------{{{
 let g:type = '^[a-z_]\+\t\+\**'
