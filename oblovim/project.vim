@@ -139,6 +139,9 @@ endif
 "/*                                                                            */
 "/* ************************************************************************** */
 func! s:isheader()
+	if len(getline(1,11)) != 11
+		return 0
+	endif
 	let l:l1 = '/* ************************************************************************** */'
 	let l:l2 = '/*                                                                            */'
 	let l:l3 = '/*                                                        :::      ::::::::   */'
@@ -193,7 +196,7 @@ endfunc
 
 tabdo windo
 \ if s:isheader() |
-\     let s:mh = map(s:miniheader(), 'b:com . " " . v:val')|
+\     let s:mh = map(s:miniheader(), '"// " . " " . v:val')|
 \     exe '1,11d' |
 \     call append(0, s:mh) |
 \     unlet s:mh |
@@ -268,3 +271,7 @@ tabdo windo
 \ if &filetype ==# 'c' |
 \     exe ":g/" . g:proto . "/call add(g:func, GetFuncDir())" |
 \ endif
+
+" test func ---------------------- {{{
+
+"}}}
