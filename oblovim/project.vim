@@ -75,7 +75,7 @@ func! s:setup()
 	endfor
 	call SetConfigTab()
 	exe 'tabe ~/config/oblovim/project.vim'
-	exe 'tabn'
+	exe 'normal! 1gt'
 endfunc
 
 " get tab name from a random buffer in that tab
@@ -204,7 +204,7 @@ tabdo windo
 
 augroup saveheader
 	autocmd!
-	autocmd BufWritePre * :call s:editheader()
+	autocmd BufWritePre src/* :call s:editheader()
 augroup END
 
 " get function --------------------------{{{
@@ -273,5 +273,20 @@ tabdo windo
 \ endif
 
 " test func ---------------------- {{{
-
+func! s:opentest()
+	let b:test = 'test/' . expand('%:h') + expand('<cword>')
+	if filereadable(b:test)
+		exe ':sp '.b:test
+	else
+		let b:func = s:getfuncfromdict(expand("<cword>"))
+		let b:include = getinclude()
+		exe ':sp '.b:test
+		exe ':read ~/config/oblovim/maintest.c'
+		exe ':2s/()/('.join(b:func.args, ', ').')'
+		exe ':s/test_/test_'.b:func.name
+		call setline(0, b:include)
+	endif
+endfunc
 "}}}
+
+exe 'normal 1gt'
