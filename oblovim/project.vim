@@ -4,6 +4,7 @@ set foldlevelstart=0
 let g:pname = fnamemodify(getcwd(), ":t")
 let g:nb_column = 3
 let g:func = []
+let g:inc = []
 " }}}
 
 noremap <leader>so :so ~/config/oblovim/project.vim<CR>
@@ -52,6 +53,12 @@ func! s:dispdir(hfile, cfiles)
 	endfor
 endfunc
 
+let s:hfiles = split(globpath('inc', '*.h'))
+
+for elem in s:hfiles
+	call add(g:inc, {'name':fnamemodify(elem, ':t'), 'dir':'inc'})
+endfor
+
 " read src dir and edit all files
 func! s:setup()
 	let l:dir = split(globpath('src', '*[^c]'))
@@ -70,6 +77,9 @@ func! s:setup()
 		endif
 		exe 'tabedit'
 		let l:header = globpath(elem, '*.h')
+		if strlen(l:header)
+			call add(g:inc, {'name':fnamemodify(l:header, ':t'), 'dir':elem})
+		endif
 		let l:cfiles = split(globpath(elem, '*.c'))
 		call s:dispdir(l:header, l:cfiles)
 	endfor
@@ -119,6 +129,7 @@ function! MyTabLine()
 	return s
 endfunction
 " }}}
+
 if !exists('g:setproject')
 	silent call <SID>setup()
 	set tabline=%!MyTabLine()
@@ -249,10 +260,14 @@ func! s:getfuncfromdict(str)
 	return g:func[l:i]
 endfunc
 
+func! s:makefuncproto(fu)
+	return (a:fu.ret . ' ' . a:fu.func . '(' . join(a:fu.args, ', ') . ")")
+endfunc
+
 func! s:seeFunc()
 	let l:fu = s:getfuncfromdict(expand("<cword>"))
 	let l:str = "in: " . l:fu.file . "\n"
-	let l:str .= l:fu.ret . ' ' . l:fu.func . '(' . join(l:fu.args, ', ') . ")\n"
+	let l:str .= s:makefuncproto(l:fu) . "\n"
 	let l:str .= "{\n" . l:fu.body . "}\n"
 	echo l:str
 endfunc
@@ -269,10 +284,14 @@ noremap <leader>edit :call <SID>editFunc()<CR>
 
 tabdo windo
 \ if &filetype ==# 'c' |
-\     exe ":g/" . g:proto . "/call add(g:func, GetFuncDir())" |
+\	exe ":g/" . g:proto . "/call add(g:func, GetFuncDir())"|
 \ endif
 
 " test func ---------------------- {{{
+func! s:getinclude()
+	
+endfunc
+
 func! s:opentest()
 	let b:test = 'test/' . expand('%:h') + expand('<cword>')
 	if filereadable(b:test)
@@ -283,7 +302,8 @@ func! s:opentest()
 		exe ':sp '.b:test
 		exe ':read ~/config/oblovim/maintest.c'
 		exe ':2s/()/('.join(b:func.args, ', ').')'
-		exe ':s/test_/test_'.b:func.name
+		exe ':%s/test_/test_'.b:func.name
+		call setline(0, s:makefuncproto(b:func))
 		call setline(0, b:include)
 	endif
 endfunc
