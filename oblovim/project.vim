@@ -65,6 +65,9 @@ func! s:setup()
 	if !isdirectory('.project/src')
 		exe ':!mkdir .project/src'
 	endif
+	if !isdirectory('test/src')
+		exe ':!mkdir test/src'
+	endif
 	if count(l:dir, 'src/lib')
 		call remove(l:dir, index(l:dir, 'src/lib'))
 	endif
@@ -74,6 +77,9 @@ func! s:setup()
 	for elem in l:dir
 		if !isdirectory('.project/' . elem)
 			exe ':!mkdir .project/' . elem
+		endif
+		if !isdirectory('test/' . elem)
+			exe ':!mkdir test/' . elem
 		endif
 		exe 'tabedit'
 		let l:header = globpath(elem, '*.h')
@@ -289,24 +295,44 @@ tabdo windo
 
 " test func ---------------------- {{{
 func! s:getinclude()
-	
+	let l:l = []
+	exe ':g/#include .*/call add(l:l, getline("."))'
+	return l:l
+endfunc
+
+func! s:initarg(list)
+	let l:init = []
+	for elem in a:list
+"	let l:type
+		let l:str = "\t"
+		let l:str .= substitute(elem, '\(\s\+const\)\|\(const\s\+\)', '', 'g')
+		let l:str .= ' = '
+		call add(l:init, l:str)
+	endfor
+	return l:init
 endfunc
 
 func! s:opentest()
-	let b:test = 'test/' . expand('%:h') + expand('<cword>')
-	if filereadable(b:test)
-		exe ':sp '.b:test
+	let l:test = 'test/' . expand('%:h') . '/test_' . expand("<cword>") . '.c'
+	if filereadable(l:test)
+		exe ':sp '.l:test
 	else
-		let b:func = s:getfuncfromdict(expand("<cword>"))
-		let b:include = getinclude()
-		exe ':sp '.b:test
+		let l:fu = s:getfuncfromdict(expand("<cword>"))
+		let l:include = s:getinclude()
+		exe ':sp '.l:test
 		exe ':read ~/config/oblovim/maintest.c'
-		exe ':2s/()/('.join(b:func.args, ', ').')'
-		exe ':%s/test_/test_'.b:func.name
-		call setline(0, s:makefuncproto(b:func))
-		call setline(0, b:include)
+		exe ':2s/()/('.join(l:fu.args, ', ').')'
+		exe ':%s/test_/test_'.l:fu.func
+		if !((len(l:fu.args) == 1) && (l:fu.args[0] ==# 'void'))
+			call append(9, s:initarg(l:fu.args))
+		endif
+		call append(0, [" ",s:makefuncproto(l:fu).";"])
+		call append(0, l:include)
+"		call addtomakefile(b:func.file, expand('%'))
 	endif
 endfunc
 "}}}
+
+noremap <leader>test :call <SID>opentest()<CR>
 
 exe 'normal 1gt'

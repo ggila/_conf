@@ -1,4 +1,3 @@
-
 int test_()
 {
 	return ? 1 : 0;
