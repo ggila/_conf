@@ -324,7 +324,7 @@ func! s:opentest()
 		exe ':2s/()/('.join(l:fu.args, ', ').')'
 		exe ':%s/test_/test_'.l:fu.func
 		if !((len(l:fu.args) == 1) && (l:fu.args[0] ==# 'void'))
-			call append(9, s:initarg(l:fu.args))
+			call append(10, s:initarg(l:fu.args))
 		endif
 		call append(0, [" ",s:makefuncproto(l:fu).";"])
 		call append(0, l:include)
