@@ -1,3 +1,7 @@
+if filereadable('.project/vimrc')
+	so '.project/vimrc'
+endif
+
 set foldlevelstart=0
 
 " globalvariable ----------------------------------- {{{
