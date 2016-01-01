@@ -6,12 +6,24 @@ set foldlevelstart=0
 
 " globalvariable ----------------------------------- {{{
 let g:pname = fnamemodify(getcwd(), ":t")
-let g:nb_column = 3
+let g:nb_column = 4
 let g:func = []
 let g:inc = []
 " }}}
 
-noremap <leader>so :so ~/config/oblovim/project.vim<CR>
+func! s:sourceproject()
+	let l:tabpage = tabpagenr()
+	source ~/config/vimrc
+	let l:i = 1
+	exe 'normal! 1gt'
+	while l:i != l:tabpage
+		exe ":tabnext"
+		let l:i += 1
+		echo l:i
+	endwhile
+endfunc
+
+noremap <leader>so :call <SID>sourceproject()<CR>
 
 " setup tab --------------------------------- {{{
 " set nb_column windows
@@ -38,7 +50,6 @@ func! s:dispdir(hfile, cfiles)
 	call s:setcol()
 	if len(a:hfile)
 		exe 'edit '.a:hfile
-		exe 'vertical resize 50'
 		exe "normal \<C-w>l"
 		let l:nbcol -= 1
 	endif
@@ -107,7 +118,7 @@ func! s:gettabname(buflist, winnr)
 	elseif file ==# 'inc' || file ==# 'src'
 		let file = 'main'
 	elseif file ==# 'oblovim'
-		let file = 'project.vim'
+		let file = 'project'
 	elseif file ==# 'filetype' || file == 'config'
 		let file = 'vimrc'
 	endif
@@ -143,12 +154,9 @@ endfunction
 if !exists('g:setproject')
 	silent call <SID>setup()
 	set tabline=%!MyTabLine()
-	let g:setproject = 1
 endif
 
-" header  --------------------------{{{
-" standard 42 header look:
-"/* ************************************************************************** */
+" header  --------------------------{{{ " standard 42 header look: "/* ************************************************************************** */
 "/*                                                                            */
 "/*                                                        :::      ::::::::   */
 "/*   filename                                           :+:      :+:    :+:   */
@@ -215,6 +223,7 @@ func! s:editheader()
 endfunc
 " }}}
 
+" rempplace ce truc hideux par une fon<CR>tion
 tabdo windo
 \ if s:isheader() |
 \     let s:mh = map(s:miniheader(), '"// " . " " . v:val')|
@@ -339,4 +348,8 @@ endfunc
 
 noremap <leader>test :call <SID>opentest()<CR>
 
-exe 'normal 1gt'
+if !exists('g:setproject')
+	exe 'normal 1gt'
+endif
+
+let g:setproject = 1

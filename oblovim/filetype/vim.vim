@@ -5,6 +5,7 @@ augroup END
 
 let b:com = '"'
 
+" CHANGER TOUT CA !!!
 " special character
 inoremap <buffer> cr <CR ><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> esc <ESC ><LEFT><BACKSPACE><RIGHT>
