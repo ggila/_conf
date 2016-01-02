@@ -1,6 +1,10 @@
 " mapleader
 let mapleader = ","
 
+" escape keys
+inoremap jk <ESC>
+inoremap kj <ESC>
+
 " option  ------------------------------------------- {{{
 
 set autoindent
@@ -53,7 +57,7 @@ augroup kindoffile
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vim
 augroup END
 "  ------------------------------------------- }}}
-"
+
 " edit config (set new tab)   ------------------------------------------- {{{
 fun! SetConfigTab()
 	exe ":tabnew"
@@ -111,33 +115,30 @@ noremap <leader>7 7gt
 noremap <leader>8 8gt
 noremap <leader>9 9gt
 " }}}
+
 " visual block replace
 vnoremap rr d<C-v>`>I
 
-" escape keys
-inoremap jk <ESC>
-inoremap kj <ESC>
-
 " fold ------------------------------ {{{
-func! s:closeFold()
-	let l:line = getline('.')
-	if match(l:line, '[{}]\{3}\d\?$') != -1
-		exe 'normal zc'
-	else
-		exe 'normal! h'
-	endif
-endfunc
+"func! s:closeFold()
+"	let l:line = getline('.')
+"	if match(l:line, '[{}]\{1,3}\d\?$') != -1
+"		exe 'normal zc'
+"	else
+"		exe 'normal! h'
+"	endif
+"endfunc
 
 func! s:swapFold()
 	let l:line = getline('.')
-	if match(l:line, '[{}]\{3}\d\?$') != -1
+	if match(l:line, '[{}]\{1,3}\d\?$') != -1
 		exe 'normal za'
 	else
 		exe 'normal! h'
 	endif
 endfunc
 " }}}
-noremap h :call <SID>closeFold()<CR>
+"noremap h :call <SID>closeFold()<CR>
 noremap <SPACE> :call <SID>swapFold()<CR>
 
 " Set scratch buffer  ------------------------------------------- {{{
@@ -148,12 +149,6 @@ func! SetScratchBuf()
 endfunc
 "  ------------------------------------------- }}}
 noremap <leader>scr :call SetScratchBuf()<CR>
-
-"my own c project plugin  ------------------------------------------- {{{
-if isdirectory(".project")
-	so ~/config/oblovim/project.vim
-endif
-" }}}
 
 " man  ------------------------------------------- {{{
 " Open new window with man page for word under cursor
@@ -178,7 +173,6 @@ noremap #K :call ReadMan("3")<CR>
 noremap $K :call ReadMan("4")<CR>
 noremap %K :call ReadMan("5")<CR>
 
-
 " Compile  ------------------------------------------- {{{
 fun! CompileOne()
 	let l:file = bufname('%')
@@ -193,14 +187,20 @@ fun! CompileOne()
 	if (line('$') == 1)
 		exe "normal! :!rm ".l:file[:-2]."o\<CR>"
 		exe ":bd"
-		echo 'ok'
+		silent echo 'ok'
 	endif
 endfunc
+
+func! s:run()
+	silent exe ":!gcc %"
+	silent exe "normal! !!./a.out \<CR>"
+endfunc
+
 "  ------------------------------------------- }}}
 noremap <leader>cc :call CompileOne()<CR>
+noremap <leader>out :call <SID>run()
 
 " Comment  ------------------------------------------- {{{
-
 func! Comment1Line()
 	let l:len = strlen(b:com) 
 	let l:line = getline('.')
