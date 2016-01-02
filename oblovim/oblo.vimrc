@@ -1,20 +1,19 @@
-set foldlevelstart=0
+" mapleader
+let mapleader = ","
 
 " option  ------------------------------------------- {{{
+
 set autoindent
 set number
+set incsearch
+set ruler
+set nobackup
 syntax on
 
-" tab style
+" tab style (python tab define in filetype/python.vim)
 set tabstop=4
 set list
 set listchars=tab:\|\ 
-
-set incsearch
-
-set mouse=a
-set ruler
-set nobackup
 
 " status line
 set statusline=%f\ \ \ \ %y\ %m%r%=%b\ %l/%L(%p)
@@ -25,6 +24,13 @@ set encoding=utf-8
 
 " color
 colorscheme peachpuff
+
+" switch option
+noremap <leader>sw :set wrap!<CR>
+noremap <leader>SW :tabdo windo set wrap!<CR>1gt
+noremap <leader>sp :set paste!<CR>
+noremap <leader>hls :set hlsearch!<CR>
+
 "  ------------------------------------------- }}}
 
 " (non actif) set status line color according to mode (non actif) ------ {{{
@@ -47,9 +53,7 @@ augroup kindoffile
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vim
 augroup END
 "  ------------------------------------------- }}}
-" mapleader
-let mapleader = ","
-
+"
 " edit config (set new tab)   ------------------------------------------- {{{
 fun! SetConfigTab()
 	exe ":tabnew"
@@ -65,7 +69,6 @@ fun! SetConfigTab()
 	exe "normal \<C-h>"
 endfunc
 "  ------------------------------------------- }}}
-
 noremap <leader>conf :call SetConfigTab()<CR>
 
 " Window management  ------------------------------------------- {{{
@@ -91,8 +94,11 @@ noremap <leader>sk :sp<CR>:e
 noremap <leader>sj :rightb sp<CR>:e 
 "  ------------------------------------------- }}}
 
+" tab management  ------------------------------------------- {{{
 noremap <leader>td :tabdo
+
 " move tab
+
 noremap + :tabn<CR>
 noremap _ :tabp<CR>
 noremap <leader>1 1gt
@@ -104,19 +110,35 @@ noremap <leader>6 6gt
 noremap <leader>7 7gt
 noremap <leader>8 8gt
 noremap <leader>9 9gt
-
-" switch option
-noremap <leader>sw :set wrap!<CR>
-noremap <leader>SW :tabdo windo set wrap!<CR>1gt
-noremap <leader>sp :set paste!<CR>
-noremap <leader>hls :set hlsearch!<CR>
-
+" }}}
 " visual block replace
 vnoremap rr d<C-v>`>I
 
 " escape keys
 inoremap jk <ESC>
 inoremap kj <ESC>
+
+" fold ------------------------------ {{{
+func! s:closeFold()
+	let l:line = getline('.')
+	if match(l:line, '[{}]\{3}\d\?$') != -1
+		exe 'normal zc'
+	else
+		exe 'normal! h'
+	endif
+endfunc
+
+func! s:swapFold()
+	let l:line = getline('.')
+	if match(l:line, '[{}]\{3}\d\?$') != -1
+		exe 'normal za'
+	else
+		exe 'normal! h'
+	endif
+endfunc
+" }}}
+noremap h :call <SID>closeFold()<CR>
+noremap <SPACE> :call <SID>swapFold()<CR>
 
 " Set scratch buffer  ------------------------------------------- {{{
 func! SetScratchBuf()
@@ -125,7 +147,7 @@ func! SetScratchBuf()
 	setlocal noswapfile
 endfunc
 "  ------------------------------------------- }}}
-noremap <leader>scr :e _scratch<CR>:call SetScratchBuf()<CR>
+noremap <leader>scr :call SetScratchBuf()<CR>
 
 "my own c project plugin  ------------------------------------------- {{{
 if isdirectory(".project")
@@ -178,6 +200,7 @@ endfunc
 noremap <leader>cc :call CompileOne()<CR>
 
 " Comment  ------------------------------------------- {{{
+
 func! Comment1Line()
 	let l:len = strlen(b:com) 
 	let l:line = getline('.')

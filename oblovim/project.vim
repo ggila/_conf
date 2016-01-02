@@ -1,3 +1,4 @@
+" for project specific mapping
 if filereadable('.project/vimrc')
 	so '.project/vimrc'
 endif
@@ -10,20 +11,6 @@ let g:nb_column = 4
 let g:func = []
 let g:inc = []
 " }}}
-
-func! s:sourceproject()
-	let l:tabpage = tabpagenr()
-	source ~/config/vimrc
-	let l:i = 1
-	exe 'normal! 1gt'
-	while l:i != l:tabpage
-		exe ":tabnext"
-		let l:i += 1
-		echo l:i
-	endwhile
-endfunc
-
-noremap <leader>so :call <SID>sourceproject()<CR>
 
 " setup tab --------------------------------- {{{
 " set nb_column windows
@@ -151,12 +138,9 @@ function! MyTabLine()
 endfunction
 " }}}
 
-if !exists('g:setproject')
-	silent call <SID>setup()
-	set tabline=%!MyTabLine()
-endif
-
-" header  --------------------------{{{ " standard 42 header look: "/* ************************************************************************** */
+" header  --------------------------{{{
+" standard 42 header look:
+"/* ************************************************************************** */
 "/*                                                                            */
 "/*                                                        :::      ::::::::   */
 "/*   filename                                           :+:      :+:    :+:   */
@@ -167,6 +151,7 @@ endif
 "/*   Updated: 2015/12/07 07:36:23 by updatorname      ###   ########.fr       */
 "/*                                                                            */
 "/* ************************************************************************** */
+
 func! s:isheader()
 	if len(getline(1,11)) != 11
 		return 0
@@ -208,10 +193,10 @@ func! s:isminiheader()
 endfunc
 
 func! s:setminiheader()
-	call setline(1, '// ' . expand('%:p'))
-	call setline(2, '// ggilaber <ggilaber@student.42.fr>')
-	call setline(3, '// '.strftime("%Y/%m/%d %H:%M:%S").' by ggilaber')
-	call setline(4, '// '.strftime("%Y/%m/%d %H:%M:%S").' by ggilaber')
+	call setline(1, b:com.' . expand('%:p'))
+	call setline(2, b:com.' ggilaber <ggilaber@student.42.fr>')
+	call setline(3, b:com.'.strftime("%Y/%m/%d %H:%M:%S").' by ggilaber')
+	call setline(4, b:com.'.strftime("%Y/%m/%d %H:%M:%S").' by ggilaber')
 endfunc
 
 func! s:editheader()
@@ -221,90 +206,145 @@ func! s:editheader()
 		call setline(4, '// '.strftime("%Y/%m/%d %H:%M:%S")." by ggilaber")
 	endif
 endfunc
+
+func! s:formatHeader()
+	if s:isheader()
+		let s:mh = map(s:miniheader(), '"// " . " " . v:val')
+		exe '1,11d'
+		call append(0, s:mh)
+		unlet s:mh
+	endif
+endfunc
 " }}}
 
-" rempplace ce truc hideux par une fon<CR>tion
-tabdo windo
-\ if s:isheader() |
-\     let s:mh = map(s:miniheader(), '"// " . " " . v:val')|
-\     exe '1,11d' |
-\     call append(0, s:mh) |
-\     unlet s:mh |
-\ endif
+" function -------------------------------------------------- {{{
 
-augroup saveheader
-	autocmd!
-	autocmd BufWritePre src/* :call s:editheader()
-augroup END
+" readme
+" doc  ---------------------------------------{{{
+" c functions are stored during a vim session in a dictionnary:
+" {
+" 	- str name
+" 	- str file where function is defined
+" 	- lst argument function
+" 	- lst body
+" 	- str return type
+" }
+" all functions are stored in a list: g:func
+" ----------------------------------------------}}}
 
-" get function --------------------------{{{
+" build dict:
+" parse c file with regex and set a dictionnary for each
+" regex to match prototype function -------------------------- {{{
 let g:type = '^[a-z_]\+\t\+\**'
 let g:funcname = '[a-zA-Z0-9_]\+'
 let g:arg = '\%(const \)\?[a-z_]\+ \**[a-zA-Z0-9_]\+\%(, \)\?'
 let g:args = '\%(void\|\%(' . g:arg . '\)\+\)'
 let g:proto = '\(' . g:type . '\)\(' . g:funcname . '\)(\(' . g:args . '\))'
-
-func! s:getret(ret)
-	let l:r = matchlist(a:ret, '\(\w\+\)\s\+\(\**\)')
-	return  strlen(l:r[2]) ? join(l:r[1:2], ' ') : r[1]
-endfunc
-
-func! s:getproto(match)
-	let l:f = {}
-	let l:f.ret = s:getret(a:match[1])
-	let l:f.func = a:match[2]
-	let l:f.args = split(a:match[3], ', ')
-	return l:f
-endfunc
-
-func! GetFuncDir()
-	let l:f = s:getproto(matchlist(getline('.'), g:proto))
-	let l:f.file = expand('%')
-	let l:f.body = ""
-	let l:nb_lin = line('.') + 2
-	let l:lin = getline(l:nb_lin)
-	while l:lin !=# '}'
-		let l:f.body .= l:lin . "\n"
-		let l:nb_lin += 1
-		let l:lin = getline(l:nb_lin)
-	endwhile
-	return l:f
-endfunc
-
-func! s:getfuncfromdict(str)
-	let l:i = 0
-	while g:func[l:i].func !=# a:str
-		let l:i += 1
-	endwhile
-	return g:func[l:i]
-endfunc
-
-func! s:makefuncproto(fu)
-	return (a:fu.ret . ' ' . a:fu.func . '(' . join(a:fu.args, ', ') . ")")
-endfunc
-
-func! s:seeFunc()
-	let l:fu = s:getfuncfromdict(expand("<cword>"))
-	let l:str = "in: " . l:fu.file . "\n"
-	let l:str .= s:makefuncproto(l:fu) . "\n"
-	let l:str .= "{\n" . l:fu.body . "}\n"
-	echo l:str
-endfunc
-
-func! s:editFunc()
-	let l:fu = s:getfuncfromdict(expand("<cword>"))
-	exe ":sp " . l:fu.file
-	call search(l:fu.func)
+" }}}
+" - build functions:  -------------------------------------------------- {{{
+"   s:getproto --------------------- {{{
+func! s:getproto(str)
+" input: line matching with g:proto and a dictionnary
+" output: add three entries to dict according to str
+	let l:submatches = matchlist(a:str, g:proto)
+	let a:dict = {}
+	let a:dict.ret = s:getret(l:submatches[1])
+	let a:dict.name = l:submatches[2]
+	let a:dict.args = split(l:submatches[3], ', ')
+	return a:dict
 endfunc
 " }}}
+" s:getret  -------------------------- {{{
+func! s:getret(str)
+" Warning: - just work for function return type
+"          - very restrictif, should be fix
+"      input     ---->    output
+"   'char\t\t**'         'char **'    OK
+"     'void '             'void'      OK    
+"  'const char *'        'const'         KO (should not happen)
+	let l:r = matchlist(a:str, '\(\w\+\)\s\+\(\**\)')
+	return  strlen(l:r[2]) ? join(l:r[1:2], ' ') : r[1]
+endfunc
+" }}}
+func! GetFuncDir()
+" function called with cursor on a line matching g:proto
+" output: dictionnary describing function
 
+	let l:dict = {}
+
+	call extend(l:dict, s:getproto(getline('.')))
+	let l:dict.file = expand('%')
+
+	" get body of function
+	let l:nb_start = line('.') + 2
+	let l:lin = getline(l:nb_start)
+	let l:nb_end = nb_start
+	while l:lin !=# '}'
+		let l:nb_end += 1
+		let l:lin = getline(l:nb_end)
+	endwhile
+
+	let l:dict.body = getline(nb_start, nb_end - 1)
+
+	return l:dict
+
+endfunc
+" ----------------------------------------------------------------------- }}}
+
+" - user api:
+" toolbox: ------------------------------------------------------------------- {{{
+" s:makeFuncProto ---------------------------- {{{
+func! s:makeFuncProto(func)
+	return (a:func.ret . ' ' . a:func.name . '(' . join(a:func.args, ', ') . ")")
+endfunc
+" }}}
+" GetFuncFromDict ------------- {{{
+func! s:getFuncFromDict(str)
+	let l:i = 0
+	let l:end = len(g:func)
+	while (g:func[l:i].name !=# a:str) && (l:i < l:end)
+		let l:i += 1
+	endwhile
+	if l:i == l:end
+		echo 'function not found'
+		return
+	endif
+	return g:func[l:i]
+endfunc
+" }}}
+" s:setFuncScratchBuf --------------------------------------------------------- {{{
+func s:setFuncScratchBuf(file, len)
+	exe ":r " . a:file
+	exe ":0d"
+	setlocal buftype=nofile
+	setlocal bufhidden=hide
+	setlocal noswapfile
+	set filetype=c
+	noremap <buffer> q :q<CR>
+	exe ':resize '.a:len
+	noremap <buffer> e :call s:editFunc<CR>
+endfunc
+" ------------------------------------------}}}
+"  ----------------------------------------------------}}}
+" mapping -----------------------------------------------------------------------------{{{
+" seeFunc ------------------------------------------------------------------------------ {{{
+func! s:seeFunc()
+	if bufexists('_func')
+		silent exe 'bw! _func'
+	endif
+	let l:func = s:getFuncFromDict(expand("<cword>"))
+	exe ":sp _func"
+	call s:setFuncScratchBuf(l:func.file, len(l:func.body) + 3)
+	exe "normal! G%k"
+endfunc
+" -------------------------------------------------------- }}}
 noremap <leader>see :call <SID>seeFunc()<CR>
-noremap <leader>edit :call <SID>editFunc()<CR>
 
-tabdo windo
-\ if &filetype ==# 'c' |
-\	exe ":g/" . g:proto . "/call add(g:func, GetFuncDir())"|
-\ endif
+" -------------------------------------------------------- }}}
+
+" - todo update dict
+
+" ----------------------------------------------------------- }}}
 
 " test func ---------------------- {{{
 func! s:getinclude()
@@ -335,21 +375,46 @@ func! s:opentest()
 		exe ':sp '.l:test
 		exe ':read ~/config/oblovim/maintest.c'
 		exe ':2s/()/('.join(l:fu.args, ', ').')'
-		exe ':%s/test_/test_'.l:fu.func
+		exe ':%s/test_/test_'.l:fu.name
 		if !((len(l:fu.args) == 1) && (l:fu.args[0] ==# 'void'))
 			call append(10, s:initarg(l:fu.args))
 		endif
-		call append(0, [" ",s:makefuncproto(l:fu).";"])
+		call append(0, [" ",s:makeFuncProto(l:fu).";"])
 		call append(0, l:include)
 "		call addtomakefile(b:func.file, expand('%'))
 	endif
 endfunc
 "}}}
 
-noremap <leader>test :call <SID>opentest()<CR>
-
 if !exists('g:setproject')
+" setup ----------------------------- {{{
+	" set all tab
+	silent call <SID>setup()
+	set tabline=%!MyTabLine()
+
+	" format header
+	tabdo windo silent call s:formatHeader()
+
+	" euto edit header when write buf to file
+	" to do: write real std42header when quit buffer
+	augroup saveheader
+		autocmd!
+		autocmd BufWritePre src/* :call s:editheader()
+		autocmd BufWritePre inc/* :call s:editheader()
+	augroup END
+	set nohlsearch
 	exe 'normal 1gt'
+" }}}
+	let g:setproject = 1
 endif
 
-let g:setproject = 1
+" mapping ----------------------------------    {{{
+noremap <leader>test :call <SID>opentest()<CR>
+" see fold function for doc
+" }}}
+
+" todo: change that
+tabdo windo
+\ if &filetype ==# 'c' |
+\	exe ":g/" . g:proto . "/call add(g:func, GetFuncDir())"|
+\ endif
