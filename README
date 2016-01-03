@@ -1,37 +1,24 @@
 .
-├── README
-├── doc
-│   ├── gitignore.txt
-│   ├── gitinfo.txt
-│   ├── mymalloc.txt
-│   └── regex.vim
 ├── gitconfig
 ├── oblovim
-│   ├── cppMaker
-│   │   ├── class.py
-│   │   └── setget.py
+│   ├── ctype.txt
 │   ├── filetype
-│   │   ├── c.vimrc
-│   │   ├── cpp.vimrc
-│   │   ├── html.vimrc
-│   │   ├── new.html
-│   │   ├── php.vimrc
-│   │   ├── python.vimrc
-│   │   └── vim.vimrc
+│   │   ├── cpp.vim
+│   │   ├── c.vim
+│   │   ├── python.vim
+│   │   └── vim.vim
+│   ├── maintest.c
 │   ├── oblo.vimrc
-│   ├── patron
-│   │   ├── Makefile
-│   │   ├── main.c
-│   │   └── patron.vim
-│   ├── project
-│   │   └── script
-│   │       ├── make_errno.py
-│   │       ├── make_proto.py
-│   │       ├── setupP.py
-│   │       └── tree.py
-│   └── script
-│       └── man.vim
+│   ├── project.vim
+│   └── vimproject.vim
+├── README
+├── script
+│   ├── make_make.py
+│   └── make_proto.py
+├── shell
+│   ├── save-go.sh
+│   └── zshrc
 ├── vimrc -> oblovim/oblo.vimrc
-└── zshrc
+└── zshrc -> shell/zshrc
 
-8 directories, 26 files
+4 directories, 17 files
