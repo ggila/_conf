@@ -70,8 +70,8 @@ fun! SetConfigTab()
 	exe ":e ~/config/vimrc"
 	exe ":rightb vsp ~/config/oblovim/filetype/vim.vim"
 	exe ":rightb vsp ~/config/oblovim/filetype/python.vim"
-"	exe ":rightb vsp ~/config/oblovim/project.vim"
-"	exe "normal \<C-h>"
+	"	exe ":rightb vsp ~/config/oblovim/project.vim"
+	"	exe "normal \<C-h>"
 	exe ":sp ~/config/oblovim/filetype/cpp.vim"
 	exe "normal \<C-h>"
 	exe ":sp ~/config/oblovim/filetype/c.vim"
@@ -134,23 +134,27 @@ vnoremap rr d<C-v>`>I
 "	endif
 "endfunc
 
-func! s:swapFold()
-	let l:line = getline('.')
-	if match(l:line, '[{}]\{1,3}\d\?\s*$') != -1
-		exe 'normal za'
-	else
-		exe 'normal! h'
-	endif
-endfunc
+"func! s:swapFold()
+"	let l:line = getline('.')
+"	if match(l:line, '[{}]\{1,3}\d\?\s*$') != -1
+"		exe 'normal za'
+"	else
+"		exe 'normal! h'
+"	endif
+"endfunc
 " }}}
 "noremap h :call <SID>closeFold()<CR>
-noremap <SPACE> :call <SID>swapFold()<CR>
+noremap <SPACE> za
 
 " Set scratch buffer  ------------------------------------------- {{{
-func! SetScratchBuf()
+func! SetScratchBuf(bname)
+	if (strlen(a:bname) && bufexists(a:bname))
+		exe 'normal! bw ' . a:bname
+	endif
 	setlocal buftype=nofile
 	setlocal bufhidden=hide
 	setlocal noswapfile
+	noremap <buffer> q :q<CR>
 endfunc
 "  ------------------------------------------- }}}
 noremap <leader>scr :call SetScratchBuf()<CR>
