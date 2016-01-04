@@ -5,13 +5,12 @@ augroup sourcing
 augroup END
 " }}}
 
-noremap <buffer> sp :so ~/config/oblovim/vimproject.vim<CR>
+noremap <buffer> sp :so ~/config/oblovim/cproj.vim<CR>
 
 " fold  ----------------------- {{{
 set foldlevelstart=0
-setlocal foldmethod=syntax
-
 setlocal foldmethod=expr
+setlocal foldexpr=s:getFoldLvl(v:lnum)
 
 function! s:indentLevel(lnum)
 	let l:str = getline(a:lnum)
@@ -27,15 +26,15 @@ function! s:getFoldLevel(lnum)
 	let l:line = getline(a:lnum)
 	if l:line =~? '\v^\s*$'
 		return '-1'
-	elseif l:line =~? '\v\s+[{}]'
+	elseif l:line =~? '\v\s*[{}]'
+		return (l:tab + 1)
+	elseif (a:lnum < line('$')) && (getline(a:lnum + 1) =~? '\v\s*\{')
 		return ">".(l:tab + 1)
 	endif
 	return l:tab
 endfunction
 
 noremap <buffer> tt :echo <SID>getFoldLevel(line('.'))<CR>
-
-setlocal foldexpr=s:getFoldLvl(v:lnum)
 
 "func! b:wrapfold() range
 "	call append(a:firstline - 1, b:foldstart)

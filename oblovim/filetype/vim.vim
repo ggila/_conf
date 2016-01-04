@@ -6,6 +6,14 @@ augroup sourcing
 augroup END
 
 " test vim function ----------------------- {{{
+func! s:mapfunction()
+	if match(getline('.'), "^func") == -1
+		return
+	endif
+	let l:funcname = matchstr(getline('.'), '\s\+\(\w:\)\?\zs\w\+')
+	call setreg('p', "noremap <buffer> t :echo <SID>".funcname."()<CR>")
+endfunc
+
 func! s:testfunction()
 	if match(getline('.'), "^func") == -1
 		return
@@ -26,6 +34,7 @@ func! s:testfunction()
 	exe ':w'
 endfunc
 " }}}
+noremap <buffer> <leader>t :call <SID>mapfunction()<CR>
 noremap <buffer> <leader>test :call <SID>testfunction()<CR>
 
 "set fold close for vim file  ----------------------- {{{
