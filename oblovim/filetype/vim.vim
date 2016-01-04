@@ -1,13 +1,38 @@
+let b:com = '"'
+
 augroup sourcing
 	autocmd!
 	autocmd BufWritePost vimrc, so ~/config/vimrc
 augroup END
 
-"set fold close for vim file
+" test vim function ----------------------- {{{
+func! s:testfunction()
+	if match(getline('.'), "^func") == -1
+		return
+	endif
+	let l:funcname = matchstr(getline('.'), '\s\+\(\w:\)\?\zs\w\+')
+	exe 'normal! V'
+	while match(getline('.'), "^endfunc")
+		exe 'normal! j'
+	endwhile
+	exe 'normal! y'
+	if bufexists("test_".funcname.".vim")
+		exe ":bw test_".funcname.".vim"
+	endif
+	exe ':sp test_'.funcname.".vim"
+	exe "normal! p"
+	call append('$', '')
+	call append('$', "noremap <buffer> tt :echo <SID>".funcname."()<CR>")
+	exe ':w'
+endfunc
+" }}}
+noremap <buffer> <leader>test :call <SID>testfunction()<CR>
+
+"set fold close for vim file  ----------------------- {{{
 set foldlevelstart=0
 setlocal foldmethod=marker
 
-let b:foldstart = '" ----------------------- {{{'
+let b:foldstart = b:com.'  ----------------------- {{{'
 let b:foldend = '" }}}'
 
 func! b:wrapfold() range
@@ -22,10 +47,19 @@ func! b:unwrapfold()
 	endif
 endfunc
 
+func! b:newfunc()
+	call append(line('.'), b:foldend)
+	call append(line('.'), b:foldstart)
+	exe 'normal! j'
+	if foldclosed(line('.'))
+		exe 'normal! zo'
+	endif
+	exe 'normal! 0f-i'
+endfunc
+" }}}
 vnoremap <buffer> <leader>f :call b:wrapfold()<CR>
-noremap <buffer> <leader>uf :call b:unwrapfold()<CR>
-
-let b:com = '"'
+noremap <buffer> <leader>ff :call b:unwrapfold()<CR>
+noremap <buffer> <leader>nf :call b:newfunc()<CR>
 
 " i-mapping keyname for buffer named **/vimrc ----------- {{{
 if expand('%:t') ==# 'vimrc'

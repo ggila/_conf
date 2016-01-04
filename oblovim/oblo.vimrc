@@ -57,6 +57,11 @@ augroup kindoffile
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vim
 augroup END
 "  ------------------------------------------- }}}
+noremap <leader>svi :so ~/config/oblovim/filetype/vim.vim<CR>
+noremap <leader>sc :so ~/config/oblovim/filetype/c.vim<CR>
+noremap <leader>spy :so ~/config/oblovim/filetype/python.vim<CR>
+noremap <leader>scpp :so ~/config/oblovim/filetype/cpp.vim<CR>
+noremap ss :so %<CR>
 
 " edit config (set new tab)   ------------------------------------------- {{{
 fun! SetConfigTab()
@@ -131,7 +136,7 @@ vnoremap rr d<C-v>`>I
 
 func! s:swapFold()
 	let l:line = getline('.')
-	if match(l:line, '[{}]\{1,3}\d\?$') != -1
+	if match(l:line, '[{}]\{1,3}\d\?\s*$') != -1
 		exe 'normal za'
 	else
 		exe 'normal! h'
@@ -155,13 +160,10 @@ noremap <leader>scr :call SetScratchBuf()<CR>
 fun! ReadMan(section)
 	let s:man_word = expand('<cword>')
 	:exe ":wincmd n"
-	" (col -b is for formatting):
 	:exe ":r!man " . a:section . " " . s:man_word . " | col -b"
-	" delete first line
 	:exe ":goto"
 	:exe ":delete"
 	:exe ":set filetype=man"
-	" set scratch buf
 	:setlocal buftype=nofile
 	:setlocal bufhidden=hide
 	:setlocal noswapfile
