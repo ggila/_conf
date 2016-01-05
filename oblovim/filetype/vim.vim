@@ -11,31 +11,35 @@ func! s:mapfunction()
 		return
 	endif
 	let l:funcname = matchstr(getline('.'), '\s\+\(\w:\)\?\zs\w\+')
-	call setreg('p', "noremap <buffer> t :echo <SID>".funcname."()<CR>")
-endfunc
-
-func! s:testfunction()
-	if match(getline('.'), "^func") == -1
-		return
-	endif
-	let l:funcname = matchstr(getline('.'), '\s\+\(\w:\)\?\zs\w\+')
-	exe 'normal! V'
-	while match(getline('.'), "^endfunc")
+	while (getline('.') !~# 'endf')
 		exe 'normal! j'
 	endwhile
-	exe 'normal! y'
-	if bufexists("test_".funcname.".vim")
-		exe ":bw test_".funcname.".vim"
-	endif
-	exe ':sp test_'.funcname.".vim"
-	exe "normal! p"
-	call append('$', '')
-	call append('$', "noremap <buffer> tt :echo <SID>".funcname."()<CR>")
-	exe ':w'
+	exe 'normal! o\<esc>'
+	call setline('.', "noremap <buffer> t1 :echo <SID>".funcname."()<CR>")
 endfunc
+
+"func! s:testfunction()
+"	if match(getline('.'), "^func") == -1
+"		return
+"	endif
+"	let l:funcname = matchstr(getline('.'), '\s\+\(\w:\)\?\zs\w\+')
+"	exe 'normal! V'
+"	while match(getline('.'), "^endfunc")
+"		exe 'normal! j'
+"	endwhile
+"	exe 'normal! y'
+"	if bufexists("test_".funcname.".vim")
+"		exe ":bw test_".funcname.".vim"
+"	endif
+"	exe ':sp test_'.funcname.".vim"
+"	exe "normal! p"
+"	call append('$', '')
+"	call append('$', "noremap <buffer> t :echo <SID>".funcname."()<CR>")
+"	exe ':w'
+"endfunc
 " }}}
 noremap <buffer> <leader>t :call <SID>mapfunction()<CR>
-noremap <buffer> <leader>test :call <SID>testfunction()<CR>
+"noremap <buffer> <leader>test :call <SID>testfunction()<CR>
 
 "set fold close for vim file  ----------------------- {{{
 set foldlevelstart=0
@@ -47,6 +51,8 @@ let b:foldend = '" }}}'
 func! b:wrapfold() range
 	call append(a:firstline - 1, b:foldstart)
 	call append(a:lastline + 1, b:foldend)
+	exe "normal! "a:firstline."G"
+	exe 'normal! 0f-i'
 endfunc
 
 func! b:unwrapfold()

@@ -121,7 +121,20 @@ noremap <leader>8 8gt
 noremap <leader>9 9gt
 " }}}
 
-" visual block replace
+
+"  visual mode ----------------------- {{{
+let @n = ''
+function! SwapVisual()
+	let l:len = strlen(@n)
+	if l:len  == 0
+		exe 'normal! `<v`>"nymn'
+	else
+		exe 'normal! `<v`>"by`n'.l:len.'x"bP`<v`>"nP'
+		let @n = ''
+	endif
+endfunction
+" }}}
+vnoremap <leader>s :call SwapVisual()<CR>
 vnoremap rr d<C-v>`>I
 
 " fold ------------------------------ {{{
@@ -148,13 +161,10 @@ noremap <SPACE> za
 
 " Set scratch buffer  ------------------------------------------- {{{
 func! SetScratchBuf(bname)
-	if (strlen(a:bname) && bufexists(a:bname))
-		exe 'normal! bw ' . a:bname
-	endif
 	setlocal buftype=nofile
 	setlocal bufhidden=hide
 	setlocal noswapfile
-	noremap <buffer> q :q<CR>
+	noremap <buffer> q :bw<CR>
 endfunc
 "  ------------------------------------------- }}}
 noremap <leader>scr :call SetScratchBuf()<CR>
