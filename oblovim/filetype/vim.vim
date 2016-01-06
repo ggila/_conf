@@ -52,7 +52,8 @@ func! b:wrapfold() range
 	call append(a:firstline - 1, b:foldstart)
 	call append(a:lastline + 1, b:foldend)
 	exe "normal! "a:firstline."G"
-	exe 'normal! 0f-i'
+	exe 'normal! 0f-'
+	startinsert
 endfunc
 
 func! b:unwrapfold()
@@ -69,7 +70,8 @@ func! b:newfunc()
 	if foldclosed(line('.'))
 		exe 'normal! zo'
 	endif
-	exe 'normal! 0f-i'
+	exe 'normal! 0f-'
+	startinsert
 endfunc
 " }}}
 vnoremap <buffer> <leader>f :call b:wrapfold()<CR>

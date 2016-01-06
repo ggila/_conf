@@ -10,6 +10,7 @@ let g:nb_column = 4
 let g:func = []
 " }}}
 
+
 " fold  ----------------------- {{{
 
 " fold based on indentation
@@ -17,7 +18,7 @@ set foldlevelstart=0
 setlocal foldmethod=expr
 setlocal foldexpr=GetCProjFoldLvl(v:lnum)
 
-" fold lvl  ----------------------- {{{
+" compute fold lvl  ----------------------- {{{
 " indentLevel ----------------------- {{{
 " compute number of tab beginning line lnum or current line if no args
 function! s:indentLevel(...)
@@ -44,8 +45,9 @@ function! s:getLineInfo(...)
 	let l:dict = {}
 	let l:dict.nb_tab = strlen(matchstr(l:line, '\v^\s*'))
 	let l:dict.is_empty = (l:line =~# '\v^\s*$')
-	let l:dict.is_bracket = (l:line =~# '\v^\s*[{}]\s*$')
 	let l:dict.is_openbra = (l:line =~? '\v\{\s*$')
+	let l:dict.is_closebra = (l:line =~? '\v\}\s*$')
+	let l:dict.is_bracket = !!(l:dict.is_openbra + l:dict.is_closebra)
 	return l:dict
 endfunc
 " }}}
@@ -103,7 +105,7 @@ endfunction
 " }}}
 " }}}
 
-" display fold lvl ----------------------- {{{
+" display fold  ----------------------- {{{
 " foldLvlList ----------------------- {{{
 function! s:foldLvlList(begin, end)
 	let l:i = a:begin
@@ -130,9 +132,20 @@ function! s:displayFoldLvl()
 endfunc
 " }}}
 " }}}
-"
+
+" open fold ----------------------- {{{
+func! s:openFold()
+	if foldclosed(line('.')) > 0 && getline('.') =~# g:proto
+		exe "normal! zO"
+	else
+		exe "normal! za"
+	endif
+endfunc
+" }}}
 " }}}
 noremap <buffer> <leader>q :call <SID>displayFoldLvl()<CR>
+noremap <buffer> <SPACE> :call <SID>openFold()<CR>
+
 
 " scope ----------------------- {{{
 " isTerminalScope ----------------------- {{{
@@ -140,11 +153,16 @@ function! s:isTerminalScope(...)
 	let l:lnum = a:0 > 0 ? a:1 : line('.') 
 	let l:flvl = GetCProjFoldLvl(l:lnum)
 	if l:flvl ==# '-1'
-		return s:isTerminalScope(l:lnum - 1)
-	elseif l:flvl ==# '>1'
+		let l:preline = s:getLineInfo(l:lnum - 1)
+			if l:preline.is_closebra
+				return 
+			endif
+		return l:preline.nb_tab
+	elseif l:flvl ==# '>1' || l:flvl ==# '0'
 		return 1
 	endif
 endfunc
+noremap <buffer> t2 :echo <SID>isTerminalScope()<CR>
 " }}}
 " checkFoldInit ----------------------- {{{
 function! s:checkFoldInit(line)
@@ -154,6 +172,9 @@ function! s:checkFoldInit(line)
 	elseif a:line =~# g:proto
 		let l:dict.type = 'func'
 		let l:dict.name = s:getproto(a:line).name
+	elseif a:line =~# '\v.*\.h'
+		let l:dict.type = 'header'
+		let l:dict.name = matchstr(a:line, '\v\s*\zs[a-zA-Z0-9_]*\.h')
 	else
 		let l:dict.type = 'dir'
 		let l:dict.name = matchstr(a:line, '\v\s*\zs[a-zA-Z0-9_]*')
@@ -187,7 +208,7 @@ func! s:orderSeq(lst)
 			endif
 			let l:dir .= elem.name . '/'
 		endif
-		if elem.type ==# 'func'
+		if elem.type ==# 'header'
 			if l:lvl > 1
 				echom 'error in orderSeq()'
 				return
@@ -195,12 +216,20 @@ func! s:orderSeq(lst)
 			let l:dir .= elem.name
 			let l:lvl = 1
 		endif
-		if elem.type ==# '0'
+		if elem.type ==# 'func'
 			if l:lvl > 2
 				echom 'error in orderSeq()'
 				return
 			endif
+			let l:dir .= elem.name . ".c"
 			let l:lvl = 2
+		endif
+		if elem.type ==# '0'
+			if l:lvl > 3
+				echom 'error in orderSeq()'
+				return
+			endif
+			let l:lvl = 3
 		endif
 	endfor
 	return l:dir
@@ -218,6 +247,7 @@ endfunc
 noremap <buffer> t :echo <SID>getScopeSeq()<CR>
 " }}}
 " }}}
+
 
 " function ------------------- {{{
 "
@@ -240,7 +270,7 @@ noremap <buffer> t :echo <SID>getScopeSeq()<CR>
 let g:type = '^\s*[a-z_]\+\t\+\**'
 let g:funcname = '[a-zA-Z0-9_]\+'
 let g:arg = '\%(const \)\?[a-z_]\+ \**[a-zA-Z0-9_]\+\%(, \)\?'
-let g:args = '\%(void\|\%(' . g:arg . '\)\+\)'
+let g:args = '\%(void\)\|\%(\%(' . g:arg . '\)\+\)'
 let g:proto = '\(' . g:type . '\)\(' . g:funcname . '\)(\(' . g:args . '\))\s*$'
 " }}}
 " - build functions:  -------------------------------------------------- {{{
@@ -311,7 +341,7 @@ func! s:getFuncFromDict(str)
 	return g:func[l:i]
 endfunc
 " }}}
-" s:setFuncScratchBuf --------------------------------------------------------- {{{
+" s:setFuncScratchBuf (useless now) ------------------------------------------- {{{
 func! s:setFuncScratchBuf(file, len)
 	exe ":r " . a:file
 	exe ":0d"
@@ -324,7 +354,7 @@ func! s:setFuncScratchBuf(file, len)
 	noremap <buffer> e :call s:editFunc<CR>
 endfunc
 " ------------------------------------------}}}
-" seeFunc ------------------------------------------------------------------------------ {{{
+" seeFunc (useless now) ------------------------------------------------------- {{{
 func! s:seeFunc()
 	if bufexists('_func')
 		silent exe 'bw! _func'
@@ -335,10 +365,43 @@ func! s:seeFunc()
 	exe "normal! G%k"
 endfunc
 " -------------------------------------------------------- }}}
-noremap <leader>see :call <SID>seeFunc()<CR>
 "  ----------------------------------------------------}}}
 "
 " - todo update dict
 "
 " --------------------------- }}}
+
+
+"  file management ----------------------- {{{
+
+" }}}
+
+
+" insert mode ----------------------- {{{
+
+" checkInsertScope ----------------------- {{{
+func! s:checkScope(...)
+	let l:lnum = a:0 > 0 ? a:1 : line('.')
+	if s:getScopeSeq(l:lnum) !=# b:iScope
+		echo 'do not edit multiple scope at a time (leave insert)'
+		return
+	endif
+	exe "normal! \<RIGHT>"
+	startinsert
+endfunc
+" }}}
+" checkScope ----------------------- {{{
+func! s:updateScope(...)
+endfunc
+" }}}
+"
+augroup ins
+	autocmd!
+	autocmd InsertEnter proj_* :let b:iScope = <SID>getScopeSeq()
+	autocmd InsertLeave proj_* :call <SID>updateScope()
+augroup END
+
+inoremap <buffer> <DOWN> <DOWN><ESC>:call <SID>checkScope()<CR>
+inoremap <buffer> <UP> <UP><ESC>:call <SID>checkScope()<CR>
+" }}}
 

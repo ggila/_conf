@@ -51,11 +51,12 @@ noremap <leader>hls :set hlsearch!<CR>
 " source filetype  ------------------------------------------- {{{
 augroup kindoffile
 	autocmd!
+	autocmd BufNewFile,BufRead *.h set filetype=c
 	autocmd Filetype vim so ~/config/oblovim/filetype/vim.vim
 	autocmd FileType c so ~/config/oblovim/filetype/c.vim
 	autocmd FileType python so ~/config/oblovim/filetype/python.vim
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vim
-	autocmd FileType help execute ':noremap <buffer> q :q<CR>'
+	autocmd FileType help :noremap <buffer> q :q<CR>
 augroup END
 "  ------------------------------------------- }}}
 noremap <leader>svi :so ~/config/oblovim/filetype/vim.vim<CR>
