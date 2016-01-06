@@ -2,7 +2,7 @@ let b:com = '"'
 
 augroup sourcing
 	autocmd!
-	autocmd BufWritePost vimrc, so ~/config/vimrc
+	autocmd BufWritePost vimrc so ~/config/vimrc
 augroup END
 
 " test vim function ----------------------- {{{
@@ -48,35 +48,40 @@ setlocal foldmethod=marker
 let b:foldstart = b:com.'  ----------------------- {{{'
 let b:foldend = '" }}}'
 
-func! b:wrapfold() range
+func! s:wrapFold() range
 	call append(a:firstline - 1, b:foldstart)
 	call append(a:lastline + 1, b:foldend)
 	exe "normal! "a:firstline."G"
-	exe 'normal! 0f-'
+	exe "normal! 0f-\<LEFT>"
 	startinsert
 endfunc
 
-func! b:unwrapfold()
-	if match(getline('.'), b:foldstart) != -1
-		exe 'normal! zo'
-		exe 'normal! mm$%dd`mdd'
-	endif
-endfunc
-
-func! b:newfunc()
+func! s:newFold()
 	call append(line('.'), b:foldend)
 	call append(line('.'), b:foldstart)
 	exe 'normal! j'
 	if foldclosed(line('.'))
 		exe 'normal! zo'
 	endif
-	exe 'normal! 0f-'
+	exe "normal! 0f-\<LEFT>"
 	startinsert
 endfunc
+
+func! s:newFunc()
+	exe "normal! ifunc!\<cr>endfunc\<esc>"
+	exe string(line('.') - 1).','.string(line('.')).'call s:wrapFold()'
+endfunc
+
+func! s:newFuncName()
+	exe "normal! `<v`>\"vd"
+	call s:newFunc()
+	exe "normal! \<ESC>\"vPjA \<ESC>\"vpA()"
+endfunc
 " }}}
-vnoremap <buffer> <leader>f :call b:wrapfold()<CR>
-noremap <buffer> <leader>ff :call b:unwrapfold()<CR>
-noremap <buffer> <leader>nf :call b:newfunc()<CR>
+vnoremap <buffer> <leader>f :call <SID>wrapFold()<CR>
+nnoremap <buffer> <leader>f :call <SID>newFold()<CR>
+vnoremap <buffer> <leader>nf :call <SID>newFuncName()<CR>
+nnoremap <buffer> <leader>nf :call <SID>newFunc()<CR>
 
 " i-mapping keyname for buffer named **/vimrc ----------- {{{
 if expand('%:t') ==# 'vimrc'

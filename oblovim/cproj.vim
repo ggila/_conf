@@ -4,10 +4,57 @@ noremap <buffer> sp :so ~/config/oblovim/cproj.vim<CR>
 " globalvariable ----------------------------------- {{{
 " Project name
 let g:pname = fnamemodify(getcwd(), ":t")
-" Maximum number of vim column available
-let g:nb_column = 4
 " dict of func
 let g:func = []
+" }}}
+
+" setup project ----------------------- {{{
+" setupHeader ----------------------- {{{
+func! s:setupHeader(file)
+	call append(line('$'), a:indent . fnamemodify(a:file, ':t')))
+	call append(line('$'), a:indent.'{')
+	exe "normal! ".line('$')."G"
+	exe ":r ".a:file
+	silent exe ":.,$s/^\\(.*\\)$/\t".a:indent."\\1"
+	call append(line('$'), a:indent.'}')
+endfunc
+" }}}
+"  setupFile----------------------- {{{
+func! SetupFile(file, indent)
+	if a:file =~# '\v\.h$'
+		call s:setupHeader(file, indent)
+	elseif a:file =~# '\v\.c'
+		call s:setupFunc(file, indent)
+endfunc
+" }}}
+" setupDir ----------------------- {{{
+func! s:setupDir(dir, indent)
+	let l:subdir = split(globpath(a:dir, '*[^ch]'))
+	let l:header = globpath(a:dir, '*.h')
+	let l:funcfiles = split(globpath(a:dir, '*.c'))
+
+	call append(line('$'), l:ind.dir)
+	call append(line('$')), l:ind."{"
+
+	for elem in l:header
+		call setupFile(elem, "\t"a:indent)
+	endfor
+	for elem in l:funcfiles
+		call setupFile(elem, "\t".a:indent)
+	endfor
+	for elem in dir
+		call setupDir(elem, "\t".a:indent)
+	endfor
+
+	call append(line('$')), l:ind."}"
+endfunc
+" }}}
+" setupProj ----------------------- {{{
+func! s:setupProj()
+"	edit "proj_".pname.".c"
+"	call s:setupDir('src', '')
+endfunc
+" }}}
 " }}}
 
 
