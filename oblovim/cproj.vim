@@ -34,6 +34,7 @@ let g:type = '\s*[a-z_]\+\t\+\**'
 let g:funcname = '[a-zA-Z0-9_]\+'
 let g:arg = '\%(const \)\?[a-z_]\+ \**[a-zA-Z0-9_\[\]]\+\%(, \)\?'
 let g:args = '\%(void\)\|\%(\%(' . g:arg . '\)\+\)'
+" Warning: add or static or ^ at the beginning
 let g:proto = '\(' . g:type . '\)\(' . g:funcname . '\)(\(' . g:args . '\))\s*$'
 " }}}
 " |    build functions:  -------------------------------------------------- {{{
@@ -138,27 +139,38 @@ endfunc
 " |    setupFile----------------------- {{{
 " |        c File ----------------------- {{{
 " |            hanlde header ----------------------- {{{
-func! s:handleHeader()
-	let l:inc = []
-	exe ':.,$g/\v^\s*# include [<\"].*[>\"]$/call add(l:dir, matchstr(getline(''.''), ''\v["<]\zs.*\ze[">]''))'
-	return l:inc
+func! s:handleHeader(begin, end)
+	exe ':'.a:begin.','.a:end."s/^/\t/"
+"	let l:inc = []
+"	exe ':.,$g/\v^\s*# include [<\"].*[>\"]$/call add(l:inc, matchstr(getline(''.''), ''\v["<]\zs.*\ze[">]''))'
+"	return l:inc
 endfunc
 " }}}
 " |            setupCFile ----------------------- {{{
 func! s:setupCFile(file, indent)
-	let l:dir = {}
+
+"	let l:dir = {}
+
+	" append func to the end of buffer
+	exe "normal! ".line('$')."G"
 	exe "read ".a:file
-	exe "normal mx"
-	silent exe ':.,$s/\v^(.*)$/\t'.a:indent.'\1'
-	exe "normal! ?".g:proto."\<cr>"
-	exe "normal! ?\<C-r>=g:proto\<CR>"
-	silent exe ':.,$s/^\t//'
-	exe "normal! ?".g:proto."\<cr>d2d`xP"
-	silent exe ':g/^\t\+static '.g:proto.'/exe ":s/static /"'
-"	exe "normal! V?\<C-r>=g:proto\<CR>d2d`xP0xjx"
+	let l:begin = line('.')
+
+	" place prototype at the top of the file
+	exe "/^".g:proto
+	exe "normal! mx"
+	exe '/\v\s*\{'
+	exe ':''x,.m'(l:begin - 1)
+
+	" indent function
+	exe ":".l:begin.'s/\v^\t*/'.a:indent
+	exe ":".(l:begin+1).'s/\v^\t*/'.a:indent
+	exe ":".(l:begin+2).", ".(line('$')-1).'s/\v^/'.a:indent."\t"
+	exe ":".line('$').'s/\v^\t*/'.a:indent
+
 "	let l:dir.inc = s:handleHeader()
+"	return l:dir
 endfunc
-noremap <buffer> t4 :echo <SID>setupCFile("~/raytracer/src/raytracer.c", '\t')<CR>
 " }}}
 " }}}
 " |        setupHeader ----------------------- {{{
@@ -172,42 +184,58 @@ func! s:setupHeader(file, indent)
 endfunc
 noremap <buffer> t3 :echo <SID>setupHeader('lib/lib.h', "\t")<CR>
 " }}}
-func! SetupFile(file, indent)
-	if a:file =~# '\v\.h$'
-		call s:setupHeader(file, indent)
-	elseif a:file =~# '\v\.c'
-		call s:setupFunc(file, indent)
-endfunc
-" }}}
+" }}} 
 " |    setupDir ----------------------- {{{
 func! s:setupDir(dir, indent)
 	let l:subdir = split(globpath(a:dir, '*[^ch]'))
 	let l:header = globpath(a:dir, '*.h')
 	let l:funcfiles = split(globpath(a:dir, '*.c'))
 
-	call append(line('$'), l:ind.dir)
-	call append(line('$')), l:ind."{"
+	call append(line('$'), a:indent.a:dir)
+	call append(line('$'), [a:indent."{", ""])
 
-	for elem in l:header
-		call setupFile(elem, "\t"a:indent)
-	endfor
+	if len(l:header)
+		for elem in l:header
+			call s:setupHeader(elem, "\t".a:indent)
+		endfor
+		call append(line('$'), '')
+	endif
+
+
+	let l:i = 0
+
+
 	for elem in l:funcfiles
-		call setupFile(elem, "\t".a:indent)
-	endfor
-	for elem in dir
-		call setupDir(elem, "\t".a:indent)
+		call s:setupCFile(elem, "\t".a:indent)
+		let l:i += 1
+		if l:i == 2 && a:dir ==# 'src/lib'
+			return
+		endif
 	endfor
 
-	call append(line('$')), l:ind."}"
+	for elem in l:subdir
+		call append(line('$'), ['',''])
+		call s:setupDir(elem, "\t".a:indent)
+		let l:i += 1
+		if l:i == 2
+			return
+		endif
+	endfor
+
+	call append(line('$'), a:indent."}")
 endfunc
 " }}}
 " |    setupProj ----------------------- {{{
 func! s:setupProj()
-"	edit "proj_".pname.".c"
-"	call s:setupDir('src', '')
+	set filetype=c
+	call s:setupDir('src', '')
+	write "proj_".g:pname.".c"
+	exe ':%s/^\s*$/'
+	exe 'normal! zMggzrdd'
 endfunc
 " }}}
 " }}}
+noremap <leader>open :call <SID>setupProj()
 
 
 " fold  ----------------------- {{{
@@ -351,7 +379,7 @@ endfunc
 " }}}
 " }}}
 noremap <buffer> <leader>q :call <SID>displayFoldLvl()<CR>
-noremap <buffer> <SPACE> :call <SID>openFold()<CR>
+noremap <buffer> <SPACE> :call <SID>openFuncFold()<CR>
 
 
 " scope ----------------------- {{{

@@ -72,8 +72,6 @@ fun! SetConfigTab()
 	exe ":e ~/config/vimrc"
 	exe ":rightb vsp ~/config/oblovim/filetype/vim.vim"
 	exe ":rightb vsp ~/config/oblovim/filetype/python.vim"
-	"	exe ":rightb vsp ~/config/oblovim/project.vim"
-	"	exe "normal \<C-h>"
 	exe ":sp ~/config/oblovim/filetype/cpp.vim"
 	exe "normal \<C-h>"
 	exe ":sp ~/config/oblovim/filetype/c.vim"
@@ -249,3 +247,5 @@ endfunc
 noremap ; :call Comment1Line()<CR>
 vnoremap c :call CommentVisual()<CR>
 vnoremap u :call UncommentVisual()<CR>
+
+nnoremap <leader>proj :source ~/config/oblovim/cproj.vim<CR>
