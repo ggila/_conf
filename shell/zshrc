@@ -24,6 +24,7 @@ alias ...='cd ../..'
 alias s='source ~/config/zshrc'
 alias np='python ~/config/oblovim/project/setupP.py '
 alias clean='rm -rf ~/test/* ~/test/.*'
+alias conf='cd ~/config'
 source ~/config/shell/save-go.sh
 
 ##mmv *.txt *.data
