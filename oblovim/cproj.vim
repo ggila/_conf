@@ -4,6 +4,7 @@
 " m
 " source
 noremap <buffer> sp :so ~/config/oblovim/cproj.vim<CR>
+exe 'normal! zR'
 
 " globalvariable ----------------------------------- {{{
 " Project name
@@ -148,78 +149,109 @@ endfunc
 " }}}
 " |            setupCFile ----------------------- {{{
 func! s:setupCFile(file, indent)
-
 "	let l:dir = {}
 
 	" append func to the end of buffer
-	exe "normal! ".line('$')."G"
 	exe "read ".a:file
 	let l:begin = line('.')
 
-	" place prototype at the top of the file
+	"move to prototype
 	exe "/^".g:proto
 	exe "normal! mx"
+
+	let l:lineproto = line('.')
+
+	" indent what stand before proto (1 more tab)
+	silent exe ':'.l:begin.",".(lineproto - 1).'s/^/\t'.a:indent
+
+	" indent proto, bracket
+	silent exe ":".l:lineproto.'s/\v^\t*/'.a:indent
+	silent exe ":".(l:lineproto+1).'s/\v^\t*/'.a:indent
+	silent exe ":".(l:lineproto+2).", ".(line('$')-1).'s/\v^/'.a:indent
+	silent exe ":".line('$').'s/\v^\t*/'.a:indent
+
+	" place prototype at the top of the file
+	exe "normal! 'x"
 	exe '/\v\s*\{'
 	exe ':''x,.m'(l:begin - 1)
-
-	" indent function
-	exe ":".l:begin.'s/\v^\t*/'.a:indent
-	exe ":".(l:begin+1).'s/\v^\t*/'.a:indent
-	exe ":".(l:begin+2).", ".(line('$')-1).'s/\v^/'.a:indent."\t"
-	exe ":".line('$').'s/\v^\t*/'.a:indent
 
 "	let l:dir.inc = s:handleHeader()
 "	return l:dir
 endfunc
+noremap <buffer> t3 :echo <SID>setupCFile('ft_printf/ft_memcpy.c', '')<CR>
 " }}}
 " }}}
 " |        setupHeader ----------------------- {{{
 func! s:setupHeader(file, indent)
-	call append(line('$'), a:indent . fnamemodify(a:file, ':t')))
+	call append(line('$'), a:indent . fnamemodify(a:file, ':t'))
 	call append(line('$'), a:indent.'{')
 	exe "normal! ".line('$')."G"
 	exe ":r ".a:file
+
+	" indent all equal
+	exe "normal! mm"
+	silent! exe ':.,$s/\v^\t+/\t'
+	exe "normal! `m"
+
+	" scope indent
 	silent exe ':.,$s/\v^(.*)$/\t'.a:indent.'\1'
+
 	call append(line('$'), a:indent.'}')
 endfunc
-noremap <buffer> t3 :echo <SID>setupHeader('lib/lib.h', "\t")<CR>
 " }}}
 " }}} 
 " |    setupDir ----------------------- {{{
 func! s:setupDir(dir, indent)
-	let l:subdir = split(globpath(a:dir, '*[^ch]'))
-	let l:header = globpath(a:dir, '*.h')
-	let l:funcfiles = split(globpath(a:dir, '*.c'))
+	let l:subdir = []
+	let l:header = []
+	let l:funcfiles = []
+
+" get dir content ----------------------- {{{
+	let l:files = split(globpath(a:dir, '*'))
+	for elem in l:files
+		if isdirectory(elem)
+			call add(l:subdir, elem)
+		elseif elem =~# '.h'
+			call add(l:header, elem)
+		elseif elem =~# '.c'
+			call add(l:funcfiles, elem)
+		endif
+	endfor
+" }}}
 
 	call append(line('$'), a:indent.a:dir)
-	call append(line('$'), [a:indent."{", ""])
+	call append(line('$'), a:indent."{")
 
 	if len(l:header)
 		for elem in l:header
+			exe "normal! G"
 			call s:setupHeader(elem, "\t".a:indent)
 		endfor
 		call append(line('$'), '')
 	endif
 
-
-	let l:i = 0
-
-
+"	let l:i=0
 	for elem in l:funcfiles
+		exe "normal! G"
 		call s:setupCFile(elem, "\t".a:indent)
-		let l:i += 1
-		if l:i == 2 && a:dir ==# 'src/lib'
+"		let i+=1
+"		if i == 1
 			return
-		endif
+"		endif
 	endfor
 
+"	let l:i=0
 	for elem in l:subdir
 		call append(line('$'), ['',''])
+		exe "normal! G"
 		call s:setupDir(elem, "\t".a:indent)
-		let l:i += 1
-		if l:i == 2
-			return
-		endif
+
+		return
+
+"		let i+=1
+"		if i == 1
+"			return
+"		endif
 	endfor
 
 	call append(line('$'), a:indent."}")
@@ -227,12 +259,15 @@ endfunc
 " }}}
 " |    setupProj ----------------------- {{{
 func! s:setupProj()
+	exe 'normal! zR'
 	set filetype=c
-	call s:setupDir('src', '')
-	write "proj_".g:pname.".c"
-	exe ':%s/^\s*$/'
-	exe 'normal! zMggzrdd'
+	call s:setupDir('.', '')
+"	exe ':%s/^\s*$/'
+"	exe 'normal! zMggzrdd'
+	call s:setFold()
 endfunc
+"silent call s:setupProj()
+"undo
 " }}}
 " }}}
 noremap <leader>open :call <SID>setupProj()
@@ -241,9 +276,11 @@ noremap <leader>open :call <SID>setupProj()
 " fold  ----------------------- {{{
 
 " fold based on indentation
-set foldlevelstart=0
-setlocal foldmethod=expr
-setlocal foldexpr=GetCProjFoldLvl(v:lnum)
+func! s:setFold()
+	set foldlevelstart=0
+	setlocal foldmethod=expr
+	setlocal foldexpr=GetCProjFoldLvl(v:lnum)
+endfunc
 
 " |    compute fold lvl  ----------------------- {{{
 " |        indentLevel ----------------------- {{{
@@ -263,7 +300,6 @@ function! s:indentLevel(...)
 	endwhile
 	return l:count
 endfunction
-noremap <buffer> t5 :echo <SID>indentLevel()<CR>
 " }}}
 " |        getLineInfo ----------------------- {{{
 " return dict with info about current line:
@@ -279,9 +315,11 @@ function! s:getLineInfo(...)
 	let l:dict = {}
 	let l:dict.nb_tab = s:indentLevel(l:lnum)
 	let l:dict.is_empty = (l:line =~# '\v^\s*$')
-	let l:dict.is_openbra = (l:line =~? '\v\{\s*$')
-	let l:dict.is_closebra = (l:line =~? '\v\}\s*$')
-	let l:dict.is_bracket = !!(l:dict.is_openbra + l:dict.is_closebra)
+	let l:dict.is_bracket = (l:line =~? '\v[{}]\s*$')
+	if l:dict.is_bracket
+		let l:dict.is_openbra = (l:line =~? '\v\{\s*$')
+		let l:dict.is_closebra = (l:line =~? '\v\}\s*$')
+	endif
 	return l:dict
 endfunc
 " }}}
@@ -311,7 +349,7 @@ function! s:lineAround(...)
 	endif
 	return l:lst
 endfunc
-noremap <buffer> t1 :echo <SID>lineAround()<CR>
+noremap <buffer> t2 :echo <SID>lineAround()<CR>
 " }}}
 " |        GetCProjFoldLvl ----------------------- {{{
 "compute foldlevel
@@ -336,6 +374,7 @@ function! GetCProjFoldLvl(...)
 	endif
 	return string(l:curline.nb_tab)
 endfunction
+noremap <buffer> t1 :echo GetCProjFoldLvl()<CR>
 " }}}
 " }}}
 
@@ -388,6 +427,9 @@ function! s:isTerminalScope(...)
 	let l:lnum = a:0 > 0 ? a:1 : line('.') 
 	let l:flvl = GetCProjFoldLvl(l:lnum)
 	if l:flvl ==# '-1'
+		if l:lnum == 1
+			return 1
+		endif
 		let l:preline = s:getLineInfo(l:lnum - 1)
 			if l:preline.is_closebra
 				return 
@@ -397,7 +439,6 @@ function! s:isTerminalScope(...)
 		return 1
 	endif
 endfunc
-noremap <buffer> t2 :echo <SID>isTerminalScope()<CR>
 " }}}
 " |    checkFoldInit ----------------------- {{{
 function! s:checkFoldInit(line)
@@ -509,8 +550,8 @@ endfunc
 
 augroup ins
 	autocmd!
-	autocmd InsertEnter proj_* :let b:iScope = <SID>getScopeSeq()
-	autocmd InsertLeave proj_* :call <SID>updateScope()
+	autocmd InsertEnter * :let b:iScope = <SID>getScopeSeq()
+	autocmd InsertLeave * :call <SID>updateScope()
 augroup END
 
 inoremap <buffer> <DOWN> <DOWN><ESC>:call <SID>checkScope()<CR>
