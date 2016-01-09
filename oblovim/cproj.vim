@@ -198,6 +198,7 @@ func! s:setupHeader(file, indent)
 
 	call append(line('$'), a:indent.'}')
 endfunc
+noremap <buffer> tsh :call <SID>setupHeader('matrix/matrix.h', '')<CR>
 " }}}
 " }}} 
 " |    setupDir ----------------------- {{{
@@ -211,15 +212,20 @@ func! s:setupDir(dir, indent)
 	for elem in l:files
 		if isdirectory(elem)
 			call add(l:subdir, elem)
-		elseif elem =~# '.h'
+		elseif elem =~# '\.h$'
 			call add(l:header, elem)
-		elseif elem =~# '.c'
+		elseif elem =~# '\.c$'
 			call add(l:funcfiles, elem)
 		endif
 	endfor
 " }}}
 
-	call append(line('$'), a:indent.a:dir)
+	echo l:subdir
+	echo l:header
+	echo l:funcfiles
+
+	call append(line('$'),
+				\a:dir ==# '.' ? fnamemodify(getcwd(), ':t') : a:indent.a:dir)
 	call append(line('$'), a:indent."{")
 
 	if len(l:header)
@@ -230,28 +236,23 @@ func! s:setupDir(dir, indent)
 		call append(line('$'), '')
 	endif
 
-"	let l:i=0
 	for elem in l:funcfiles
 		exe "normal! G"
-		call s:setupCFile(elem, "\t".a:indent)
-"		let i+=1
-"		if i == 1
-			return
-"		endif
+		call s:setupHeader(elem, "\t".a:indent)
 	endfor
 
-"	let l:i=0
+
+	let i=0
 	for elem in l:subdir
-		call append(line('$'), ['',''])
+
+		if i
+			call append(line('$'), ['',''])
+		else
+			let i=1
+		endif
+
 		exe "normal! G"
 		call s:setupDir(elem, "\t".a:indent)
-
-		return
-
-"		let i+=1
-"		if i == 1
-"			return
-"		endif
 	endfor
 
 	call append(line('$'), a:indent."}")
@@ -262,8 +263,8 @@ func! s:setupProj()
 	exe 'normal! zR'
 	set filetype=c
 	call s:setupDir('.', '')
-"	exe ':%s/^\s*$/'
-"	exe 'normal! zMggzrdd'
+	exe ':%s/^\s*$/'
+	exe 'normal! zMggzrdd'
 	call s:setFold()
 endfunc
 "silent call s:setupProj()
@@ -281,6 +282,7 @@ func! s:setFold()
 	setlocal foldmethod=expr
 	setlocal foldexpr=GetCProjFoldLvl(v:lnum)
 endfunc
+noremap <buffer> <leader>sf :call <SID>setFold()<CR>
 
 " |    compute fold lvl  ----------------------- {{{
 " |        indentLevel ----------------------- {{{
@@ -316,10 +318,8 @@ function! s:getLineInfo(...)
 	let l:dict.nb_tab = s:indentLevel(l:lnum)
 	let l:dict.is_empty = (l:line =~# '\v^\s*$')
 	let l:dict.is_bracket = (l:line =~? '\v[{}]\s*$')
-	if l:dict.is_bracket
-		let l:dict.is_openbra = (l:line =~? '\v\{\s*$')
-		let l:dict.is_closebra = (l:line =~? '\v\}\s*$')
-	endif
+	let l:dict.is_openbra = (l:line =~? '\v\{\s*$')
+	let l:dict.is_closebra = (l:line =~? '\v\}\s*$')
 	return l:dict
 endfunc
 " }}}
@@ -349,7 +349,7 @@ function! s:lineAround(...)
 	endif
 	return l:lst
 endfunc
-noremap <buffer> t2 :echo <SID>lineAround()<CR>
+noremap <buffer> tla :echo <SID>lineAround()<CR>
 " }}}
 " |        GetCProjFoldLvl ----------------------- {{{
 "compute foldlevel
@@ -530,31 +530,31 @@ noremap <buffer> t :echo <SID>getScopeSeq()<CR>
 " }}}
 
 
-" insert mode ----------------------- {{{
-
-" |    checkInsertScope ----------------------- {{{
-func! s:checkScope(...)
-	let l:lnum = a:0 > 0 ? a:1 : line('.')
-	if s:getScopeSeq(l:lnum) !=# b:iScope
-		echo 'do not edit multiple scope at a time (leave insert)'
-		return
-	endif
-	exe "normal! \<RIGHT>"
-	startinsert
-endfunc
-" }}}
-" |    checkScope ----------------------- {{{
-func! s:updateScope(...)
-endfunc
-" }}}
-
-augroup ins
-	autocmd!
-	autocmd InsertEnter * :let b:iScope = <SID>getScopeSeq()
-	autocmd InsertLeave * :call <SID>updateScope()
-augroup END
-
-inoremap <buffer> <DOWN> <DOWN><ESC>:call <SID>checkScope()<CR>
-inoremap <buffer> <UP> <UP><ESC>:call <SID>checkScope()<CR>
-" }}}
+"" insert mode ----------------------- {{{
+"
+"" |    checkInsertScope ----------------------- {{{
+"func! s:checkScope(...)
+"	let l:lnum = a:0 > 0 ? a:1 : line('.')
+"	if s:getScopeSeq(l:lnum) !=# b:iScope
+"		echo 'do not edit multiple scope at a time (leave insert)'
+"		return
+"	endif
+"	exe "normal! \<RIGHT>"
+"	startinsert
+"endfunc
+"" }}}
+"" |    checkScope ----------------------- {{{
+"func! s:updateScope(...)
+"endfunc
+"" }}}
+"
+"augroup ins
+"	autocmd!
+"	autocmd InsertEnter * :let b:iScope = <SID>getScopeSeq()
+"	autocmd InsertLeave * :call <SID>updateScope()
+"augroup END
+"
+"inoremap <buffer> <DOWN> <DOWN><ESC>:call <SID>checkScope()<CR>
+"inoremap <buffer> <UP> <UP><ESC>:call <SID>checkScope()<CR>
+"" }}}
 

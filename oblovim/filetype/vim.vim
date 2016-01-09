@@ -6,16 +6,45 @@ augroup sourcing
 augroup END
 
 " test vim function ----------------------- {{{
+func! s:getMapping(funcname)
+	let l:scope = matchstr(a:funcname, '\w\ze:')
+	let l:name = matchstr(a:funcname, '\v(\w:)?\zs\w+')
+
+	let l:shortcut = tolower(l:name[0])
+	set noignorecase
+	let l:i = 1
+	while i < strlen(l:name)
+		if l:name[i] =~# '[A-Z0-9]'
+			let l:shortcut .= tolower(l:name[i])
+		endif
+		let i+=1
+	endwhile
+
+	let l:ret = l:shortcut . ' :echo ' . (l:scope == 's' ? '<SID>' : '') . l:name
+
+	if search(l:ret)
+		echo 'mind the mapping'
+		if a:funcname[-1:] =~# '[0-9]'
+			return s:getMapping(a:funcname[:-2] . (a:funcname[-1:] + 1))
+		else
+			return s:getMapping(a:funcname . '1')
+		endif
+	endif
+
+	return l:ret
+
+endfunc
+
 func! s:mapfunction()
 	if match(getline('.'), "^func") == -1
 		return
 	endif
-	let l:funcname = matchstr(getline('.'), '\s\+\(\w:\)\?\zs\w\+')
-	while (getline('.') !~# 'endf')
+	let l:funcname = matchstr(getline('.'), '\s\+\zs\(\w:\)\?\w\+')
+	while (getline('.') !~# 'endfunc')
 		exe 'normal! j'
 	endwhile
-	exe 'normal! o\<esc>'
-	call setline('.', "noremap <buffer> t1 :echo <SID>".funcname."()<CR>")
+	call append(line('.'), "noremap <buffer> t".s:getMapping(l:funcname)."()<CR>")
+	exe 'normal! j$F)'
 endfunc
 
 "func! s:testfunction()
