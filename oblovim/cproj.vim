@@ -4,7 +4,6 @@
 " m
 " source
 noremap <buffer> sp :so ~/config/oblovim/cproj.vim<CR>
-exe 'normal! zR'
 
 " globalvariable ----------------------------------- {{{
 " Project name
@@ -139,50 +138,25 @@ endfunc
 " setup project ----------------------- {{{
 " |    setupFile----------------------- {{{
 " |        c File ----------------------- {{{
-" |            hanlde header ----------------------- {{{
-func! s:handleHeader(begin, end)
-	exe ':'.a:begin.','.a:end."s/^/\t/"
-"	let l:inc = []
-"	exe ':.,$g/\v^\s*# include [<\"].*[>\"]$/call add(l:inc, matchstr(getline(''.''), ''\v["<]\zs.*\ze[">]''))'
-"	return l:inc
-endfunc
-" }}}
+"" |            hanlde header ----------------------- {{{
+""func! s:handleHeader(begin, end)
+""	let l:inc = []
+""	exe ':.,$g/\v^\s*# include [<\"].*[>\"]$/call add(l:inc, matchstr(getline(''.''), ''\v["<]\zs.*\ze[">]''))'
+""	return l:inc
+""endfunc
+"" }}}
 " |            setupCFile ----------------------- {{{
-func! s:setupCFile(file, indent)
-"	let l:dir = {}
-
-	" append func to the end of buffer
-	exe "read ".a:file
-	let l:begin = line('.')
-
-	"move to prototype
-	exe "/^".g:proto
-	exe "normal! mx"
-
-	let l:lineproto = line('.')
-
-	" indent what stand before proto (1 more tab)
-	silent exe ':'.l:begin.",".(lineproto - 1).'s/^/\t'.a:indent
-
-	" indent proto, bracket
-	silent exe ":".l:lineproto.'s/\v^\t*/'.a:indent
-	silent exe ":".(l:lineproto+1).'s/\v^\t*/'.a:indent
-	silent exe ":".(l:lineproto+2).", ".(line('$')-1).'s/\v^/'.a:indent
-	silent exe ":".line('$').'s/\v^\t*/'.a:indent
-
-	" place prototype at the top of the file
-	exe "normal! 'x"
-	exe '/\v\s*\{'
-	exe ':''x,.m'(l:begin - 1)
-
-"	let l:dir.inc = s:handleHeader()
-"	return l:dir
+func! s:setupCFile(file)
+	let l:filename = fnamemodify(a:file, ':t')
+	let l:prot = getline(search('\s*'.g:proto, 'bn'))
+	call search('\v^\s*'.l:filename[:-3].'.c$', 'b')
+	call setline(line('.'), l:prot)
+	exe 'normal! 0x'
 endfunc
-noremap <buffer> t3 :echo <SID>setupCFile('ft_printf/ft_memcpy.c', '')<CR>
 " }}}
 " }}}
-" |        setupHeader ----------------------- {{{
-func! s:setupHeader(file, indent)
+" |        setupFile ----------------------- {{{
+func! s:setupFile(file, indent)
 	call append(line('$'), a:indent . fnamemodify(a:file, ':t'))
 	call append(line('$'), a:indent.'{')
 	exe "normal! ".line('$')."G"
@@ -190,19 +164,23 @@ func! s:setupHeader(file, indent)
 
 	" indent all equal
 	exe "normal! mm"
-	silent! exe ':.,$s/\v^\t+/\t'
+	silent! ':.,$s/\v^\t+/\t'
 	exe "normal! `m"
 
 	" scope indent
 	silent exe ':.,$s/\v^(.*)$/\t'.a:indent.'\1'
 
 	call append(line('$'), a:indent.'}')
+
+	if a:file =~# '\v.c$'
+		call s:setupCFile(a:file)
+	endif
 endfunc
-noremap <buffer> tsh :call <SID>setupHeader('matrix/matrix.h', '')<CR>
 " }}}
 " }}} 
 " |    setupDir ----------------------- {{{
 func! s:setupDir(dir, indent)
+
 	let l:subdir = []
 	let l:header = []
 	let l:funcfiles = []
@@ -224,28 +202,28 @@ func! s:setupDir(dir, indent)
 	echo l:header
 	echo l:funcfiles
 
-	call append(line('$'),
-				\a:dir ==# '.' ? fnamemodify(getcwd(), ':t') : a:indent.a:dir)
+	call append(line('$'), a:indent.fnamemodify(a:dir, ':t'))
+"				\(a:dir == '.' ? fnamemodify(getcwd(), ':t') : a:dir))
 	call append(line('$'), a:indent."{")
 
 	if len(l:header)
 		for elem in l:header
 			exe "normal! G"
-			call s:setupHeader(elem, "\t".a:indent)
+			call s:setupFile(elem, "\t".a:indent)
 		endfor
 		call append(line('$'), '')
 	endif
 
 	for elem in l:funcfiles
 		exe "normal! G"
-		call s:setupHeader(elem, "\t".a:indent)
+		call s:setupFile(elem, "\t".a:indent)
 	endfor
 
 
 	let i=0
 	for elem in l:subdir
 
-		if i
+		if i || len(l:header) || len(l:funcfiles)
 			call append(line('$'), ['',''])
 		else
 			let i=1
@@ -260,11 +238,11 @@ endfunc
 " }}}
 " |    setupProj ----------------------- {{{
 func! s:setupProj()
-	exe 'normal! zR'
+	set nofoldenable
 	set filetype=c
-	call s:setupDir('.', '')
-	exe ':%s/^\s*$/'
-	exe 'normal! zMggzrdd'
+	call s:setupDir('src', '')
+	silent! exe ':%s/^\s*$/'
+	exe 'normal! zMggzr'
 	call s:setFold()
 endfunc
 "silent call s:setupProj()
@@ -290,15 +268,16 @@ noremap <buffer> <leader>sf :call <SID>setFold()<CR>
 function! s:indentLevel(...)
 	let l:lnum = a:0 > 0 ? a:1 : line('.')
 	let l:str = getline(l:lnum)
+	let l:end = strlen(l:str)
 	let l:count = 0
 	let l:i = 0
-	while (l:str[i] == "\t" || l:str[i] == '/')
+	while (l:str[i] == "\t" || l:str[i] == '/') && (i < end)
 		if l:str[i] == '/' && l:str[i + 1] == '/'
-			let i += 2
+			let i += 1
 		elseif l:str[i] == "\t"
 			let l:count += 1
-			let i += 1
 		endif
+		let i += 1
 	endwhile
 	return l:count
 endfunction
@@ -317,9 +296,9 @@ function! s:getLineInfo(...)
 	let l:dict = {}
 	let l:dict.nb_tab = s:indentLevel(l:lnum)
 	let l:dict.is_empty = (l:line =~# '\v^\s*$')
-	let l:dict.is_bracket = (l:line =~? '\v[{}]\s*$')
 	let l:dict.is_openbra = (l:line =~? '\v\{\s*$')
-	let l:dict.is_closebra = (l:line =~? '\v\}\s*$')
+	let l:dict.is_closebra = (l:line =~? '\v\}((\s+t_\w+)?;)?\s*$')
+	let l:dict.is_bracket = !!(l:dict.is_closebra + l:dict.is_openbra)
 	return l:dict
 endfunc
 " }}}
@@ -374,7 +353,6 @@ function! GetCProjFoldLvl(...)
 	endif
 	return string(l:curline.nb_tab)
 endfunction
-noremap <buffer> t1 :echo GetCProjFoldLvl()<CR>
 " }}}
 " }}}
 
@@ -405,6 +383,7 @@ function! s:displayFoldLvl()
 endfunc
 " }}}
 " }}}
+noremap <buffer> <leader>q :call <SID>displayFoldLvl()<CR>
 
 " |    open func fold ----------------------- {{{
 func! s:openFuncFold()
@@ -417,7 +396,6 @@ func! s:openFuncFold()
 endfunc
 " }}}
 " }}}
-noremap <buffer> <leader>q :call <SID>displayFoldLvl()<CR>
 noremap <buffer> <SPACE> :call <SID>openFuncFold()<CR>
 
 
@@ -471,6 +449,7 @@ function! s:recSeq(lnum, lst)
 	exe 'normal! [z'
 	call s:recSeq(line('.'), a:lst)
 endfunction
+noremap <buffer> trs :echo <SID>recSeq(line('.'), [])<CR>
 " }}}
 " |    orderSeq ----------------------- {{{
 func! s:orderSeq(lst)
@@ -511,16 +490,25 @@ func! s:orderSeq(lst)
 	return l:dir
 endfunc
 " }}}
-" |    getScopeSeq ----------------------- {{{
-function! s:getScopeSeq(...)
-	exe 'normal! mn'
+" getScopDict ----------------------- {{{
+func! s:getScopeDict(...)
 	let l:lnum = a:0 > 0 ? a:1 : line('.') 
 	let l:seq = []
 	call s:recSeq(l:lnum, l:seq)
+	call s:checkFile(l:seq)
+	return l:seq
+endfunc
+noremap <buffer> tgsd :echo <SID>getScopeDict()<CR>
+" }}}
+" |    getScopeSeq ----------------------- {{{
+function! s:getScopeSeq(...)
+	let l:lnum = a:0 > 0 ? a:1 : line('.') 
+	exe 'normal! mn'
+	let l:seq = s:getScopeDict()
 	exe 'normal! `n'
 	return s:orderSeq(l:seq)
 endfunc
-noremap <buffer> t :echo <SID>getScopeSeq()<CR>
+noremap <buffer> tgss :echo <SID>getScopeSeq()<CR>
 " }}}
 " }}}
 
@@ -530,31 +518,40 @@ noremap <buffer> t :echo <SID>getScopeSeq()<CR>
 " }}}
 
 
-"" insert mode ----------------------- {{{
-"
-"" |    checkInsertScope ----------------------- {{{
-"func! s:checkScope(...)
-"	let l:lnum = a:0 > 0 ? a:1 : line('.')
-"	if s:getScopeSeq(l:lnum) !=# b:iScope
-"		echo 'do not edit multiple scope at a time (leave insert)'
-"		return
-"	endif
-"	exe "normal! \<RIGHT>"
-"	startinsert
-"endfunc
-"" }}}
-"" |    checkScope ----------------------- {{{
-"func! s:updateScope(...)
-"endfunc
-"" }}}
-"
-"augroup ins
-"	autocmd!
-"	autocmd InsertEnter * :let b:iScope = <SID>getScopeSeq()
-"	autocmd InsertLeave * :call <SID>updateScope()
-"augroup END
-"
-"inoremap <buffer> <DOWN> <DOWN><ESC>:call <SID>checkScope()<CR>
-"inoremap <buffer> <UP> <UP><ESC>:call <SID>checkScope()<CR>
-"" }}}
+" insert mode ----------------------- {{{
+" insertScopeSeq ----------------------- {{{
+func! s:insertScopeSeq()
+	let l:lnum = line('.')
+	if l:lnum == line('$') || l:lnum == 1
+		stopinsert
+		return ''
+	endif
+	return s:getScopeSeq()
+endfunc
+" }}}
+" |    checkScope ----------------------- {{{
+func! s:checkScope(...)
+	let l:lnum = a:0 > 0 ? a:1 : line('.')
+	if s:getScopeSeq(l:lnum) !=# b:iScope
+		echo 'do not edit multiple scope at a time (leave insert)'
+		return
+	endif
+	exe "normal! \<RIGHT>"
+	startinsert
+endfunc
+" }}}
+" |    checkScope ----------------------- {{{
+func! s:updateScope(...)
+endfunc
+" }}}
+
+augroup ins
+	autocmd!
+	autocmd InsertEnter * :let b:iScope = <SID>insertScopeSeq()
+	autocmd InsertLeave * :call <SID>updateScope()
+augroup END
+
+inoremap <buffer> <DOWN> <DOWN><ESC>:call <SID>checkScope()<CR>
+inoremap <buffer> <UP> <UP><ESC>:call <SID>checkScope()<CR>
+" }}}
 

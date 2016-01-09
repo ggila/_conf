@@ -59,6 +59,7 @@ augroup kindoffile
 	autocmd FileType help :noremap <buffer> q :q<CR>
 augroup END
 "  ------------------------------------------- }}}
+noremap <leader>s :so ~/config/vimrc
 noremap <leader>svi :so ~/config/oblovim/filetype/vim.vim<CR>
 noremap <leader>sc :so ~/config/oblovim/filetype/c.vim<CR>
 noremap <leader>spy :so ~/config/oblovim/filetype/python.vim<CR>
@@ -121,7 +122,6 @@ noremap <leader>8 8gt
 noremap <leader>9 9gt
 " }}}
 
-
 "  visual mode ----------------------- {{{
 let @n = ''
 function! SwapVisual()
@@ -158,6 +158,7 @@ vnoremap rr d<C-v>`>I
 " }}}
 "noremap h :call <SID>closeFold()<CR>
 noremap <SPACE> za
+noremap <leader>see zR
 
 " Set scratch buffer  ------------------------------------------- {{{
 func! SetScratchBuf(bname)
@@ -244,8 +245,8 @@ func! UncommentVisual() range
 	endfor
 endfunc
 "  ------------------------------------------- }}}
-noremap ; :call Comment1Line()<CR>
-vnoremap c :call CommentVisual()<CR>
+nnoremap C :call Comment1Line()<CR>
+vnoremap C :call CommentVisual()<CR>
 vnoremap u :call UncommentVisual()<CR>
 
 nnoremap <leader>proj :source ~/config/oblovim/cproj.vim<CR>
