@@ -131,3 +131,10 @@ endif
 
 inoremap <buffer> c- <C -><LEFT><LEFT><BACKSPACE><RIGHT>
 inoremap <buffer> s- <S -><LEFT><LEFT><BACKSPACE><RIGHT>
+
+inoremap <buffer> if<SPACE> if<CR>endif<UP><SPACE>
+inoremap <buffer> for<SPACE> for<CR>endfor<UP><SPACE>
+inoremap <buffer> while<SPACE> while<CR>endwhile<UP><SPACE>
+inoremap <buffer> func<SPACE> func<CR>endfunc<UP><SPACE>
+inoremap <buffer> func!<SPACE> func!<CR>endfunc<UP><SPACE>
+

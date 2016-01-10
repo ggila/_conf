@@ -18,6 +18,11 @@ autoload -U colors && colors
 
 PS1="%{$fg[red]%}%m %{$fg[green]%}%~%{$reset_color%}|%"
 
+# brew config
+export HOMEBREW_TEMP="/tmp/""$USER""brewtmp"
+export HOMEBREW_CACHE="/tmp/""$USER""brewcache"
+mkdir -p ~/Library/Caches/Homebrew/ $HOMEBREW_TEMP $HOMEBREW_CACHE
+
 ##ALIAS
 alias ..='cd ..'
 alias ...='cd ../..'

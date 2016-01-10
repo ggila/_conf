@@ -5,134 +5,19 @@
 " source
 noremap <buffer> sp :so ~/config/oblovim/cproj.vim<CR>
 
-" globalvariable ----------------------------------- {{{
+" variable ----------------------------------- {{{
+" global ----------------------- {{{
 " Project name
 let g:pname = fnamemodify(getcwd(), ":t")
 " dict of func
 let g:func = []
 " }}}
-
-
-" function ------------------- {{{
-"
-" |    doc  ---------------------------------------{{{
-" c functions are stored during a vim session in a dictionnary:
-" {
-" 	- str: name
-" 	- str: file where function is defined
-" 	- lst: argument function
-" 	- lst: body
-" 	- str: return type
-" }
-" all functions are stored in a list: g:func
-" ----------------------------------------------}}}
-"
-" build func dict:
-" parse c file with regex and set a dictionnary for each
-" |    regex to match prototype function -------------------------- {{{
-let g:type = '\s*[a-z_]\+\t\+\**'
-let g:funcname = '[a-zA-Z0-9_]\+'
-let g:arg = '\%(const \)\?[a-z_]\+ \**[a-zA-Z0-9_\[\]]\+\%(, \)\?'
-let g:args = '\%(void\)\|\%(\%(' . g:arg . '\)\+\)'
-" Warning: add or static or ^ at the beginning
-let g:proto = '\(' . g:type . '\)\(' . g:funcname . '\)(\(' . g:args . '\))\s*$'
+" buffer ----------------------- {{{
+let b:isProj = 1
+" while entering insert mode, iFile is set to the file we're editing
+let b:iFile = ''
 " }}}
-" |    build functions:  -------------------------------------------------- {{{
-" |        s:getproto --------------------- {{{
-" input: line matching with g:proto
-" output: new dict dict with the function name, arguments and return type
-func! s:getproto(str)
-	let l:submatches = matchlist(a:str, g:proto)
-	let a:dict = {}
-	let a:dict.ret = s:getret(l:submatches[1])
-	let a:dict.name = l:submatches[2]
-	let a:dict.args = split(l:submatches[3], ', ')
-	return a:dict
-endfunc
 " }}}
-" |        s:getret  -------------------------- {{{
-" Warning: - just work for function return type
-"          - very restrictif, should be fix
-"      input     ---->    output
-"   'char\t\t**'         'char **'    OK
-"     'void '             'void'      OK    
-"  'const char *'        'const'         KO (should not happen)
-func! s:getret(str)
-	let l:r = matchlist(a:str, '\(\w\+\)\s\+\(\**\)')
-	return  strlen(l:r[2]) ? join(l:r[1:2], ' ') : r[1]
-endfunc
-" }}}
-" |        GetFuncScope ----------------------- {{{
-" function called with cursor on a line matching g:proto
-" output: dictionnary describing function
-func! GetFuncScope()
-	let l:dict = {}
-	call extend(l:dict, s:getproto(getline('.')))
-	let l:dict.file = expand('%')
-	" get body of function
-	let l:nb_start = line('.') + 2
-	let l:lin = getline(l:nb_start)
-	let l:nb_end = nb_start
-	while l:lin !=# '}'
-		let l:nb_end += 1
-		let l:lin = getline(l:nb_end)
-	endwhile
-	let l:dict.body = getline(nb_start, nb_end - 1)
-	return l:dict
-endfunc
-" }}}
-" ----------------------------------------------------------------------- }}}
-"
-" function dict api:
-" |    toolbox: ------------------------------------------------------------------- {{{
-" |        s:makeFuncProto ---------------------------- {{{
-func! s:makeFuncProto(func)
-	return (a:func.ret . ' ' . a:func.name . '(' . join(a:func.args, ', ') . ")")
-endfunc
-" }}}
-" |        GetFuncFromDict ------------- {{{
-func! s:getFuncFromDict(str)
-	let l:i = 0
-	let l:end = len(g:func)
-	while (g:func[l:i].name !=# a:str) && (l:i < l:end)
-		let l:i += 1
-	endwhile
-	if l:i == l:end
-		echo 'function not found'
-		return
-	endif
-	return g:func[l:i]
-endfunc
-" }}}
-" |        s:setFuncScratchBuf (useless now) ------------------------------ {{{
-func! s:setFuncScratchBuf(file, len)
-	exe ":r " . a:file
-	exe ":0d"
-	setlocal buftype=nofile
-	setlocal bufhidden=hide
-	setlocal noswapfile
-	set filetype=c
-	noremap <buffer> q :q<CR>
-	exe ':resize '.a:len
-	noremap <buffer> e :call s:editFunc<CR>
-endfunc
-" ------------------------------------------}}}
-" |        seeFunc (useless now) ------------------------------------------------------- {{{
-func! s:seeFunc()
-	if bufexists('_func')
-		silent exe 'bw! _func'
-	endif
-	let l:func = s:getFuncFromDict(expand("<cword>"))
-	exe ":sp _func"
-	call s:setFuncScratchBuf(l:func.file, len(l:func.body) + 3)
-	exe "normal! G%k"
-endfunc
-" -------------------------------------------------------- }}}
-"  ----------------------------------------------------}}}
-"
-" - todo update dict
-"
-" --------------------------- }}}
 
 
 " setup project ----------------------- {{{
@@ -238,18 +123,21 @@ endfunc
 " }}}
 " |    setupProj ----------------------- {{{
 func! s:setupProj()
+	silent exe ':!cp -r . /tmp/'
 	set nofoldenable
 	set filetype=c
 	call s:setupDir('src', '')
 	silent! exe ':%s/^\s*$/'
 	exe 'normal! zMggzr'
 	call s:setFold()
+	redraw!
+	set nohlsearch
 endfunc
 "silent call s:setupProj()
 "undo
 " }}}
 " }}}
-noremap <leader>open :call <SID>setupProj()
+noremap <buffer> <leader>open :call <SID>setupProj()
 
 
 " fold  ----------------------- {{{
@@ -399,6 +287,172 @@ endfunc
 noremap <buffer> <SPACE> :call <SID>openFuncFold()<CR>
 
 
+" insert mode ----------------------- {{{
+" insertFile ----------------------- {{{
+func! s:insertFile()
+	if !exists('b:isProj')
+		return
+	endif
+	let l:lnum = line('.')
+	if l:lnum == line('$') || l:lnum == 1
+		stopinsert
+		return ''
+	endif
+	return s:getScopeFile()
+endfunc
+" }}}
+" |    checkScope ----------------------- {{{
+func! s:checkScope(lnum)
+	if s:getScopeFile(a:lnum) !=# b:iFile
+		echo 'editing multiple files at a time is forbidden'
+		return
+	endif
+	exe "normal! \<RIGHT>"
+	startinsert
+endfunc
+" }}}
+" |    updateScope ----------------------- {{{
+func! s:updateScope(...)
+	if !exists('b:isProj')
+		return
+	endif
+	if b:iFile[-1] == '/'
+endfunc
+" }}}
+
+augroup ins
+	autocmd!
+	autocmd InsertEnter * :let b:iFile = <SID>insertFile()
+	autocmd InsertLeave * :call <SID>updateScope()
+augroup END
+
+inoremap <buffer> <DOWN> <DOWN><ESC>:call <SID>checkScope(line('.'))<CR>
+inoremap <buffer> <UP> <UP><ESC>:call <SID>checkScope(line('.'))<CR>
+" }}}
+
+
+" function ------------------- {{{
+"
+" |    doc  ---------------------------------------{{{
+" c functions are stored during a vim session in a dictionnary:
+" {
+" 	- str: name
+" 	- str: file where function is defined
+" 	- lst: argument function
+" 	- lst: body
+" 	- str: return type
+" }
+" all functions are stored in a list: g:func
+" ----------------------------------------------}}}
+"
+" build func dict:
+" parse c file with regex and set a dictionnary for each
+" |    regex to match prototype function -------------------------- {{{
+let g:type = '\s*[a-z_]\+\t\+\**'
+let g:funcname = '[a-zA-Z0-9_]\+'
+let g:arg = '\%(const \)\?[a-z_]\+ \**[a-zA-Z0-9_\[\]]\+\%(, \)\?'
+let g:args = '\%(void\)\|\%(\%(' . g:arg . '\)\+\)'
+" Warning: add or static or ^ at the beginning
+let g:proto = '\(' . g:type . '\)\(' . g:funcname . '\)(\(' . g:args . '\))\s*$'
+" }}}
+" |    build functions:  -------------------------------------------------- {{{
+" |        s:getproto --------------------- {{{
+" input: line matching with g:proto
+" output: new dict dict with the function name, arguments and return type
+func! s:getproto(str)
+	let l:submatches = matchlist(a:str, g:proto)
+	let a:dict = {}
+	let a:dict.ret = s:getret(l:submatches[1])
+	let a:dict.name = l:submatches[2]
+	let a:dict.args = split(l:submatches[3], ', ')
+	return a:dict
+endfunc
+" }}}
+" |        s:getret  -------------------------- {{{
+" Warning: - just work for function return type
+"          - very restrictif, should be fix
+"      input     ---->    output
+"   'char\t\t**'         'char **'    OK
+"     'void '             'void'      OK    
+"  'const char *'        'const'         KO (should not happen)
+func! s:getret(str)
+	let l:r = matchlist(a:str, '\(\w\+\)\s\+\(\**\)')
+	return  strlen(l:r[2]) ? join(l:r[1:2], ' ') : r[1]
+endfunc
+" }}}
+" |        GetFuncScope ----------------------- {{{
+" function called with cursor on a line matching g:proto
+" output: dictionnary describing function
+func! GetFuncScope()
+	let l:dict = {}
+	call extend(l:dict, s:getproto(getline('.')))
+	let l:dict.file = expand('%')
+	" get body of function
+	let l:nb_start = line('.') + 2
+	let l:lin = getline(l:nb_start)
+	let l:nb_end = nb_start
+	while l:lin !=# '}'
+		let l:nb_end += 1
+		let l:lin = getline(l:nb_end)
+	endwhile
+	let l:dict.body = getline(nb_start, nb_end - 1)
+	return l:dict
+endfunc
+" }}}
+" ----------------------------------------------------------------------- }}}
+"
+" function dict api:
+" |    toolbox: ------------------------------------------------------------------- {{{
+" |        s:makeFuncProto ---------------------------- {{{
+func! s:makeFuncProto(func)
+	return (a:func.ret . ' ' . a:func.name . '(' . join(a:func.args, ', ') . ")")
+endfunc
+" }}}
+" |        GetFuncFromDict ------------- {{{
+func! s:getFuncFromDict(str)
+	let l:i = 0
+	let l:end = len(g:func)
+	while (g:func[l:i].name !=# a:str) && (l:i < l:end)
+		let l:i += 1
+	endwhile
+	if l:i == l:end
+		echo 'function not found'
+		return
+	endif
+	return g:func[l:i]
+endfunc
+" }}}
+" |        s:setFuncScratchBuf (useless now) ------------------------------ {{{
+func! s:setFuncScratchBuf(file, len)
+	exe ":r " . a:file
+	exe ":0d"
+	setlocal buftype=nofile
+	setlocal bufhidden=hide
+	setlocal noswapfile
+	set filetype=c
+	noremap <buffer> q :q<CR>
+	exe ':resize '.a:len
+	noremap <buffer> e :call s:editFunc<CR>
+endfunc
+" ------------------------------------------}}}
+" |        seeFunc (useless now) ------------------------------------------------------- {{{
+func! s:seeFunc()
+	if bufexists('_func')
+		silent exe 'bw! _func'
+	endif
+	let l:func = s:getFuncFromDict(expand("<cword>"))
+	exe ":sp _func"
+	call s:setFuncScratchBuf(l:func.file, len(l:func.body) + 3)
+	exe "normal! G%k"
+endfunc
+" -------------------------------------------------------- }}}
+"  ----------------------------------------------------}}}
+"
+" - todo update dict
+"
+" --------------------------- }}}
+
+
 " scope ----------------------- {{{
 " |    isTerminalScope ----------------------- {{{
 function! s:isTerminalScope(...)
@@ -411,12 +465,15 @@ function! s:isTerminalScope(...)
 		let l:preline = s:getLineInfo(l:lnum - 1)
 			if l:preline.is_closebra
 				return 
+			elseif l:preline.is_empty
+				return s:isTerminalScope(l:lnum - 1)
 			endif
-		return l:preline.nb_tab
+		return !l:preline.nb_tab
 	elseif l:flvl ==# '>1' || l:flvl ==# '0'
 		return 1
 	endif
 endfunc
+noremap <buffer> tits :echo <SID>isTerminalScope()<CR>
 " }}}
 " |    checkFoldInit ----------------------- {{{
 function! s:checkFoldInit(line)
@@ -451,107 +508,56 @@ function! s:recSeq(lnum, lst)
 endfunction
 noremap <buffer> trs :echo <SID>recSeq(line('.'), [])<CR>
 " }}}
-" |    orderSeq ----------------------- {{{
-func! s:orderSeq(lst)
-	let l:dir = ''
-	let l:lvl = 0
+" |    pathFromDict ----------------------- {{{
+func! s:pathFromDict(lst)
+	let l:path = ''
 	for elem in a:lst
 		if elem.type ==# 'dir'
-			if l:lvl > 0
-				echom 'error in orderSeq()'
-				return
-			endif
-			let l:dir .= elem.name . '/'
-		endif
-		if elem.type ==# 'header'
-			if l:lvl > 1
-				echom 'error in orderSeq()'
-				return
-			endif
-			let l:dir .= elem.name
-			let l:lvl = 1
-		endif
-		if elem.type ==# 'func'
-			if l:lvl > 2
-				echom 'error in orderSeq()'
-				return
-			endif
-			let l:dir .= elem.name . ".c"
-			let l:lvl = 2
-		endif
-		if elem.type ==# '0'
-			if l:lvl > 3
-				echom 'error in orderSeq()'
-				return
-			endif
-			let l:lvl = 3
+			let l:path .= elem.name . '/'
+		elseif elem.type ==# 'header'
+			let l:path .= elem.name
+		elseif elem.type ==# 'cfile'
+			let l:path .= elem.name . ".c"
 		endif
 	endfor
-	return l:dir
+	return l:path
 endfunc
 " }}}
-" getScopDict ----------------------- {{{
+" |    checkDict ----------------------- {{{
+func! s:checkDict(seq)
+	let l:file = 0
+	for elem in a:seq
+		if elem.type ==# 'func' && !l:file
+			let elem.type = 'cfile'
+			let l:file = 1
+		endif
+	endfor
+endfunc
+" }}}
+" |    getScopDict ----------------------- {{{
 func! s:getScopeDict(...)
+	exe 'normal! mn'
 	let l:lnum = a:0 > 0 ? a:1 : line('.') 
 	let l:seq = []
 	call s:recSeq(l:lnum, l:seq)
-	call s:checkFile(l:seq)
+	call s:checkDict(l:seq)
+	exe 'normal! `n'
 	return l:seq
 endfunc
 noremap <buffer> tgsd :echo <SID>getScopeDict()<CR>
 " }}}
-" |    getScopeSeq ----------------------- {{{
-function! s:getScopeSeq(...)
+" |    getScopeFile ----------------------- {{{
+function! s:getScopeFile(...)
 	let l:lnum = a:0 > 0 ? a:1 : line('.') 
-	exe 'normal! mn'
 	let l:seq = s:getScopeDict()
-	exe 'normal! `n'
-	return s:orderSeq(l:seq)
+	return s:pathFromDict(l:seq)
 endfunc
-noremap <buffer> tgss :echo <SID>getScopeSeq()<CR>
+noremap <buffer> tgss :echo <SID>getScopeFile()<CR>
 " }}}
 " }}}
 
 
 "  file management ----------------------- {{{
 
-" }}}
-
-
-" insert mode ----------------------- {{{
-" insertScopeSeq ----------------------- {{{
-func! s:insertScopeSeq()
-	let l:lnum = line('.')
-	if l:lnum == line('$') || l:lnum == 1
-		stopinsert
-		return ''
-	endif
-	return s:getScopeSeq()
-endfunc
-" }}}
-" |    checkScope ----------------------- {{{
-func! s:checkScope(...)
-	let l:lnum = a:0 > 0 ? a:1 : line('.')
-	if s:getScopeSeq(l:lnum) !=# b:iScope
-		echo 'do not edit multiple scope at a time (leave insert)'
-		return
-	endif
-	exe "normal! \<RIGHT>"
-	startinsert
-endfunc
-" }}}
-" |    checkScope ----------------------- {{{
-func! s:updateScope(...)
-endfunc
-" }}}
-
-augroup ins
-	autocmd!
-	autocmd InsertEnter * :let b:iScope = <SID>insertScopeSeq()
-	autocmd InsertLeave * :call <SID>updateScope()
-augroup END
-
-inoremap <buffer> <DOWN> <DOWN><ESC>:call <SID>checkScope()<CR>
-inoremap <buffer> <UP> <UP><ESC>:call <SID>checkScope()<CR>
 " }}}
 
