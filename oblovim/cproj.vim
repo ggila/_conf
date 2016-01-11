@@ -314,12 +314,13 @@ func! s:updateDir()
 endfunc
 " }}}
 func! s:updateScope(...)
-"	if !exists('b:isProj')
-"		return
-"	endif
-"	if b:iFile[-1] == '/'
-"		call s:updateDir()
-"	endif
+	if !exists('b:isProj')
+		return
+	endif
+	if b:iFile[-1] == '/'
+		call s:checkNewScope()
+	elseif b:iFile 
+	endif
 endfunc
 " }}}
 
@@ -566,6 +567,21 @@ noremap <buffer> tgss :echo <SID>getScopeFile()<CR>
 
 
 "  file management ----------------------- {{{
-
+" newDir  ----------------------- {{{
+func! s:newDir()
+	exe 'normal! `m[z'
+	let indent =
+	exe 'normal! mm'
+	let
+	let l:path = s:getScopeFile()
+	if l:path[-1:] != '/'
+		return
+	endif
+	let l:dir = input('dir name: ')
+	call mkdir(l:path . l:dir)
+	call append
+endfunc
 " }}}
+" }}}
+nnoremap <leader>nd :call <SID>newDir()<CR>
 
