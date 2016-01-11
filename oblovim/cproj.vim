@@ -83,10 +83,6 @@ func! s:setupDir(dir, indent)
 	endfor
 " }}}
 
-	echo l:subdir
-	echo l:header
-	echo l:funcfiles
-
 	call append(line('$'), a:indent.fnamemodify(a:dir, ':t'))
 "				\(a:dir == '.' ? fnamemodify(getcwd(), ':t') : a:dir))
 	call append(line('$'), a:indent."{")
@@ -312,11 +308,18 @@ func! s:checkScope(lnum)
 endfunc
 " }}}
 " |    updateScope ----------------------- {{{
+" |        updateDir ----------------------- {{{
+func! s:updateDir()
+	
+endfunc
+" }}}
 func! s:updateScope(...)
-	if !exists('b:isProj')
-		return
-	endif
-	if b:iFile[-1] == '/'
+"	if !exists('b:isProj')
+"		return
+"	endif
+"	if b:iFile[-1] == '/'
+"		call s:updateDir()
+"	endif
 endfunc
 " }}}
 
@@ -503,7 +506,12 @@ function! s:recSeq(lnum, lst)
 	if s:isTerminalScope(a:lnum)
 		return
 	endif
+	let before = line('.')
 	exe 'normal! [z'
+	let after = line('.')
+	if before == after
+		return
+	endif
 	call s:recSeq(line('.'), a:lst)
 endfunction
 noremap <buffer> trs :echo <SID>recSeq(line('.'), [])<CR>
