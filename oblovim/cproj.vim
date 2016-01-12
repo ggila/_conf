@@ -119,7 +119,6 @@ endfunc
 " }}}
 " |    setupProj ----------------------- {{{
 func! s:setupProj()
-	silent exe ':!cp -r . /tmp/'
 	set nofoldenable
 	set filetype=c
 	call s:setupDir('src', '')
