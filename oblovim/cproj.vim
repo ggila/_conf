@@ -584,3 +584,23 @@ endfunc
 " }}}
 nnoremap <leader>nd :call <SID>newDir()<CR>
 
+" netrw  ----------------------- {{{
+" displayNetrw ----------------------- {{{
+func! s:displayNetrw()
+	exe "normal! /\\.\\.\<cr>"
+	let l:lin = getline('.')
+	while l:lin[-1:] == '/'
+
+		exe 'normal! j'
+		let l:lin = getline('.')
+	endwhile
+	exe ":vertical res 30"
+endfunc
+" }}}
+" }}}
+
+func! s:update()
+	exe 'normal! ggdG'
+	call s:setupProj()
+endfunc
+nnoremap <buffer> <leader>upd :call <SID>update()<CR>

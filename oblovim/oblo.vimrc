@@ -5,14 +5,16 @@ let mapleader = ","
 inoremap jk <ESC>
 inoremap kj <ESC>
 
-" option  ------------------------------------------- {{{
+" vital options  ------------------------------------------- {{{
 
-set autoindent
-set number
-set incsearch
-set ruler
-set nobackup
 syntax on
+set number
+set autoindent
+
+" search
+set incsearch
+set noignorecase
+
 
 " tab style (python tab define in filetype/python.vim)
 set tabstop=4
