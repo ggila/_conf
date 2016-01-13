@@ -5,6 +5,9 @@ let mapleader = ","
 inoremap jk <ESC>
 inoremap kj <ESC>
 
+let g:netrw_liststyle = 3
+let g:netrw_browse_split = 2
+
 " vital options  ------------------------------------------- {{{
 
 syntax on
@@ -58,6 +61,7 @@ augroup kindoffile
 	autocmd FileType c so ~/config/oblovim/filetype/c.vim
 	autocmd FileType python so ~/config/oblovim/filetype/python.vim
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vim
+	autocmd FileType netrw so ~/config/oblovim/filetype/netrw.vim
 	autocmd FileType help :noremap <buffer> q :q<CR>
 augroup END
 "  ------------------------------------------- }}}
@@ -75,7 +79,7 @@ fun! SetConfigTab()
 	exe ":e ~/config/vimrc"
 	exe ":rightb vsp ~/config/oblovim/filetype/vim.vim"
 	exe ":rightb vsp ~/config/oblovim/filetype/python.vim"
-	exe ":sp ~/config/oblovim/filetype/cpp.vim"
+	exe ":sp ~/config/oblovim/filetype/netrw.vim"
 	exe "normal \<C-h>"
 	exe ":sp ~/config/oblovim/filetype/c.vim"
 	exe "normal \<C-h>"
@@ -138,6 +142,22 @@ endfunction
 " }}}
 vnoremap <leader>s :call SwapVisual()<CR>
 vnoremap rr d<C-v>`>I
+
+"   ----------------------- {{{
+func! s:swapWindow()
+	let l:len = strlen(@n)
+	if l:len  == 0
+		let @n = expand('%')
+	else
+		let @b = expand('%')
+		exe ":b " . @n
+		exe "normal! \<C-w>p"
+		exe ":b " . @b
+		let @n = ''
+	endif
+endfunc
+" }}}
+nnoremap <leader>s :call <SID>swapWindow()<CR>
 
 " fold ------------------------------ {{{
 "func! s:closeFold()
