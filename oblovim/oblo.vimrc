@@ -65,7 +65,7 @@ augroup kindoffile
 	autocmd FileType help :noremap <buffer> q :q<CR>
 augroup END
 "  ------------------------------------------- }}}
-noremap <leader>s :so ~/config/vimrc
+noremap <leader>s :so ~/config/vimrc<CR>
 noremap <leader>svi :so ~/config/oblovim/filetype/vim.vim<CR>
 noremap <leader>sc :so ~/config/oblovim/filetype/c.vim<CR>
 noremap <leader>spy :so ~/config/oblovim/filetype/python.vim<CR>
@@ -143,21 +143,21 @@ endfunction
 vnoremap <leader>s :call SwapVisual()<CR>
 vnoremap rr d<C-v>`>I
 
-"   ----------------------- {{{
-func! s:swapWindow()
-	let l:len = strlen(@n)
-	if l:len  == 0
-		let @n = expand('%')
-	else
-		let @b = expand('%')
-		exe ":b " . @n
-		exe "normal! \<C-w>p"
-		exe ":b " . @b
-		let @n = ''
-	endif
-endfunc
-" }}}
-nnoremap <leader>s :call <SID>swapWindow()<CR>
+""   ----------------------- {{{
+"func! s:swapWindow()
+"	let l:len = strlen(@n)
+"	if l:len  == 0
+"		let @n = expand('%')
+"	else
+"		let @b = expand('%')
+"		exe ":b " . @n
+"		exe "normal! \<C-w>p"
+"		exe ":b " . @b
+"		let @n = ''
+"	endif
+"endfunc
+"" }}}
+"nnoremap <leader>s :call <SID>swapWindow()<CR>
 
 " fold ------------------------------ {{{
 "func! s:closeFold()
@@ -190,7 +190,7 @@ func! SetScratchBuf(bname)
 	noremap <buffer> q :bw<CR>
 endfunc
 "  ------------------------------------------- }}}
-noremap <leader>scr :call SetScratchBuf()<CR>
+noremap <leader>scr :call SetScratchBuf(expand('%'))<CR>
 
 " man  ------------------------------------------- {{{
 " Open new window with man page for word under cursor
