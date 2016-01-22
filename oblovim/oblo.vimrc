@@ -57,6 +57,7 @@ noremap <leader>hls :set hlsearch!<CR>
 augroup kindoffile
 	autocmd!
 	autocmd BufNewFile,BufRead *.h set filetype=c
+	autocmd BufNewFile,BufRead *.md set filetype=markdown
 	autocmd Filetype vim so ~/config/oblovim/filetype/vim.vim
 	autocmd FileType c so ~/config/oblovim/filetype/c.vim
 	autocmd FileType python so ~/config/oblovim/filetype/python.vim
