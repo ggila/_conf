@@ -19,9 +19,9 @@ autoload -U colors && colors
 PS1="%{$fg[red]%}%m %{$fg[green]%}%~%{$reset_color%}|%"
 
 # brew config
-export HOMEBREW_TEMP="/tmp/""$USER""brewtmp"
-export HOMEBREW_CACHE="/tmp/""$USER""brewcache"
-mkdir -p ~/Library/Caches/Homebrew/ $HOMEBREW_TEMP $HOMEBREW_CACHE
+export C_INCLUDE_PATH="$HOME/.brew/include:$HOME/.brew/include/freetype2"
+export CPLUS_INCLUDE_PATH="$HOME/.brew/include:$HOME/.brew/include/freetype2"
+export LIBRARY_PATH="$HOME/.brew/lib"
 
 ##ALIAS
 alias ..='cd ..'
