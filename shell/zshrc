@@ -31,6 +31,8 @@ alias np='python ~/config/oblovim/project/setupP.py '
 alias clean='rm -rf ~/test/* ~/test/.*'
 alias conf='cd ~/config'
 alias pybook='ipython notebook'
+alias py='python3'
+alias python='python3'
 
 
 source ~/config/shell/save-go.sh
