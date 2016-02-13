@@ -67,6 +67,7 @@ augroup kindoffile
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vim
 	autocmd FileType netrw so ~/config/oblovim/filetype/netrw.vim
 	autocmd FileType help :noremap <buffer> q :q<CR>
+	autocmd FileType make :let b:com = '#'
 augroup END
 "  ------------------------------------------- }}}
 noremap <leader>s :so ~/config/vimrc<CR>
