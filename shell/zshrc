@@ -33,9 +33,8 @@ alias so='source ~/config/zshrc'
 alias np='python ~/config/oblovim/project/setupP.py '
 alias clean='rm -rf ~/test/* ~/test/.*'
 alias conf='cd ~/config'
-alias pybook='ipython notebook'
-alias py='python3'
-alias python='python3'
+alias work='cd ~/working'
+alias jbk='jupyter notebook'
 
 
 source ~/config/shell/save-go.sh
