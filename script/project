@@ -1,0 +1,24 @@
+malloc:stdlib malloc function implementation
+philosophers:threads 
+libftasm:libc finction implementation in assembly 
+
+Current:
+ft_p:client/server implementation
+raytracer:raytracer implementation
+nm-otool:implemtetation of mac nm an otool shell command
+lib: some perso, loyal c funcs
+
+Piscine:
+piscine_cpp:cpp, oop
+piscine_web:php, mamp, oop, sql, javascript
+
+Old:
+get_next_line:read fd line by line
+ft_ls:ls shell builtin implementation
+pushswap:sorting algo
+fractol:fractal display (Julia, Mandelbrot)
+computorv1:low degrees polynomial solver
+ft_linear_regression:linear regression (python)
+shell:sell implementation
+wolf3d:raycasting
+libft:libc fonctions implementation

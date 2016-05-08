@@ -8,7 +8,7 @@ import sys
 readme_init = '''#42
 ## school project
 
-This repository is generated with 42.py
+> This repository is generated with [make_42git.py](https://github.com/ggila/config/blob/master/script/make_42git.py)
 
 Master git branch contains the most recent project
 Each project, except currents one, can be found with a git tag (e.g. >> git checkout pushswap)
@@ -22,9 +22,9 @@ mygit = 'https://github.com/ggila/'
 
 # func
 
-def checkProj(proj: list, ls: list, error: list):
-    """ Check if project find in file 'project' is
-        actually present and compile
+def checkProj(proj: dict, ls: list, error: dict):
+    """ Check for each project (find in file 'project')
+        if it is actually present and compile.
     """
     if proj not in ls:
         error['fatal'].append(proj + ' not here')
@@ -33,7 +33,7 @@ def checkProj(proj: list, ls: list, error: list):
 #        error['warning'].append(proj + ' does not compile')
 #    os.system('make fclean -C ' + proj)
 
-def print_error(err):
+def print_error(err: dict):
     """ err (dict) collects errors during runtime
     """
     if err['fatal']:
@@ -43,12 +43,12 @@ def print_error(err):
         print('\nwarning:')
         for e in err['warning']: print(e)
 
-def gitLink(proj):
+def gitLink(proj: dict):
     """ Formate current project string for README.md
     """
     return '[{0}]({1}{0}) IN PROGRESS'.format(proj, mygit)
 
-def tagThose(list_proj, branch):
+def tagThose(list_proj: list, branch: str):
     """ Setup tag for each project in 'list_proj'
         in git branch 'branch'
     """
@@ -73,10 +73,10 @@ def tagThose(list_proj, branch):
 
 ls = [a[:-1] for a in list(os.popen('ls'))]      # list 
 error = {'fatal':[], 'warning':[]}               # store error when processing 'project'
-proj = {'ok':[], 'current':[], 'old':[], 'piscine'=[]}       # store projects
+proj = {'ok':[], 'current':[], 'old':[], 'piscine':[]}       # store projects
 i = 'ok'                                         # tmp var
 
-with open('project') as f, open('README.md', 'w+') as readme:
+with open(os.path.expanduser('~/config/script/project')) as f, open('README.md', 'w+') as readme:
     readme.write(readme_init)
     for line in f:
         if line == 'Current:\n':
@@ -103,7 +103,7 @@ if error['fatal'] or error['warning']:
 # Init git
 
 os.system('git init')
-os.system('git add README.md project setup_42git.py')
+os.system('git add README.md')
 os.system('git commit -m \'init, add README.md\'')
 
 # Setup 'old' branch
@@ -111,22 +111,40 @@ os.system('git commit -m \'init, add README.md\'')
 os.system('git checkout -b old')
 for p in proj['old']:
     os.system('git add ' + p)
-os.system('git commit -m \'add old project\'')
+os.system('git commit -m \'add old projects\'')
 
-tagThose(proj['old'], 'old')
+tagThose(proj['old'], 'old')                # set a tag for each project
 
-# Setup 'piscine' branch
+os.system('git checkout master')
 
 os.system('git checkout -b piscine')
 for p in proj['piscine']:
     os.system('git add ' + p)
-tagThose(proj['piscine'], 'piscine')
+os.system('git commit -m \'add {}\''.format(' '.join(proj['piscine'])))
 
-#for p in proj['ok'] + proj['current']:
-#    os.system('git add ' + p)
-#os.system('git commit -m \'add projects\'')
+tagThose(proj['piscine'], 'piscine')        # set a tag for each project
 
-#tagThose(proj['ok'], 'master')
+os.system('git checkout master')
 
-if error['fatal'] or error['warning']: print_error(error)
-print(proj)
+# Setup submodules for curent project
+
+for p in proj['current']:
+    os.system('git submodule add {}'.format(mygit + p + '.git'))
+    os.system('git add' + p)
+os.system('git add .gitmodules')
+os.system('git commit -m \'add submodules\'')
+
+# Setup master branch
+
+os.system('git checkout -b ok')
+for p in proj['ok']:
+    os.system('git add ' + p)
+os.system('git commit -m \'add projects\'')
+
+tagThose(proj['ok'], 'ok')
+
+os.system('git checkout master')
+os.system('git merge ok')
+os.system('git branch -d ok')
+
+print_error(error)
