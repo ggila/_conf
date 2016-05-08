@@ -26,15 +26,14 @@ export LIBRARY_PATH="$HOME/.brew/lib"
 ##ALIAS
 alias ..='cd ..'
 alias ...='cd ../..'
-alias /='cd /'
-alias s='cd -'
 alias v='vim'
 alias so='source ~/config/zshrc'
-alias np='python ~/config/oblovim/project/setupP.py '
-alias clean='rm -rf ~/test/* ~/test/.*'
+alias mkproto='python ~/config/script/make_proto.py'
 alias conf='cd ~/config'
 alias work='cd ~/working'
 alias jbk='jupyter notebook'
+alias mkgit='python ~/config/script/make_42git.py'
+alias mkreadme='python ~/config/script/make_readme.py'
 
 
 source ~/config/shell/save-go.sh

@@ -1,3 +1,7 @@
+# ggila
+# create 'proto.h' in ./inc/ with c func and typedef declarations
+# define in files in ./src/
+
 import os
 #!/usr/bin/python
 
