@@ -3,6 +3,8 @@
 import os
 import sys
 
+# var
+
 readme_init = '''#42
 ## school project
 
@@ -18,16 +20,18 @@ Least significant project are stored in \'old\' git branch
 
 mygit = 'https://github.com/ggila/'
 
-def checkProj(proj, ls, error):
+# func
+
+def checkProj(proj: list, ls: list, error: list):
     """ Check if project find in file 'project' is
         actually present and compile
     """
     if proj not in ls:
         error['fatal'].append(proj + ' not here')
         return
-    if os.system('make -C ' + proj) != 0:
-        error['warning'].append(proj + ' does not compile')
-    os.system('make fclean -C ' + proj)
+#    if os.system('make -C ' + proj) != 0:
+#        error['warning'].append(proj + ' does not compile')
+#    os.system('make fclean -C ' + proj)
 
 def print_error(err):
     """ err (dict) collects errors during runtime
@@ -65,18 +69,21 @@ def tagThose(list_proj, branch):
         os.system('git checkout ' + branch)
         os.system('git branch -D tmp')
 
-os.system('git init')   # Init repo
+# scan and check file 'project' and create README.md
 
-# Scan project and create README.md
-ls = [a[:-1] for a in list(os.popen('ls'))]
-error = {'fatal':[], 'warning':[]}
-proj = {'ok':[], 'current':[], 'old':[]}
-i = 'ok'
+ls = [a[:-1] for a in list(os.popen('ls'))]      # list 
+error = {'fatal':[], 'warning':[]}               # store error when processing 'project'
+proj = {'ok':[], 'current':[], 'old':[], 'piscine'=[]}       # store projects
+i = 'ok'                                         # tmp var
+
 with open('project') as f, open('README.md', 'w+') as readme:
     readme.write(readme_init)
     for line in f:
         if line == 'Current:\n':
             i = 'current'
+        elif line == 'Piscine:\n':
+            readme.write('\n* **Piscine** (2 weeks initiation):\n')
+            i = 'piscine'
         elif line == 'Old:\n':
             readme.write('\n* **Old**:\n')
             i = 'old'
@@ -87,11 +94,15 @@ with open('project') as f, open('README.md', 'w+') as readme:
             readme.write(' * {0}: {1}\n'.format(p if i != 'current' else gitLink(p), comment[:-1]).replace('_','\\_'))
             proj[i].append(p)
 
-if error['fatal']:
+# stop if fatal error
+
+if error['fatal'] or error['warning']:
     print_error(error)
     sys.exit(0)
 
 # Init git
+
+os.system('git init')
 os.system('git add README.md project setup_42git.py')
 os.system('git commit -m \'init, add README.md\'')
 
@@ -106,10 +117,11 @@ tagThose(proj['old'], 'old')
 
 # Setup 'piscine' branch
 
-#for p in proj['current']:
-#    os.system('git submodule add {}{}'.format(mygit, p))
+os.system('git checkout -b piscine')
+for p in proj['piscine']:
+    os.system('git add ' + p)
+tagThose(proj['piscine'], 'piscine')
 
-#os.system('git checkout master')
 #for p in proj['ok'] + proj['current']:
 #    os.system('git add ' + p)
 #os.system('git commit -m \'add projects\'')
@@ -117,3 +129,4 @@ tagThose(proj['old'], 'old')
 #tagThose(proj['ok'], 'master')
 
 if error['fatal'] or error['warning']: print_error(error)
+print(proj)

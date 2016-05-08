@@ -28,12 +28,12 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias v='vim'
 alias so='source ~/config/zshrc'
-alias mkproto='python ~/config/script/make_proto.py'
+alias mkproto='python3 ~/config/script/make_proto.py'
 alias conf='cd ~/config'
 alias work='cd ~/working'
 alias jbk='jupyter notebook'
-alias mkgit='python ~/config/script/make_42git.py'
-alias mkreadme='python ~/config/script/make_readme.py'
+alias mkgit='python3 ~/config/script/make_42git.py'
+alias mkreadme='python3 ~/config/script/make_readme.py'
 
 
 source ~/config/shell/save-go.sh
