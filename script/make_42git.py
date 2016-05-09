@@ -6,7 +6,7 @@ import sys
 # var
 
 readme_init = '''#42
-## school project
+### school project
 
 > This repository is generated with [make_42git.py](https://github.com/ggila/config/blob/master/script/make_42git.py)
 
@@ -29,9 +29,9 @@ def checkProj(proj: dict, ls: list, error: dict):
     if proj not in ls:
         error['fatal'].append(proj + ' not here')
         return
-#    if os.system('make -C ' + proj) != 0:
-#        error['warning'].append(proj + ' does not compile')
-#    os.system('make fclean -C ' + proj)
+    if os.system('make -C ' + proj) != 0:
+        error['warning'].append(proj + ' does not compile')
+    os.system('make fclean -C ' + proj)
 
 def print_error(err: dict):
     """ err (dict) collects errors during runtime
@@ -46,7 +46,7 @@ def print_error(err: dict):
 def gitLink(proj: dict):
     """ Formate current project string for README.md
     """
-    return '[{0}]({1}{0}) IN PROGRESS'.format(proj, mygit)
+    return '[{0}]({1}{0}) (IN PROGRESS)'.format(proj, mygit)
 
 def tagThose(list_proj: list, branch: str):
     """ Setup tag for each project in 'list_proj'
@@ -82,7 +82,7 @@ with open(os.path.expanduser('~/config/script/project')) as f, open('README.md',
         if line == 'Current:\n':
             i = 'current'
         elif line == 'Piscine:\n':
-            readme.write('\n* **Piscine** (2 weeks initiation):\n')
+            readme.write('\n* **Piscine** (deep initiation):\n')
             i = 'piscine'
         elif line == 'Old:\n':
             readme.write('\n* **Old**:\n')
@@ -96,7 +96,7 @@ with open(os.path.expanduser('~/config/script/project')) as f, open('README.md',
 
 # stop if fatal error
 
-if error['fatal'] or error['warning']:
+if error['fatal']:
     print_error(error)
     sys.exit(0)
 
