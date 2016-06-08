@@ -14,16 +14,19 @@ def readReadme(root):
             else: i += 1
         return readme
 
-def checkFile(source):
+def checkPyFile(source):
     ''' open source file and return its description
     '''
     with open(source) as f:
-        if f.readline() != '# ggila\n': return '\n'
-        ret = ''
-        while True:
-            s = f.readline()
-            if s[0] != '#': return ret
-            ret += s[2:]
+        if source[-3:] == '.py':
+            if f.readline() != '# ggila\n': return '\n'
+            ret = ''
+            while True:
+                s = f.readline()
+                if s[0] != '#': return ret
+                ret += s[2:]
+#        else:
+
 
 for root, dirs, files in os.walk('.', topdown = False):
     if '.git' not in root:

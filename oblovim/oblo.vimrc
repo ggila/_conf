@@ -60,7 +60,7 @@ noremap <leader>hls :set hlsearch!<CR>
 augroup kindoffile
 	autocmd!
 	autocmd BufNewFile,BufRead *.h set filetype=c
-	autocmd BufNewFile,BufRead *.md set filetype=markdown
+	autocmd BufNewFile,BufRead *.md so ~/config/oblovim/filetype/markdown.vim
 	autocmd Filetype vim so ~/config/oblovim/filetype/vim.vim
 	autocmd FileType c so ~/config/oblovim/filetype/c.vim
 	autocmd FileType python so ~/config/oblovim/filetype/python.vim
@@ -71,10 +71,6 @@ augroup kindoffile
 augroup END
 "  ------------------------------------------- }}}
 noremap <leader>s :so ~/config/vimrc<CR>
-noremap <leader>svi :so ~/config/oblovim/filetype/vim.vim<CR>
-noremap <leader>sc :so ~/config/oblovim/filetype/c.vim<CR>
-noremap <leader>spy :so ~/config/oblovim/filetype/python.vim<CR>
-noremap <leader>scpp :so ~/config/oblovim/filetype/cpp.vim<CR>
 noremap ss :so %<CR>
 
 " edit config (set new tab)   ------------------------------------------- {{{
@@ -84,7 +80,7 @@ fun! SetConfigTab()
 	exe ":e ~/config/vimrc"
 	exe ":rightb vsp ~/config/oblovim/filetype/vim.vim"
 	exe ":rightb vsp ~/config/oblovim/filetype/python.vim"
-	exe ":sp ~/config/oblovim/filetype/netrw.vim"
+	exe ":sp ~/config/oblovim/filetype/markdown.vim"
 	exe "normal \<C-h>"
 	exe ":sp ~/config/oblovim/filetype/c.vim"
 	exe "normal \<C-h>"
