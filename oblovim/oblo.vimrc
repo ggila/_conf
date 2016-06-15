@@ -61,6 +61,7 @@ augroup kindoffile
 	autocmd!
 	autocmd BufNewFile,BufRead *.h set filetype=c
 	autocmd BufNewFile,BufRead *.md so ~/config/oblovim/filetype/markdown.vim
+	autocmd BufNewFile,BufRead *.scala so ~/config/oblovim/filetype/scala.vim
 	autocmd Filetype vim so ~/config/oblovim/filetype/vim.vim
 	autocmd FileType c so ~/config/oblovim/filetype/c.vim
 	autocmd FileType python so ~/config/oblovim/filetype/python.vim
