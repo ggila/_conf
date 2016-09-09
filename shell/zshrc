@@ -35,6 +35,7 @@ alias jbk='jupyter notebook'
 alias mkgit='python3 ~/config/script/make_42git.py'
 alias mkreadme='python3 ~/config/script/make_readme.py'
 alias meteo='curl wttr.in'
+alias emacs="emacs -nw"
 
 
 source ~/config/shell/save-go.sh

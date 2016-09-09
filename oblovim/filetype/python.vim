@@ -1,6 +1,6 @@
 let b:com = '#'
 
-colorscheme darkblue
+"colorscheme darkblue
 
 set foldlevelstart=1
 setlocal foldmethod=indent

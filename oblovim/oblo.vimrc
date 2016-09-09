@@ -273,4 +273,9 @@ nnoremap C :call Comment1Line()<CR>
 vnoremap C :call CommentVisual()<CR>
 vnoremap u :call UncommentVisual()<CR>
 
+" infinite undo ------------------------------------- {{{
+set undofile
+set undodir=~/.vim/undo
+"  ------------------------------------------- }}}
+
 nnoremap <leader>proj :source ~/config/oblovim/cproj.vim<CR>
