@@ -125,3 +125,7 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+
+# pythonpath
+export PYTHONPATH="/home/gaut/insights:/home/gaut/insights/lbd-core"
