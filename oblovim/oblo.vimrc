@@ -9,9 +9,9 @@ Plugin 'VundleVim/Vundle.vim'
 
 call vundle#end()
 filetype plugin indent on
-"  ------------------------------------------- }}}
 
 Bundle 'christoomey/vim-tmux-navigator'
+"  ------------------------------------------- }}}
 
 " mapleader
 let mapleader = ","
