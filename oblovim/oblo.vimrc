@@ -1,3 +1,18 @@
+" vundle  ------------------------------------------- {{{
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
+
+
+call vundle#end()
+filetype plugin indent on
+"  ------------------------------------------- }}}
+
+Bundle 'christoomey/vim-tmux-navigator'
+
 " mapleader
 let mapleader = ","
 
@@ -10,6 +25,7 @@ source ~/config/oblovim/cscope.vim
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 2
 let g:netrw_list_hide = '.*\.sw[op]'
+
 
 " vital options  ------------------------------------------- {{{
 

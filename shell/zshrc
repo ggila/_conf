@@ -26,14 +26,12 @@ export LIBRARY_PATH="$HOME/.brew/lib"
 ##ALIAS
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ll='ls -l'
+alias lla='ls -la'
+alias aa='clear'
 alias v='vim'
-alias so='source ~/config/zshrc'
-alias mkproto='python3 ~/config/script/make_proto.py'
+alias so='source ~/config/bashrc'
 alias conf='cd ~/config'
-alias work='cd ~/working'
-alias jbk='jupyter notebook'
-alias mkgit='python3 ~/config/script/make_42git.py'
-alias mkreadme='python3 ~/config/script/make_readme.py'
 alias meteo='curl wttr.in'
 alias emacs="emacs -nw"
 
