@@ -13,4 +13,6 @@ nnoremap <buffer> <leader>bp oipdb.set_trace()<ESC>I
 
 inoremap <buffer> deprint 
    \print '______________________'<ENTER>
-   \print '^^^^^^^^^^^^^^^^^^^^^^'<ESC>O
+   \print '^^^^^^^^^^^^^^^^^^^^^^'<ESC>Oprint 
+
+nnoremap <buffer> <leader>fpy :%s/\t/    /g<ENTER>
