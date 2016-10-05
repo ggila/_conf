@@ -82,6 +82,7 @@ augroup kindoffile
 	autocmd BufNewFile,BufRead *.scala so ~/config/oblovim/filetype/scala.vim
 	autocmd Filetype vim so ~/config/oblovim/filetype/vim.vim
 	autocmd FileType c so ~/config/oblovim/filetype/c.vim
+	autocmd FileType javascript so ~/config/oblovim/filetype/javascript.vim
 	autocmd FileType python so ~/config/oblovim/filetype/python.vim
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vim
 	autocmd FileType netrw so ~/config/oblovim/filetype/netrw.vim
@@ -97,6 +98,8 @@ fun! SetConfigTab()
 	exe ":tabnew"
 	exe ":set wrap!"
 	exe ":e ~/config/vimrc"
+	exe ":vsp ~/config"
+	exe "normal \<C-l>"
 	exe ":rightb vsp ~/config/oblovim/filetype/vim.vim"
 	exe ":rightb vsp ~/config/oblovim/filetype/python.vim"
 	exe ":sp ~/config/oblovim/filetype/markdown.vim"
