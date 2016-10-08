@@ -80,14 +80,15 @@ augroup kindoffile
 	autocmd BufNewFile,BufRead *.h set filetype=c
 	autocmd BufNewFile,BufRead *.md so ~/config/oblovim/filetype/markdown.vim
 	autocmd BufNewFile,BufRead *.scala so ~/config/oblovim/filetype/scala.vim
-	autocmd Filetype vim so ~/config/oblovim/filetype/vim.vim
-	autocmd FileType c so ~/config/oblovim/filetype/c.vim
+	autocmd FileType sh so ~/config/oblovim/filetype/sh.vim
 	autocmd FileType javascript so ~/config/oblovim/filetype/javascript.vim
 	autocmd FileType python so ~/config/oblovim/filetype/python.vim
 	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vim
 	autocmd FileType netrw so ~/config/oblovim/filetype/netrw.vim
 	autocmd FileType help :noremap <buffer> q :q<CR>
 	autocmd FileType make :let b:com = '#'
+	autocmd Filetype vim so ~/config/oblovim/filetype/vim.vim
+	autocmd FileType c so ~/config/oblovim/filetype/c.vim
 augroup END
 "  ------------------------------------------- }}}
 noremap <leader>s :so ~/config/vimrc<CR>
