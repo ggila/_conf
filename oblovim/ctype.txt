@@ -1,7 +1,0 @@
-unsigned char
-char
-unsigned int
-int
-float
-double
-size_t

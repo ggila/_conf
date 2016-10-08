@@ -1,7 +1,10 @@
-" mark used in this script:
-" x
-" n
-" m
+" Vim utility for c proj
+" old stuff, do not try to understand anything
+" except if you read this with vim fold, plus
+" some time
+" begin with fold 'functions', then 'fold'
+
+
 " source
 noremap <buffer> sp :so ~/config/oblovim/cproj.vim<CR>
 
@@ -351,6 +354,7 @@ inoremap <buffer> <UP> <UP><ESC>:call <SID>checkScope(line('.'))<CR>
 " build func dict:
 " parse c file with regex and set a dictionnary for each
 " |    regex to match prototype function -------------------------- {{{
+" we mainly use g:proto
 let g:type = '\s*[a-z_]\+\t\+\**'
 let g:funcname = '[a-zA-Z0-9_]\+'
 let g:arg = '\%(const \)\?[a-z_]\+ \**[a-zA-Z0-9_\[\]]\+\%(, \)\?'
