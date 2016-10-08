@@ -1,26 +1,38 @@
+10/16
+
 .
+├── bashrc -> shell/bashrc
 ├── gitconfig
 ├── oblovim
-│   ├── cproj.vim
+│   ├── c_proj
+│   │   ├── cproj.vim
+│   │   └── project.vim
 │   ├── cscope.vim
-│   ├── ctype.txt
 │   ├── filetype
 │   │   ├── cpp.vim
 │   │   ├── c.vim
+│   │   ├── javascript.vim
+│   │   ├── markdown.vim
 │   │   ├── netrw.vim
 │   │   ├── python.vim
+│   │   ├── scala_syntax.vim
+│   │   ├── scala.vim
+│   │   ├── sh.vim
 │   │   └── vim.vim
-│   ├── maintest.c
-│   ├── oblo.vimrc
-│   └── project.vim
+│   └── oblo.vimrc
 ├── README
 ├── script
-│   ├── make_make.py
-│   └── make_proto.py
+│   ├── check_args.sh
+│   ├── install_config.sh
+│   ├── make_proto.py
+│   └── save-go.sh
 ├── shell
-│   ├── save-go.sh
+│   ├── alias.sh
+│   ├── bashrc
+│   ├── script.sh
 │   └── zshrc
+├── tmux.conf
 ├── vimrc -> oblovim/oblo.vimrc
 └── zshrc -> shell/zshrc
 
-4 directories, 19 files
+5 directories, 28 files
