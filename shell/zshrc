@@ -24,19 +24,11 @@ export CPLUS_INCLUDE_PATH="$HOME/.brew/include:$HOME/.brew/include/freetype2"
 export LIBRARY_PATH="$HOME/.brew/lib"
 
 ##ALIAS
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ll='ls -l'
-alias lla='ls -la'
-alias aa='clear'
-alias v='vim'
-alias so='source ~/config/bashrc'
-alias conf='cd ~/config'
-alias meteo='curl wttr.in'
-alias emacs="emacs -nw"
+alias so='source ~/config/zshrc'
+source '~/config/shell/alias.sh'
 
-
-source ~/config/shell/save-go.sh
+##SCRIPT
+source '~/config/shell/script.sh'
 
 ##mmv *.txt *.data
 autoload -U zmv
@@ -51,12 +43,6 @@ function lla
 {
 	ls -lAbFhgo $@ | sed -E "s/([^ ]+)( +)([^ ]+)( +)([^ ]+)( +[^ ]+ +[^ ]+ +[^ ]+) (.+)/[\1] `printf "\033[1;30m"`\6  `printf "\033[0;36m"`(\5 +\3)`printf "\033[0m"` \4\2\7/" | sed "s/ +1)/)   /"
 };
-
-function gc
-{
-	dir="$1";
-	git clone https://github.com/ggila/"$1".git;
-}
 
 man() {
 	env \

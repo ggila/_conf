@@ -87,16 +87,12 @@ fi
 # colored GCC warnings and errors
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ll='ls -l'
-alias lla='ls -la'
-alias aa='clear'
-alias v='vim'
+##ALIAS
 alias so='source ~/config/bashrc'
-alias conf='cd ~/config'
-alias meteo='curl wttr.in'
-alias emacs="emacs -nw"
+source '~/config/shell/alias.sh'
+
+##SCRIPT
+source '~/config/shell/script.sh'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
