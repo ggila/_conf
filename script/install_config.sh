@@ -1,6 +1,5 @@
 #!/bin/bash
 
-CONF_DIR=$HOME/config
 CONF_FILE="
 vimrc
 bashrc
@@ -8,7 +7,12 @@ zshrc
 gitconfig
 "
 
-echo $HOME
+if ! [[ ! -d "_conf" || ! -f "_conf/shell/var_env" ]]; then 
+  echo 'non'
+  exit 1
+fi
+
+source './_conf/shell/var_env.sh'
 
 get_answer () {
   while :
