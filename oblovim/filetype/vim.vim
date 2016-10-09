@@ -2,7 +2,7 @@ let b:com = '"'
 
 augroup sourcing
 	autocmd!
-	autocmd BufWritePost vimrc so ~/config/vimrc
+	autocmd BufWritePost vimrc so $_CONF_DIR/vimrc
 augroup END
 
 " test vim function ----------------------- {{{

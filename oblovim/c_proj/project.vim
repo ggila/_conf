@@ -92,7 +92,7 @@ func! s:setup()
 		call s:dispdir(l:header, l:cfiles)
 	endfor
 	call SetConfigTab()
-	exe 'tabe ~/config/oblovim/project.vim'
+	exe 'tabe $_VIM_DIR/project.vim'
 	exe 'normal! 1gt'
 endfunc
 
@@ -373,7 +373,7 @@ func! s:opentest()
 		let l:fu = s:getfuncfromdict(expand("<cword>"))
 		let l:include = s:getinclude()
 		exe ':sp '.l:test
-		exe ':read ~/config/oblovim/maintest.c'
+		exe ':read $_VIM_DIR/maintest.c'
 		exe ':2s/()/('.join(l:fu.args, ', ').')'
 		exe ':%s/test_/test_'.l:fu.name
 		if !((len(l:fu.args) == 1) && (l:fu.args[0] ==# 'void'))

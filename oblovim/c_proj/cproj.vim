@@ -6,7 +6,7 @@
 
 
 " source
-noremap <buffer> sp :so ~/config/oblovim/cproj.vim<CR>
+noremap <buffer> sp :so $_VIM_DIR/cproj.vim<CR>
 
 " variable ----------------------------------- {{{
 " global ----------------------- {{{

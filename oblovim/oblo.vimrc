@@ -89,15 +89,15 @@ augroup kindoffile
 	autocmd FileType c so $_VIM_DIR/filetype/c.vim
 augroup END
 "  ------------------------------------------- }}}
-noremap <leader>s :so ~/config/vimrc<CR>
+noremap <leader>s :so $_CONF_DIR/vimrc<CR>
 noremap ss :so %<CR>
 
 " edit config (set new tab)   ------------------------------------------- {{{
 fun! SetConfigTab()
 	exe ":tabnew"
 	exe ":set wrap!"
-	exe ":e ~/config/vimrc"
-	exe ":vsp ~/config"
+	exe ":e $_CONF_DIR/vimrc"
+	exe ":vsp $_CONF_DIR"
 	exe "normal \<C-l>"
 	exe ":rightb vsp $_VIM_DIR/filetype/vim.vim"
 	exe ":rightb vsp $_VIM_DIR/filetype/python.vim"
@@ -251,4 +251,4 @@ vnoremap u :call UncommentVisual()<CR>
 "set undodir=~/.vim/undo
 "  ------------------------------------------- }}}
 
-nnoremap <leader>proj :source ~/config/oblovim/cproj.vim<CR>
+nnoremap <leader>proj :source $_VIM_DIR/cproj.vim<CR>
