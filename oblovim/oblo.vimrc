@@ -53,13 +53,13 @@ set encoding=utf-8
 " color
 colorscheme peachpuff
 
+"  ------------------------------------------- }}}
+
 " switch option
 noremap <leader>sw :set wrap!<CR>
 noremap <leader>SW :tabdo windo set wrap!<CR>1gt
 noremap <leader>sp :set paste!<CR>
 noremap <leader>hls :set hlsearch!<CR>
-
-"  ------------------------------------------- }}}
 
 " (non actif) set status line color according to mode (non actif) ------ {{{
 " first, enable status line always
@@ -76,17 +76,17 @@ noremap <leader>hls :set hlsearch!<CR>
 augroup kindoffile
 	autocmd!
 	autocmd BufNewFile,BufRead *.h set filetype=c
-	autocmd BufNewFile,BufRead *.md so ~/config/oblovim/filetype/markdown.vim
-	autocmd BufNewFile,BufRead *.scala so ~/config/oblovim/filetype/scala.vim
-	autocmd FileType sh so ~/config/oblovim/filetype/sh.vim
-	autocmd FileType javascript so ~/config/oblovim/filetype/javascript.vim
-	autocmd FileType python so ~/config/oblovim/filetype/python.vim
-	autocmd FileType cpp so ~/config/oblovim/filetype/cpp.vim
-	autocmd FileType netrw so ~/config/oblovim/filetype/netrw.vim
+	autocmd BufNewFile,BufRead *.md so $_VIM_DIR/filetype/markdown.vim
+	autocmd BufNewFile,BufRead *.scala so $_VIM_DIR/filetype/scala.vim
+	autocmd FileType sh so $_VIM_DIR/filetype/sh.vim
+	autocmd FileType javascript so $_VIM_DIR/filetype/javascript.vim
+	autocmd FileType python so $_VIM_DIR/filetype/python.vim
+	autocmd FileType cpp so $_VIM_DIR/filetype/cpp.vim
+	autocmd FileType netrw so $_VIM_DIR/filetype/netrw.vim
 	autocmd FileType help :noremap <buffer> q :q<CR>
 	autocmd FileType make :let b:com = '#'
-	autocmd Filetype vim so ~/config/oblovim/filetype/vim.vim
-	autocmd FileType c so ~/config/oblovim/filetype/c.vim
+	autocmd Filetype vim so $_VIM_DIR/filetype/vim.vim
+	autocmd FileType c so $_VIM_DIR/filetype/c.vim
 augroup END
 "  ------------------------------------------- }}}
 noremap <leader>s :so ~/config/vimrc<CR>
@@ -99,11 +99,11 @@ fun! SetConfigTab()
 	exe ":e ~/config/vimrc"
 	exe ":vsp ~/config"
 	exe "normal \<C-l>"
-	exe ":rightb vsp ~/config/oblovim/filetype/vim.vim"
-	exe ":rightb vsp ~/config/oblovim/filetype/python.vim"
-	exe ":sp ~/config/oblovim/filetype/markdown.vim"
+	exe ":rightb vsp $_VIM_DIR/filetype/vim.vim"
+	exe ":rightb vsp $_VIM_DIR/filetype/python.vim"
+	exe ":sp $_VIM_DIR/filetype/markdown.vim"
 	exe "normal \<C-h>"
-	exe ":sp ~/config/oblovim/filetype/c.vim"
+	exe ":sp $_VIM_DIR/filetype/c.vim"
 	exe "normal \<C-h>"
 endfunc
 "  ------------------------------------------- }}}

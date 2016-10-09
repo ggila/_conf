@@ -15,11 +15,12 @@ setopt share_history
 alias so="source $_CONF_DIR/zshrc"
 source "$_CONF_DIR/shell/alias.sh"
 
-##SCRIPT
-source "$_CONF_DIR/shell/script.sh"
-
 ##FUNCTIONS
-source "$_CONF_DIR/shell/functions.sh"
+source "$_CONF_DIR/shell/function/ll.sh"
+source "$_CONF_DIR/shell/function/lla.sh"
+source "$_CONF_DIR/shell/function/man.sh"
+source "$_CONF_DIR/shell/function/precmd.sh"
+source "$_CONF_DIR/shell/function/save-go.sh"
 
 ##mmv *.txt *.data
 autoload -U zmv

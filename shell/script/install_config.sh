@@ -33,10 +33,18 @@ set_conf () {
 
 for conf_file in $CONF_FILE
 do
-    echo "overwrite $conf_file ([y]/n) ?"
-    if get_answer $conf_file; then
-      set_conf $conf_file
-    fi
+    rm -f "$HOME/.$conf_file"
+    ln -s "$_CONF_DIR/$conf_file" "$HOME/.$conf_file"
 done
+
+#for conf_file in $CONF_FILE
+#do
+#    if is_set $conf_file; then
+#        echo "overwrite $conf_file ([y]/n) ?"
+#        if get_answer $conf_file; then
+#            set_conf $conf_file
+#        fi
+#    fi
+#done
 
 exit
