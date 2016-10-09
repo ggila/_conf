@@ -24,11 +24,11 @@ export CPLUS_INCLUDE_PATH="$HOME/.brew/include:$HOME/.brew/include/freetype2"
 export LIBRARY_PATH="$HOME/.brew/lib"
 
 ##ALIAS
-alias so='source ~/config/zshrc'
-source '~/config/shell/alias.sh'
+alias so="source $HOME/config/zshrc"
+source "$HOME/config/shell/alias.sh"
 
 ##SCRIPT
-source '~/config/shell/script.sh'
+source "$HOME/config/shell/script.sh"
 
 ##mmv *.txt *.data
 autoload -U zmv

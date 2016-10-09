@@ -1,2 +1,2 @@
 # load script
-source '~/config/shell/save-go.sh'
+source "$HOME/config/script/save-go.sh"
