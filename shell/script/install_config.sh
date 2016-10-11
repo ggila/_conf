@@ -5,14 +5,15 @@ vimrc
 bashrc
 zshrc
 gitconfig
+tmux.conf
 "
 
-if ! [[ ! -d "_conf" || ! -f "_conf/shell/var_env" ]]; then 
-  echo 'non'
-  exit 1
-fi
+#if [[ ! -d "_conf" || ! -f "_conf/shell/var_env" ]]; then 
+#  echo 'non'
+#  exit 1
+#fi
 
-source './_conf/shell/var_env.sh'
+#source "$HOME/_conf/shell/var_env.sh"
 
 get_answer () {
   while :
