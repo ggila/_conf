@@ -1,7 +1,6 @@
 source "$HOME/_conf/shell/var_env.sh"
 
-#Color
-autoload -U colors && colors
+##HISTORY
 
 PATH=$HOME/.brew/bin:$_CONF_DIR/script:$PATH
 HISTFILE=~/.zshrc_history
@@ -11,9 +10,18 @@ HISTSIZE=5000
 setopt inc_append_history
 setopt share_history
 
+##Color
+autoload -U colors && colors
+
+
 ##ALIAS
 alias so="source $_CONF_DIR/zshrc"
 source "$_CONF_DIR/shell/alias.sh"
+
+#mmv *.txt *.data
+autoload -U zmv
+alias mmv='noglob zmv -W'
+
 
 ##FUNCTIONS
 source "$_CONF_DIR/shell/function/ll.sh"
@@ -21,11 +29,3 @@ source "$_CONF_DIR/shell/function/lla.sh"
 source "$_CONF_DIR/shell/function/man.sh"
 source "$_CONF_DIR/shell/function/precmd.sh"
 source "$_CONF_DIR/shell/function/save-go.sh"
-
-##mmv *.txt *.data
-autoload -U zmv
-alias mmv='noglob zmv -W'
-
-
-export NVM_DIR="/home/gaut/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm

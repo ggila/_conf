@@ -17,7 +17,7 @@
 # (save --help) for more commands
 #
 
-SAVE_FILE="$_CONF_DIR/script/save_go_dirlist"
+SAVE_FILE="$HOME/.save_go.list"
 
 function save()
 {
