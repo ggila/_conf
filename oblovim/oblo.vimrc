@@ -15,6 +15,9 @@ Bundle 'christoomey/vim-tmux-navigator'
 execute pathogen#infect()
 "  ------------------------------------------- }}}
 
+" gundo: undo/redo tree visualizer
+nnoremap <leader>gd :GundoToggle<CR>
+
 " mapleader
 let mapleader = ","
 
@@ -54,6 +57,14 @@ set encoding=utf-8
 colorscheme peachpuff
 
 "  ------------------------------------------- }}}
+
+" Command
+command! Q q
+command! W w
+command! WQ wq
+command! Wq wq
+command! Qa qa
+command! QA qa
 
 " switch option
 noremap <leader>sw :set wrap!<CR>
