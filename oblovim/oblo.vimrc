@@ -258,8 +258,8 @@ vnoremap C :call CommentVisual()<CR>
 vnoremap u :call UncommentVisual()<CR>
 
 " infinite undo ------------------------------------- {{{
-"set undofile
-"set undodir=~/.vim/undo
+set undofile
+set undodir=~/.vim/undo
 "  ------------------------------------------- }}}
 
 nnoremap <leader>proj :source $_VIM_DIR/cproj.vim<CR>
