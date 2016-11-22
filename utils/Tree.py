@@ -1,45 +1,59 @@
 from collections import deque
 
-POSSIBLE_INPUT = ('id_node',
+POSSIBLE_INPUT = ('id',
                   'name',
-                  'parent_id',
+                  'parent',
                   'path',
                   'id_path',
-                  'children_id')
+                  'children',
+                  'nb_subchild')
 
 class Node(object):
 
-    def __init__(self, **kwargs):
-        for k, v in kwargs:
+    def __init__(self, id_, **kwargs):
+        self.node_attr = ['id']
+        self.id = id_
+        if len(kwargs) > 0:
+            self.update(**kwargs)
+
+    def update(self, **kwargs):
+        for k, v in kwargs.items():
             if k not in POSSIBLE_INPUT:
-                raise:
-                    KeyError
+                raise KeyError
+            self.node_attr.append(k)
             setattr(self, k, v)
-        self.check_consistency()
+        #self.check_consistency()
 
     def __repr__(self):
-        return 'Node({}, {}, {})'.format(self.id_node,
-                                         self.name,
-                                         self.id_parent,)
+        s = 'Node('
+        s += ', '.join(["{field}='{value}'".format(field=field, value=getattr(self, field))
+                            for field in POSSIBLE_INPUT 
+                            if field in self.node_attr])
+        s += ')'
+        return s
 
-    def add_child(self, child):
+    def add_child(self, id_child):
         if not hasattr(self, 'children'):
-            self.child = []
-        if child not in self.child:
-            self.child.append(child)
+            self.children = []
+            self.node_attr.append('children')
+        if id_child not in self.children:
+            self.children.append(id_child)
 
     def add_parent(self, parent):
         pass
 
 
-
 class Tree(object):
 
     def __init__(self, nodes):
+        '''
+            'nodes': list of dicts describing Node
+        '''
+#        self.check_consistency(nodes)
         self.nodes = dict()
         for node in nodes:
-            self._add_node(*node)
-        self.check_consistency()
+            id_ = node.pop('id')
+            self._add_node(id_, node)
 
     def __getitem__(self, node_id):
         return self.nodes[node_id]
@@ -47,28 +61,53 @@ class Tree(object):
     def __iter__(self):
         return dict.__iter__(self.nodes)
 
-    def _add_node(self, **node):
-        new_node = Node(**node)
-        if new_node.id_node == new_node.id_parent:
-            self.root = new_node
-        self.nodes[id_node] = new_node
+    def items(self):
+        return self.nodes.items()
+
+    def _add_node(self, id_, node_dict):
+        if id_ not in self:
+            self.nodes[id_] = Node(id_)
+        self[id_].update(**node_dict)
+        if self[id_].parent == id_:
+            if hasattr(self, 'root'):
+                raise AttributeError
+            self.root = self[id_]
 
     def check_root(self):
         assert hasattr(self, 'root')
 
+    def _add_child(self):
+        for id_, node in self.items():
+            node.children = []
+            assert (node.parent in self)
+            self[node.parent].add_child(id_)
+
+    def get_nb_subchild(self):
+
+        for id_, node in self.items():
+            node.nb_subchild = 0
+
+        def add_subchild_count(self, node):
+            if len(node.children != 0):
+                node.nb_subchild = sum([self[subnode].nb_subchild for subnode
+                                                                  in node.children])
+            
+        self.trasverse_tree(add_subchild_count,
+                            deque((self.root, )),
+                            filter_args=self.self_and_node,
+                            toptobottom=False)
+
+
+#    def _check_circuitless(self):
+#        visited = set()
+#        self._trasverse_tree(check_circuitless_rec, self.root, visited=visited)
+
+#    @staticmethod
+#    def _check_unvisited(visiting, visited):
+#        assert (visiting not in visited)
+#        visited.add(visiting)
+
     @staticmethod
-    def _add_child(visiting, visited):
-       self[visiting.id_parent].append(visiting)
-
-    def _check_circuitless(self):
-        visited = set()
-        self._trasverse_tree(check_circuitless_rec, self.root, visited=visited)
-
-    @staticmethod
-    def _check_unvisited(visiting, visited):
-        assert (visiting not in visited)
-        visited.add(visiting)
-
     def default_args(self, visiting, visited, to_visit):
         '''
         filter args for trasverse_tree
@@ -80,12 +119,30 @@ class Tree(object):
             'to_visit': to_visit
         }
 
+    @staticmethod
+    def self_and_node(self, visiting, visited, to_visit):
+        return {
+            'self': self,
+            'node': visiting,
+        }
+
+#    @staticmethod
+#    def __add_child(node):
+#        self.nodes[node.parent] = node.id
+
+    def count_subchild(self, id_, count):
+        children = self[id_].children
+        count += len(children)
+        for child in children:
+            count += self.count_subchild(child, 0)
+        return count
+
     def trasverse_tree(self,
                         func,
                         to_visit,
                         visited=set(),
                         filter_args=default_args,
-                        ordering_node=lambda x:x,
+                        ordering_children=lambda x:x,
                         toptobottom=True,):
         '''
             traverse tree and apply func to each node
@@ -99,14 +156,14 @@ class Tree(object):
             - filter_args: function which filter func arguments
                            (must be a method of this class)
             - visited: set of nodes on which func has been applied
-            - ordering_node: node.children are sorted with this
-                             function before being pushed on queue
+            - ordering_children: node.children are sorted with this
+                                 function before being pushed on queue
             -toptobottom: bfs or dfs
         '''
 
         def apply_func():
             available_args = self, node, visited, to_visit
-            filtered_args = filter_args(available_args)
+            filtered_args = filter_args(*available_args)
             func(**filtered_args)
             
         try:
@@ -124,4 +181,3 @@ class Tree(object):
             apply_func()
 
         self._trasverse_tree(func, filter_args, visited, to_visit)
-
