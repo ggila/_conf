@@ -78,7 +78,6 @@ class Tree(object):
 
     def _add_child(self):
         for id_, node in self.items():
-            node.children = []
             assert (node.parent in self)
             self[node.parent].add_child(id_)
 
@@ -130,7 +129,15 @@ class Tree(object):
 #    def __add_child(node):
 #        self.nodes[node.parent] = node.id
 
-    def count_subchild(self, id_, count):
+    def count_subchild(self, id_):
+        import sys
+        recursion_limit = sys.getrecursionlimt()
+        sys.setrecursionlimit(len(self.nodes))
+        count = _count_subchild_rec(id_, 0)
+        sys.setrecursionlimit(recursion_limit)
+        return count
+
+    def _count_subchild_rec(self, id_count):
         children = self[id_].children
         count += len(children)
         for child in children:
