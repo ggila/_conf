@@ -1,43 +1,78 @@
 from collections import deque
-
-POSSIBLE_INPUT = ('id',
-                  'name',
-                  'parent',
-                  'path',
-                  'id_path',
-                  'children',
-                  'nb_subchild')
+import csv
 
 class Node(object):
 
+    ATTRIBUTES = set((
+                      'id',               # unique identifier
+                      'name',             # string
+                      'parent',           # parent id
+                      'path',             # list of parents from root to node
+                      'children',         # list of children id
+                      'nb_subchild',      # number of subchildren (!= len(children))
+                     ))
+
+
     def __init__(self, id_, **kwargs):
-        self.node_attr = ['id']
+        '''
+        `id` is mandatory (and must be comparable)
+        `kwargs` contains optionnal attribute
+        
+        Raise AttributeError if unexpected attribute in kwargs
+
+        Copy at first information then check its consistency (to be done)
+        '''
+
         self.id = id_
-        if len(kwargs) > 0:
-            self.update(**kwargs)
+
+        # raise AttributeError if unexpected attribute:
+        key_kwargs = set(kwargs.keys())
+        if key_kwargs.difference(Node.ATTRIBUTES):
+            raise AttributeError
+
+        # init expected attributes not found in kwargs
+        to_init = Node.ATTRIBUTES.difference(key_kwargs)
+        self._init(to_init)
+
+        # copy expected attributes found in kwargs
+        to_copy = Node.ATTRIBUTES.intersection(key_kwargs)
+        self.update(**{k:kwargs[k] for k in to_copy})
+
+        #self.check_consistency()
+
+    def _init(self, to_init):
+        if 'children' in to_init:
+            self.children = Node.new_default_node_children()
+        if 'nb_subchild' in to_init:
+            self.nb_subchild = 0
 
     def update(self, **kwargs):
         for k, v in kwargs.items():
-            if k not in POSSIBLE_INPUT:
-                raise KeyError
-            self.node_attr.append(k)
             setattr(self, k, v)
-        #self.check_consistency()
+
+    def get_defined_attribute(self):
+        return [attr for attr in Node.ATTRIBUTES
+                              if (hasattr(self, attr)
+                                  and getattr(self, attr))]
 
     def __repr__(self):
-        s = 'Node('
-        s += ', '.join(["{field}='{value}'".format(field=field, value=getattr(self, field))
-                            for field in POSSIBLE_INPUT 
-                            if field in self.node_attr])
-        s += ')'
-        return s
 
-    def add_child(self, id_child):
-        if not hasattr(self, 'children'):
-            self.children = []
-            self.node_attr.append('children')
-        if id_child not in self.children:
-            self.children.append(id_child)
+        def attr_to_dict(self, attr):
+            return "{attr}='{value}'".format(
+                            attr=attr,
+                            value=getattr(self, attr))
+
+        name = self.__class__.__name__
+
+        attr_lst = self.get_defined_attribute()
+        attr_formated = ', '.join([attr_to_dict(self, attr)
+                                        for attr in attr_lst])
+
+        return '{class_name}({attr})'.format(class_name=name, attr=attr_formated)
+
+    @staticmethod
+    def new_default_node_children():
+        return set()
 
     def add_parent(self, parent):
         pass
@@ -45,15 +80,50 @@ class Node(object):
 
 class Tree(object):
 
+    NODE_ATTRIBUTES = Node.ATTRIBUTES
+
     def __init__(self, nodes):
         '''
             'nodes': list of dicts describing Node
         '''
 #        self.check_consistency(nodes)
+        import datetime
         self.nodes = dict()
+        i = 0
+        start = datetime.datetime.now()
         for node in nodes:
             id_ = node.pop('id')
-            self._add_node(id_, node)
+            self.add_node(id_, node)
+            i += 1
+            if i % 5000 == 0:
+                print '{nb} attributes in tree ({time}s)'.format(nb=i, time=(datetime.datetime.now() - start).seconds)
+        print 'done: {nb} attributes in tree ({time}s)'.format(nb=i, time=(datetime.datetime.now() - start).seconds)
+        print datetime.datetime.now()
+
+#SHOULD ADAPT (DEFAULT_NODE_KEY)
+#    @classmethod
+#    def from_file(cls, file_):
+#        with open(file_) as f:
+#            csv_lines = csv.reader(f)
+#            format_ = csv_lines.next()
+#            self.csv_reader = self._handle_csv_format(format_)
+#            for line in csv_lines:
+#                node = self.csv_reader(line)
+#                nodes.append(node)
+#        return cls(**node)
+#
+#    def _handle_csv_format(self, format_):
+#        '''
+#            Check format and return function allowing to read wanted field from input
+#        '''
+#        for field in DEFAULT_NODE_KEY:
+#            assert (field in format_), "'id', 'name' or 'parent_id' not define in taxo"
+#        indices = [format_.index(field) for field in DEFAULT_NODE_KEY]
+#
+#        def csv_reader(line):
+#            return {field:line[index] for field, index in zip(Node.ATTRIBUTES, indices)}
+#
+#        return csv_reader
 
     def __getitem__(self, node_id):
         return self.nodes[node_id]
@@ -64,30 +134,46 @@ class Tree(object):
     def items(self):
         return self.nodes.items()
 
-    def _add_node(self, id_, node_dict):
-        if id_ not in self:
+    def add_node(self, id_, node_dict):
+        if id_ not in self:                 # node might have already been created (by one of its children)
             self.nodes[id_] = Node(id_)
         self[id_].update(**node_dict)
+        if 'parent' in node_dict:
+            parent = node_dict['parent']
+            self._handle_root(parent, id_)
+            if 'children' not in node_dict:
+                self._set_children_from_parent(parent, id_)
+    
+    def _handle_root(self, parent, id_):
         if self[id_].parent == id_:
             if hasattr(self, 'root'):
                 raise AttributeError
             self.root = self[id_]
 
-    def check_root(self):
-        assert hasattr(self, 'root')
+    def _set_children_from_parent(self, parent, id_):
+        if parent not in self.nodes:
+            self.nodes[parent] = Node(parent)
+        self[parent].add_child(id_)
 
-    def _add_child(self):
-        for id_, node in self.items():
-            assert (node.parent in self)
-            self[node.parent].add_child(id_)
+    def count_subchild(self, node):
+        import sys
+        recursion_limit = sys.getrecursionlimit()
+        sys.setrecursionlimit(len(self.nodes))
+        count = self._count_subchild_rec(node, 0)
+        sys.setrecursionlimit(recursion_limit)
+        return count
+
+    def _count_subchild_rec(self, node, count):
+        children = node.children
+        count += len(children)
+        for child_id in children:
+            count += self._count_subchild_rec(self[child_id], 0)
+        return count
 
     def get_nb_subchild(self):
 
-        for id_, node in self.items():
-            node.nb_subchild = 0
-
         def add_subchild_count(self, node):
-            if len(node.children != 0):
+            if len(node.children) != 0:
                 node.nb_subchild = sum([self[subnode].nb_subchild for subnode
                                                                   in node.children])
             
@@ -124,25 +210,6 @@ class Tree(object):
             'self': self,
             'node': visiting,
         }
-
-#    @staticmethod
-#    def __add_child(node):
-#        self.nodes[node.parent] = node.id
-
-    def count_subchild(self, id_):
-        import sys
-        recursion_limit = sys.getrecursionlimt()
-        sys.setrecursionlimit(len(self.nodes))
-        count = _count_subchild_rec(id_, 0)
-        sys.setrecursionlimit(recursion_limit)
-        return count
-
-    def _count_subchild_rec(self, id_count):
-        children = self[id_].children
-        count += len(children)
-        for child in children:
-            count += self.count_subchild(child, 0)
-        return count
 
     def trasverse_tree(self,
                         func,
@@ -187,4 +254,4 @@ class Tree(object):
         if not toptobottom:
             apply_func()
 
-        self._trasverse_tree(func, filter_args, visited, to_visit)
+        self.trasverse_tree(func, filter_args, visited, to_visit)

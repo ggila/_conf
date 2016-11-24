@@ -71,6 +71,7 @@ noremap <leader>sw :set wrap!<CR>
 noremap <leader>SW :tabdo windo set wrap!<CR>1gt
 noremap <leader>sp :set paste!<CR>
 noremap <leader>hls :set hlsearch!<CR>
+noremap <leader>sn :set number!<CR>
 
 " (non actif) set status line color according to mode (non actif) ------ {{{
 " first, enable status line always
