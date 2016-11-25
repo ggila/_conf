@@ -46,11 +46,19 @@ class Node(object):
         if 'nb_subchild' in to_init:
             self.nb_subchild = 0
 
+    @staticmethod
+    def new_default_node_children():
+        return set()
+
     def update(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
 
     def get_defined_attribute(self):
+        '''
+            Return list of non-null self attributes name
+            (shoul)
+        '''
         return [attr for attr in Node.ATTRIBUTES
                               if (hasattr(self, attr)
                                   and getattr(self, attr))]
@@ -58,21 +66,19 @@ class Node(object):
     def __repr__(self):
 
         def attr_to_dict(self, attr):
-            return "{attr}='{value}'".format(
+            return '{attr}={value}'.format(
                             attr=attr,
                             value=getattr(self, attr))
 
         name = self.__class__.__name__
 
         attr_lst = self.get_defined_attribute()
-        attr_formated = ', '.join([attr_to_dict(self, attr)
-                                        for attr in attr_lst])
+        formated_attr = [attr_to_dict(self, attr) for attr
+                                                    in attr_lst
+                                                    if attr != 'id']
+        attr_formated = ', '.join(attr_lst)
 
         return '{class_name}({attr})'.format(class_name=name, attr=attr_formated)
-
-    @staticmethod
-    def new_default_node_children():
-        return set()
 
     def add_parent(self, parent):
         pass
@@ -86,19 +92,14 @@ class Tree(object):
         '''
             'nodes': list of dicts describing Node
         '''
-#        self.check_consistency(nodes)
         import datetime
-        self.nodes = dict()
-        i = 0
         start = datetime.datetime.now()
+        self.nodes = dict()
+        #self.complete_node(nodes)
         for node in nodes:
             id_ = node.pop('id')
-            self.add_node(id_, node)
-            i += 1
-            if i % 5000 == 0:
-                print '{nb} attributes in tree ({time}s)'.format(nb=i, time=(datetime.datetime.now() - start).seconds)
-        print 'done: {nb} attributes in tree ({time}s)'.format(nb=i, time=(datetime.datetime.now() - start).seconds)
-        print datetime.datetime.now()
+            self.nodes[id_] = Node(id_, **node)
+        print '\ndone: {:>5} ({}s)'.format(len(self.nodes), (datetime.datetime.now() - start))
 
 #SHOULD ADAPT (DEFAULT_NODE_KEY)
 #    @classmethod
@@ -135,14 +136,14 @@ class Tree(object):
         return self.nodes.items()
 
     def add_node(self, id_, node_dict):
-        if id_ not in self:                 # node might have already been created (by one of its children)
-            self.nodes[id_] = Node(id_)
-        self[id_].update(**node_dict)
-        if 'parent' in node_dict:
-            parent = node_dict['parent']
-            self._handle_root(parent, id_)
-            if 'children' not in node_dict:
-                self._set_children_from_parent(parent, id_)
+        pass
+      #  if id_ not in self:                 # node might have already been created (by one of its children)
+      #  self[id_].update(**node_dict)
+      #  if 'parent' in node_dict:
+      #      parent = node_dict['parent']
+      #      self._handle_root(parent, id_)
+      #      if 'children' not in node_dict:
+      #          self._set_children_from_parent(parent, id_)
     
     def _handle_root(self, parent, id_):
         if self[id_].parent == id_:
