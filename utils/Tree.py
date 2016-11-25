@@ -1,4 +1,5 @@
 from collections import deque
+import json
 import csv
 
 class Node(object):
@@ -20,7 +21,7 @@ class Node(object):
         
         Raise AttributeError if unexpected attribute in kwargs
 
-        Copy at first information then check its consistency (to be done)
+        Copy at first information then check its consistency
         '''
 
         self.id = id_
@@ -30,15 +31,15 @@ class Node(object):
         if key_kwargs.difference(Node.ATTRIBUTES):
             raise AttributeError
 
-        # init expected attributes not found in kwargs
-        to_init = Node.ATTRIBUTES.difference(key_kwargs)
-        self._init(to_init)
-
         # copy expected attributes found in kwargs
         to_copy = Node.ATTRIBUTES.intersection(key_kwargs)
         self.update(**{k:kwargs[k] for k in to_copy})
 
-        #self.check_consistency()
+        # init expected attributes not found in kwargs
+        to_init = Node.ATTRIBUTES.difference(key_kwargs)
+        self._init(to_init)
+
+        #self.check_consistency() TODO
 
     def _init(self, to_init):
         if 'children' in to_init:
@@ -54,7 +55,7 @@ class Node(object):
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    def get_defined_attribute(self):
+    def _get_defined_attribute(self):
         '''
             Return list of non-null self attributes name
             (shoul)
@@ -65,23 +66,32 @@ class Node(object):
 
     def __repr__(self):
 
-        def attr_to_dict(self, attr):
-            return '{attr}={value}'.format(
+        def to_str(self, attr):
+            return '{attr}="{value}"'.format(
                             attr=attr,
                             value=getattr(self, attr))
 
         name = self.__class__.__name__
 
-        attr_lst = self.get_defined_attribute()
-        formated_attr = [attr_to_dict(self, attr) for attr
+        attr_lst = self._get_defined_attribute()
+        formated_attr = [to_str(self, attr) for attr
                                                     in attr_lst
                                                     if attr != 'id']
-        attr_formated = ', '.join(attr_lst)
+        return '{class_name}("{id_}", {other_attr})'.format(
+                                class_name=name,
+                                id_=self.id, 
+                                other_attr=', '.join(formated_attr))
 
-        return '{class_name}({attr})'.format(class_name=name, attr=attr_formated)
 
-    def add_parent(self, parent):
-        pass
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        return NotImplemented
+
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return not self.__eq__(other)
+        return NotImplemented
 
 
 class Tree(object):
@@ -92,39 +102,13 @@ class Tree(object):
         '''
             'nodes': list of dicts describing Node
         '''
-        import datetime
-        start = datetime.datetime.now()
         self.nodes = dict()
-        #self.complete_node(nodes)
+        #self.complete_node_attributes(nodes)
+        print 'node setup ok'.format(len(self.nodes))
         for node in nodes:
             id_ = node.pop('id')
             self.nodes[id_] = Node(id_, **node)
-        print '\ndone: {:>5} ({}s)'.format(len(self.nodes), (datetime.datetime.now() - start))
-
-#SHOULD ADAPT (DEFAULT_NODE_KEY)
-#    @classmethod
-#    def from_file(cls, file_):
-#        with open(file_) as f:
-#            csv_lines = csv.reader(f)
-#            format_ = csv_lines.next()
-#            self.csv_reader = self._handle_csv_format(format_)
-#            for line in csv_lines:
-#                node = self.csv_reader(line)
-#                nodes.append(node)
-#        return cls(**node)
-#
-#    def _handle_csv_format(self, format_):
-#        '''
-#            Check format and return function allowing to read wanted field from input
-#        '''
-#        for field in DEFAULT_NODE_KEY:
-#            assert (field in format_), "'id', 'name' or 'parent_id' not define in taxo"
-#        indices = [format_.index(field) for field in DEFAULT_NODE_KEY]
-#
-#        def csv_reader(line):
-#            return {field:line[index] for field, index in zip(Node.ATTRIBUTES, indices)}
-#
-#        return csv_reader
+        print 'tree ok'.format(len(self.nodes))
 
     def __getitem__(self, node_id):
         return self.nodes[node_id]
@@ -134,6 +118,9 @@ class Tree(object):
 
     def items(self):
         return self.nodes.items()
+
+#    def complete_node_attributes(self, id_, node_dict):
+#        pass
 
     def add_node(self, id_, node_dict):
         pass
