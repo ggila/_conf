@@ -1,6 +1,14 @@
+#!/usr/bin/env python
+
+'''
+    Python Tree (connected circuitless graph) Implementation
+'''
+
 from collections import deque
 import json
 import csv
+
+(_BFS, _WFS0 = range(2)
 
 class Node(object):
 
@@ -12,6 +20,14 @@ class Node(object):
                       'children',         # list of children id
                       'nb_subchild',      # number of subchildren (!= len(children))
                      ))
+
+    INIT_FUNC = {
+                    # k: attributes which need to be init
+                    # v: function returning init value
+                    'path': list,
+                    'children': set,
+                    'nb_subchild': int,
+                }
 
 
     def __init__(self, id_, **kwargs):
@@ -26,30 +42,32 @@ class Node(object):
 
         self.id = id_
 
+        kwargs_attr = set(kwargs.keys())
+        all_attr = Node.ATTRIBUTES 
+        init_attr = set(Node.INIT_FUNC)
+
+
         # raise AttributeError if unexpected attribute:
-        key_kwargs = set(kwargs.keys())
-        if key_kwargs.difference(Node.ATTRIBUTES):
-            raise AttributeError
+        unknown_attr = set.difference(kwargs_attr, all_attr)
+        if unknown_attr:
+            raise AttributeError, 'unknown attributes: {attrs}'.format(attrs=unknown_attr)
 
         # copy expected attributes found in kwargs
-        to_copy = Node.ATTRIBUTES.intersection(key_kwargs)
+        to_copy = set.intersection(kwargs_attr, all_attr)
         self.update(**{k:kwargs[k] for k in to_copy})
 
         # init expected attributes not found in kwargs
-        to_init = Node.ATTRIBUTES.difference(key_kwargs)
-        self._init(to_init)
+        to_init = set.difference(init_attr, kwargs_attr)
+        self._init(*to_init)
 
         #self.check_consistency() TODO
 
-    def _init(self, to_init):
-        if 'children' in to_init:
-            self.children = Node.new_default_node_children()
-        if 'nb_subchild' in to_init:
-            self.nb_subchild = 0
-
-    @staticmethod
-    def new_default_node_children():
-        return set()
+    def _init(self, *attrs):
+        init = Node.INIT_FUNC
+        for attr in attrs:
+            if attr in init:
+                val = init[attr]()
+                setattr(self, attr, val)
 
     def update(self, **kwargs):
         for k, v in kwargs.items():
@@ -63,6 +81,10 @@ class Node(object):
         return [attr for attr in Node.ATTRIBUTES
                               if (hasattr(self, attr)
                                   and getattr(self, attr))]
+
+    def add_child(self, id_child):
+        if id_child not in self.children:
+            self.children.add(id_child)
 
     def __repr__(self):
 
@@ -98,17 +120,28 @@ class Tree(object):
 
     NODE_ATTRIBUTES = Node.ATTRIBUTES
 
-    def __init__(self, nodes):
+    def __init__(self, nodes=[]):
         '''
             'nodes': list of dicts describing Node
         '''
         self.nodes = dict()
         #self.complete_node_attributes(nodes)
-        print 'node setup ok'.format(len(self.nodes))
+        #print 'node setup ok'.format(len(self.nodes))
         for node in nodes:
             id_ = node.pop('id')
             self.nodes[id_] = Node(id_, **node)
+        self._check()
         print 'tree ok'.format(len(self.nodes))
+
+    def _check(self):
+        for id_, node in self.items():
+            if node.parent == id_:
+                if hasattr(self, 'root'):
+                    raise AttributeError
+                self.root = node
+                return
+        if not hasattr(self, 'root'):
+            print 'no root find'
 
     def __getitem__(self, node_id):
         return self.nodes[node_id]
@@ -119,44 +152,22 @@ class Tree(object):
     def items(self):
         return self.nodes.items()
 
-#    def complete_node_attributes(self, id_, node_dict):
-#        pass
 
+    #TOUPDATE
     def add_node(self, id_, node_dict):
-        pass
-      #  if id_ not in self:                 # node might have already been created (by one of its children)
-      #  self[id_].update(**node_dict)
-      #  if 'parent' in node_dict:
-      #      parent = node_dict['parent']
-      #      self._handle_root(parent, id_)
-      #      if 'children' not in node_dict:
-      #          self._set_children_from_parent(parent, id_)
+        if id_ not in self:                 # node might have already been created (by one of its children)
+            self.nodes[id_] = Node(id_)
+        self[id_].update(**node_dict)
+        if 'parent' in node_dict:
+            parent = node_dict['parent']
+            self._handle_root(parent, id_)
+            if 'children' not in node_dict:
+                self._set_children_from_parent(parent, id_)
     
-    def _handle_root(self, parent, id_):
-        if self[id_].parent == id_:
-            if hasattr(self, 'root'):
-                raise AttributeError
-            self.root = self[id_]
-
     def _set_children_from_parent(self, parent, id_):
         if parent not in self.nodes:
             self.nodes[parent] = Node(parent)
         self[parent].add_child(id_)
-
-    def count_subchild(self, node):
-        import sys
-        recursion_limit = sys.getrecursionlimit()
-        sys.setrecursionlimit(len(self.nodes))
-        count = self._count_subchild_rec(node, 0)
-        sys.setrecursionlimit(recursion_limit)
-        return count
-
-    def _count_subchild_rec(self, node, count):
-        children = node.children
-        count += len(children)
-        for child_id in children:
-            count += self._count_subchild_rec(self[child_id], 0)
-        return count
 
     def get_nb_subchild(self):
 
@@ -180,32 +191,10 @@ class Tree(object):
 #        assert (visiting not in visited)
 #        visited.add(visiting)
 
-    @staticmethod
-    def default_args(self, visiting, visited, to_visit):
-        '''
-        filter args for trasverse_tree
-        '''
-        return {
-            'self': self,
-            'node': node,
-            'visited': visited,
-            'to_visit': to_visit
-        }
-
-    @staticmethod
-    def self_and_node(self, visiting, visited, to_visit):
-        return {
-            'self': self,
-            'node': visiting,
-        }
-
-    def trasverse_tree(self,
+    def _bfs(self,
+                        starting_node,
                         func,
-                        to_visit,
-                        visited=set(),
-                        filter_args=default_args,
-                        ordering_children=lambda x:x,
-                        toptobottom=True,):
+                        order=_BFS):
         '''
             traverse tree and apply func to each node
 
@@ -223,23 +212,35 @@ class Tree(object):
             -toptobottom: bfs or dfs
         '''
 
-        def apply_func():
-            available_args = self, node, visited, to_visit
-            filtered_args = filter_args(*available_args)
-            func(**filtered_args)
-            
-        try:
+        def trasverse_tree_rec(self,
+                            to_visit,
+                            func,
+                            toptobottom:
+                            visited):
+       
             node = to_visit.popleft()
-        except IndexError:
-            return
-
-        if toptobottom:
-            apply_func()
-
-        children = ordering_children(node.children)
-        to_visit.extend(children)
+            to_visit.extend(node.children)
 
         if not toptobottom:
-            apply_func()
+            func(self, node, visited, to_visit, visiting)
 
         self.trasverse_tree(func, filter_args, visited, to_visit)
+
+        if toptobottom:
+            func(self, node, visited, to_visit, visiting)
+
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            if len(self.nodes) != len(other.nodes):
+                return False
+            for k in self.nodes:
+                if self[k] != other[k]:
+                    return False
+            return True
+        return NotImplemented
+
+    def __ne__(self, other):
+        if isinstance(other, self.__class__):
+            return not self.__eq__(other)
+        return NotImplemented
