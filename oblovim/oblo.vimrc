@@ -132,10 +132,10 @@ noremap <C-l> <C-w>l
 noremap <C-q> <C-w><C-p>
 
 " resize window
-noremap <S-UP> :res -5<CR>
-noremap <S-DOWN> :res +5<CR>
-noremap <S-LEFT> :vertical res -5<CR>
-noremap <S-RIGHT> :vertical res +5<CR>
+noremap <leader>s :res -5<CR>
+noremap <leader>w :res +5<CR>
+noremap <leader>a :vertical res -5<CR>
+noremap <leader>d :vertical res +5<CR>
 
 " new file in new window
 noremap <leader>vsh :vsp<CR>:e 
