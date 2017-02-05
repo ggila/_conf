@@ -7,6 +7,3 @@ export PYTHONPATH="/home/gaut/insights:/home/gaut/insights/lbd-core"
 export NVM_DIR="/home/gaut/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-if [ -f "$HOME/.var_env.sh" ]; then
-  source "$HOME/.var_env.sh"
-fi
