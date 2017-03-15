@@ -84,26 +84,6 @@ noremap <leader>sn :set number!<CR>
 "endif
 " }}}
 
-" source filetype  ------------------------------------------- {{{
-augroup kindoffile
-	autocmd!
-	autocmd BufNewFile,BufRead *.h set filetype=c
-	autocmd BufNewFile,BufRead *.md so $_VIM_DIR/filetype/markdown.vim
-	autocmd BufNewFile,BufRead *.scala so $_VIM_DIR/filetype/scala.vim
-	autocmd FileType sh so $_VIM_DIR/filetype/sh.vim
-	autocmd FileType javascript so $_VIM_DIR/filetype/javascript.vim
-	autocmd FileType python so $_VIM_DIR/filetype/python.vim
-	autocmd FileType cpp so $_VIM_DIR/filetype/cpp.vim
-	autocmd FileType netrw so $_VIM_DIR/filetype/netrw.vim
-	autocmd FileType help :noremap <buffer> q :q<CR>
-	autocmd FileType make :let b:com = '#'
-	autocmd Filetype vim so $_VIM_DIR/filetype/vim.vim
-	autocmd FileType c so $_VIM_DIR/filetype/c.vim
-augroup END
-"  ------------------------------------------- }}}
-noremap <leader>s :so $_CONF_DIR/vimrc<CR>
-noremap ss :so %<CR>
-
 " edit config (set new tab)   ------------------------------------------- {{{
 fun! SetConfigTab()
 	exe ":tabnew"
@@ -258,9 +238,29 @@ nnoremap C :call Comment1Line()<CR>
 vnoremap C :call CommentVisual()<CR>
 vnoremap u :call UncommentVisual()<CR>
 
-" infinite undo ------------------------------------- {{{
-set undofile
-set undodir=~/.vim/undo
+" (unset) infinite undo (unset) -------------- {{{
+"set undofile
+"set undodir=~/.vim/undo
 "  ------------------------------------------- }}}
 
 nnoremap <leader>proj :source $_VIM_DIR/cproj.vim<CR>
+
+" source filetype  ------------------------------------------- {{{
+augroup kindoffile
+	autocmd!
+	autocmd BufNewFile,BufRead *.h set filetype=c
+	autocmd BufNewFile,BufRead *.md so $_VIM_DIR/filetype/markdown.vim
+	autocmd BufNewFile,BufRead *.scala so $_VIM_DIR/filetype/scala.vim
+	autocmd FileType sh so $_VIM_DIR/filetype/sh.vim
+	autocmd FileType javascript so $_VIM_DIR/filetype/javascript.vim
+	autocmd FileType python so $_VIM_DIR/filetype/python.vim
+	autocmd FileType cpp so $_VIM_DIR/filetype/cpp.vim
+	autocmd FileType netrw so $_VIM_DIR/filetype/netrw.vim
+	autocmd FileType help :noremap <buffer> q :q<CR>
+	autocmd FileType make :let b:com = '#'
+	autocmd Filetype vim so $_VIM_DIR/filetype/vim.vim
+	autocmd FileType c so $_VIM_DIR/filetype/c.vim
+augroup END
+"  ------------------------------------------- }}}
+noremap <leader>s :so $_CONF_DIR/vimrc<CR>
+noremap ss :so %<CR>
