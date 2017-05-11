@@ -47,7 +47,7 @@ set list
 set listchars=tab:\|\ 
 
 " status line
-set statusline=%f\ \ \ \ %y\ %m%r%=%b\ %l/%L(%p)
+set statusline=%f\ %y%m\ %r\ char:%b\ col:\ %c
 set laststatus=2
 
 " encoding

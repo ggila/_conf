@@ -15,4 +15,6 @@ inoremap <buffer> deprint
    \print '______________________'<ENTER>
    \print '^^^^^^^^^^^^^^^^^^^^^^'<ESC>Oprint 
 
+inoremap <buffer> debpdb import pdb; pdb.set_trace()
+
 nnoremap <buffer> <leader>fpy :%s/\t/    /g<ENTER>
