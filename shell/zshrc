@@ -1,22 +1,30 @@
-source "$HOME/_conf/shell/var_env.sh"
+# env var
+export _CONF_DIR="$HOME/_conf"
+export _GIT_DIR="$HOME/_git"
+export _VIM_DIR="$_CONF_DIR/oblovim"
 
-##HISTORY
+export PYTHONPATH="$HOME/insights:$HOME/insights/lbd-core"
 
-PATH=$HOME/.brew/bin:$_CONF_DIR/script:$PATH
-HISTFILE=~/.zshrc_history
-SAVEHIST=5000
-HISTSIZE=5000
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
+# history
 setopt inc_append_history
 setopt share_history
 
-##Color
+# color
 autoload -U colors && colors
 
 
-##ALIAS
-alias so="source $_CONF_DIR/zshrc"
-source "$_CONF_DIR/shell/alias.sh"
+# alias
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias conf="cd $_CONF_DIR"
+alias meteo='curl wttr.in'
+alias emacs="emacs -nw"
 
 #mmv *.txt *.data
 autoload -U zmv
