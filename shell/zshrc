@@ -16,6 +16,8 @@ setopt share_history
 # color
 autoload -U colors && colors
 
+# bindkey
+bindkey -M vicmd '/' history-incremental-search-backward
 
 # alias
 alias ..='cd ..'
@@ -25,6 +27,7 @@ alias .....='cd ../../../..'
 alias conf="cd $_CONF_DIR"
 alias meteo='curl wttr.in'
 alias v='bindkey -v'
+alias e='bindkey -e'
 
 #mmv *.txt *.data
 autoload -U zmv
