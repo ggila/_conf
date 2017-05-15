@@ -9,15 +9,17 @@ export PYTHONPATH="$HOME/insights:$HOME/insights/lbd-core"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
+# virtual_env
+export WORKON_HOME="$HOME/Envs"
+source /usr/local/bin/virtualenvwrapper.sh
+
+
 # history
 setopt inc_append_history
 setopt share_history
 
 # color
 autoload -U colors && colors
-
-# bindkey
-bindkey -M vicmd '/' history-incremental-search-backward
 
 # alias
 alias ..='cd ..'
