@@ -30,6 +30,7 @@ alias conf="cd $_CONF_DIR"
 alias meteo='curl wttr.in'
 alias v='bindkey -v'
 alias e='bindkey -e'
+alias rmpyc='rm **/*.pyc'
 
 #mmv *.txt *.data
 autoload -U zmv

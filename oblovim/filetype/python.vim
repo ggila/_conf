@@ -15,6 +15,10 @@ inoremap <buffer> deprint
    \print '______________________'<ENTER>
    \print '^^^^^^^^^^^^^^^^^^^^^^'<ESC>Oprint 
 
-inoremap <buffer> debpdb import pdb; pdb.set_trace()
+nnoremap <buffer> pretty 
+   \diwIprint '<c-r>": {}'.format(<C-r>")<ESC>
+
+inoremap <buffer> ipdb import ipdb; ipdb.set_trace()
+inoremap <buffer> pdb import pdb; pdb.set_trace()
 
 nnoremap <buffer> <leader>fpy :%s/\t/    /g<ENTER>

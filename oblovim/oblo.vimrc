@@ -44,7 +44,7 @@ set noignorecase
 " tab style (python tab define in filetype/python.vim)
 set tabstop=4
 set list
-set listchars=tab:\|\ 
+set listchars=tab:\|\
 
 " status line
 set statusline=%f\ %y%m\ %r\ char:%b\ col:\ %c
@@ -61,6 +61,7 @@ colorscheme peachpuff
 " Command
 command! Q q
 command! W w
+command! W1 w!
 command! WQ wq
 command! Wq wq
 command! Qa qa
@@ -255,6 +256,7 @@ augroup kindoffile
 	autocmd FileType javascript so $_VIM_DIR/filetype/javascript.vim
 	autocmd FileType python so $_VIM_DIR/filetype/python.vim
 	autocmd FileType cpp so $_VIM_DIR/filetype/cpp.vim
+	autocmd FileType html so $_VIM_DIR/filetype/html.vim
 	autocmd FileType netrw so $_VIM_DIR/filetype/netrw.vim
 	autocmd FileType help :noremap <buffer> q :q<CR>
 	autocmd FileType make :let b:com = '#'
@@ -264,3 +266,6 @@ augroup END
 "  ------------------------------------------- }}}
 noremap <leader>s :so $_CONF_DIR/vimrc<CR>
 noremap ss :so %<CR>
+
+" count word under cursor
+noremap <leader>count yiw:%s/<c-r>"//gn<CR>
