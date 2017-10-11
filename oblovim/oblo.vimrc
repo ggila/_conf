@@ -5,6 +5,7 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'fisadev/vim-isort'
 
 
 call vundle#end()
@@ -24,6 +25,9 @@ let mapleader = ","
 " escape keys
 inoremap jk <ESC>
 inoremap kj <ESC>
+set nobackup
+set nowritebackup
+set noswapfile
 
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 2

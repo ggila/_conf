@@ -4,6 +4,7 @@ export _GIT_DIR="$HOME/_git"
 export _VIM_DIR="$_CONF_DIR/oblovim"
 
 export PYTHONPATH="$HOME/insights:$HOME/insights/lbd-core"
+export PFDC="172.31.8.109"
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
@@ -31,6 +32,9 @@ alias meteo='curl wttr.in'
 alias v='bindkey -v'
 alias e='bindkey -e'
 alias rmpyc='rm **/*.pyc'
+alias ssh-pfdc='ssh gautier.gilabert@prod-pfdc-api.apps.artefact.is'
+alias gfunc="gcloud beta functions"
+alias gmul="functions-emulator"
 
 #mmv *.txt *.data
 autoload -U zmv
@@ -44,3 +48,10 @@ source "$_CONF_DIR/shell/function/man.sh"
 source "$_CONF_DIR/shell/function/precmd.sh"
 source "$_CONF_DIR/shell/function/save-go.sh"
 export LESS=-RFX
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /home/gaut/.nvm/versions/node/v6.7.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/gaut/.nvm/versions/node/v6.7.0/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /home/gaut/.nvm/versions/node/v6.7.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /home/gaut/.nvm/versions/node/v6.7.0/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
