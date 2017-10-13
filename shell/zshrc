@@ -1,5 +1,9 @@
 source "$HOME/_conf/shell/var_env.sh"
 
+##COMPLETION
+autoload -u compinit
+compinit
+
 ##HISTORY
 
 PATH=$HOME/.brew/bin:$_CONF_DIR/script:$PATH
@@ -16,6 +20,7 @@ autoload -U colors && colors
 
 ##ALIAS
 alias so="source $_CONF_DIR/zshrc"
+alias gfuncs="gcloud beta functions"
 source "$_CONF_DIR/shell/alias.sh"
 
 #mmv *.txt *.data
