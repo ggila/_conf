@@ -6,7 +6,6 @@ bashrc
 zshrc
 gitconfig
 tmux.conf
-var_env.sh
 "
 
 #if [[ ! -d "_conf" || ! -f "_conf/shell/var_env" ]]; then 
@@ -14,7 +13,7 @@ var_env.sh
 #  exit 1
 #fi
 
-source './_conf/var_env.sh'
+source "$HOME/_conf/var_env.sh"
 
 get_answer () {
   while :

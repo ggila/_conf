@@ -1,27 +1,46 @@
-source "$HOME/_conf/shell/var_env.sh"
+# env var
+export _CONF_DIR="$HOME/_conf"
+export _GIT_DIR="$HOME/_git"
+export _VIM_DIR="$_CONF_DIR/oblovim"
 
 ##COMPLETION
 autoload -u compinit
 compinit
 
 ##HISTORY
+export PYTHONPATH=$HOME
+export PFDC="172.31.8.109"
 
-PATH=$HOME/.brew/bin:$_CONF_DIR/script:$PATH
-HISTFILE=~/.zshrc_history
-SAVEHIST=5000
-HISTSIZE=5000
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
+# virtual_env
+export WORKON_HOME="$HOME/Envs"
+source /usr/local/bin/virtualenvwrapper.sh
+
+
+# history
 setopt inc_append_history
 setopt share_history
 
-##Color
+# color
 autoload -U colors && colors
 
 
 ##ALIAS
 alias so="source $_CONF_DIR/zshrc"
-alias gfuncs="gcloud beta functions"
-source "$_CONF_DIR/shell/alias.sh"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias conf="cd $_CONF_DIR"
+alias meteo='curl wttr.in'
+alias v='bindkey -v'
+alias e='bindkey -e'
+alias rmpyc='rm **/*.pyc'
+alias gfunc="gcloud beta functions"
+alias gmul="functions-emulator"
 
 #mmv *.txt *.data
 autoload -U zmv
@@ -35,3 +54,4 @@ source "$_CONF_DIR/shell/function/man.sh"
 source "$_CONF_DIR/shell/function/precmd.sh"
 source "$_CONF_DIR/shell/function/save-go.sh"
 export LESS=-RFX
+

@@ -1,8 +1,8 @@
 let b:com = '//'
 
 setlocal expandtab
-setlocal shiftwidth=2
-setlocal softtabstop=2
+setlocal shiftwidth=4
+setlocal softtabstop=4
 
 func! CommentFirstLine()
 	let l:len = 3 
@@ -15,5 +15,5 @@ func! CommentFirstLine()
 endfunc
 
 
-nnoremap C :call CommentFirstLine()<CR>
-nnoremap C :call CommentLastLine()<CR>
+" nnoremap C :call CommentFirstLine()<CR>
+" nnoremap C :call CommentLastLine()<CR>
