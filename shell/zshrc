@@ -8,7 +8,8 @@ autoload -u compinit
 compinit
 
 ##HISTORY
-export PYTHONPATH=$HOME
+export PATH="$PATH:$HOME/cdiscount-voice/bin"
+export PYTHONPATH="$CONF_DIR/python:$HOME/cdiscount-voice"
 export PFDC="172.31.8.109"
 
 # nvm
