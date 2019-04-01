@@ -4,7 +4,7 @@ export _GIT_DIR="$HOME/_git"
 export _VIM_DIR="$_CONF_DIR/oblovim"
 
 ##COMPLETION
-autoload -u compinit
+autoload -U compinit
 compinit
 
 ##HISTORY
