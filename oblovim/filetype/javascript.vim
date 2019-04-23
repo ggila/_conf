@@ -1,8 +1,8 @@
 let b:com = '//'
 
 setlocal expandtab
-setlocal shiftwidth=4
-setlocal softtabstop=4
+setlocal shiftwidth=2
+setlocal softtabstop=2
 
 func! CommentFirstLine()
 	let l:len = 3 
