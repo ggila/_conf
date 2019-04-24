@@ -81,6 +81,9 @@ inoremap kj <ESC>
 noremap <leader>sw :set wrap!<CR>
 noremap <leader>SW :tabdo windo set wrap!<CR>1gt
 
+" fold
+noremap <leader>sf :set foldmethod=indent<CR>
+
 " switch paste mode
 noremap <leader>sp :set paste!<CR>
 
