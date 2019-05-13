@@ -137,6 +137,9 @@ noremap <leader>7 7gt
 noremap <leader>8 8gt
 noremap <leader>9 9gt
 
+"format json
+noremap <leader>json :%!python -m json.tool<CR>
+
 " }}}
 
 " Helpers  ------------------------------------------- {{{
