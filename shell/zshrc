@@ -42,7 +42,7 @@ alias e='bindkey -e'
 alias rmpyc='rm **/*.pyc'
 alias gfunc="gcloud beta functions"
 alias gmul="functions-emulator"
-alias nochrome="open -a Google\ Chrome --args --disable-web-security --user-data-dir"
+alias chromenosecu="open -a Google\ Chrome --args --disable-web-security --user-data-dir"
 
 #mmv *.txt *.data
 autoload -U zmv
