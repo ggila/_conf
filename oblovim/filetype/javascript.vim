@@ -14,6 +14,11 @@ func! CommentFirstLine()
 	endif
 endfunc
 
-
+nnoremap <leader>log yiwoconsole.log({})<esc>hP
+                        \F(a">>>>> <c-r>=expand("%:t")<cr>", 
+                        \<c-r>=line('.')<cr>, <esc>
+vnoremap <leader>log yoconsole.log()<esc>P
+                        \0f(a">>>>> <c-r>=expand("%:t")<cr>", 
+                        \<c-r>=line('.')<cr>, <esc>
 " nnoremap C :call CommentFirstLine()<CR>
 " nnoremap C :call CommentLastLine()<CR>

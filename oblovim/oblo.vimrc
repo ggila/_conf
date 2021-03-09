@@ -7,7 +7,12 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'fisadev/vim-isort'
 Plugin 'tpope/vim-surround'
-
+Plugin 'dense-analysis/ale'
+let g:ale_set_highlights = 0
+let g:ale_fixers = {
+ \ 'javascript': ['eslint']
+ \ }
+Plugin 'psf/black'
 
 call vundle#end()
 filetype plugin indent on
@@ -32,6 +37,8 @@ set autoindent
 set incsearch
 set noignorecase
 
+" tabpagemax
+set tabpagemax=100
 
 " tab style
 set expandtab
@@ -66,6 +73,7 @@ command! WQ wq
 command! Wq wq
 command! Qa qa
 command! QA qa
+command! Ssess mks! .session.vim
 
 " }}}
 
@@ -73,6 +81,8 @@ command! QA qa
 
 " mapleader
 let mapleader = ","
+
+inoremap i18nt i18n.t('')<esc>hi
 
 " escape keys
 inoremap jk <ESC>
@@ -196,6 +206,7 @@ augroup kindoffile
     autocmd BufNewFile,BufRead *.scala so $_VIM_DIR/filetype/scala.vim
     autocmd FileType sh so $_VIM_DIR/filetype/sh.vim
     autocmd FileType javascript so $_VIM_DIR/filetype/javascript.vim
+    autocmd FileType javascriptreact so $_VIM_DIR/filetype/javascript.vim
     autocmd FileType python so $_VIM_DIR/filetype/python.vim
     autocmd FileType cpp so $_VIM_DIR/filetype/cpp.vim
     autocmd FileType html so $_VIM_DIR/filetype/html.vim

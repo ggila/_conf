@@ -9,12 +9,14 @@ setlocal expandtab
 setlocal shiftwidth=4
 setlocal softtabstop=4
 
-inoremap <buffer> deprint 
+inoremap <buffer> <leader>log
    \print '______________________'<ENTER>
    \print '^^^^^^^^^^^^^^^^^^^^^^'<ESC>Oprint 
 
-nnoremap <buffer> pretty 
-   \diwIprint '<c-r>": {}'.format(<C-r>")<ESC>
+nnoremap <leader>log yiwoprint()<esc>P
+                        \F(a">>>>> ", <esc>
+vnoremap <leader>log yoprint()<esc>P
+                        \0f(a">>>>> ", <esc>
 
 inoremap <buffer> ipdb import ipdb; ipdb.set_trace()
 inoremap <buffer> pdb import pdb; pdb.set_trace()

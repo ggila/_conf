@@ -8,8 +8,8 @@ autoload -U compinit
 compinit
 
 ##HISTORY
-export PATH="$PATH:$HOME/cdiscount-voice/bin"
-export PYTHONPATH="$CONF_DIR/python:$HOME/cdiscount-voice"
+export PATH="$PATH:$HOME:/home/gaut/.local/bin"
+export PYTHONPATH="$CONF_DIR/python"
 export PFDC="172.31.8.109"
 
 # nvm
@@ -37,10 +37,10 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias conf="cd $_CONF_DIR"
 alias meteo='curl wttr.in'
-alias v='bindkey -v'
-alias e='bindkey -e'
-alias rmpyc='rm **/*.pyc'
+alias vimsess="vim -S .session.vim"
 alias dc="docker-compose"
+alias dcup="docker-compose up"
+alias dcdb="docker-compose exec db bash"
 alias dcback="docker-compose exec back bash"
 alias dcfront="docker-compose exec front bash"
 
