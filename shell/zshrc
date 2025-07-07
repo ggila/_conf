@@ -55,6 +55,7 @@ source "$_CONF_DIR/shell/function/lla.sh"
 source "$_CONF_DIR/shell/function/man.sh"
 source "$_CONF_DIR/shell/function/precmd.sh"
 source "$_CONF_DIR/shell/function/save-go.sh"
+source /usr/local/bin/virtualenvwrapper.sh
 export LESS=-RFX
 
 

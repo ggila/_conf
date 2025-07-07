@@ -7,13 +7,9 @@ call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'fisadev/vim-isort'
 Plugin 'tpope/vim-surround'
-Plugin 'dense-analysis/ale'
-let g:ale_set_highlights = 0
-let g:ale_fixers = {
- \ 'javascript': ['eslint']
- \ }
+Plugin 'davidhalter/jedi-vim'
 Plugin 'psf/black'
-
+Plugin 'dense-analysis/ale'
 call vundle#end()
 filetype plugin indent on
 
@@ -22,7 +18,34 @@ Bundle 'christoomey/vim-tmux-navigator'
 execute pathogen#infect()
 " }}}
 
+" ALE options  {{{
+" Active ALE pour TypeScript et TSX (React)
+let g:ale_linters = {
+\   'typescript': ['tsserver'],
+\   'typescriptreact': ['tsserver'],
+\}
+
+" Active les actions ALE dans TS et TSX
+let g:ale_fixers = {
+\   'typescript': ['prettier'],
+\   'typescriptreact': ['prettier'],
+\}
+
+" Active l'affichage des erreurs en ligne et dans la fenêtre de location list
+let g:ale_echo_cursor = 1
+let g:ale_sign_column_always = 1
+" Activer l'autocomplétion ALE (via omnifunc)
+let g:ale_completion_enabled = 1
+let g:ale_completion_autoimport = 1
+
+" Optionnel : raccourci pour autocomplétion manuelle
+inoremap <silent><expr> <C-Space> ale#completion#Refresh()
+" }}}
+
 " options {{{
+
+" backspace
+set backspace=indent,eol,start
 
 " color
 syntax on
@@ -53,7 +76,7 @@ set laststatus=2
 set encoding=utf-8
 
 " color
-colorscheme peachpuff
+colorscheme pablo
 
 " no backup files
 set nobackup
@@ -130,10 +153,27 @@ noremap <C-l> <C-w>l
 noremap <C-q> <C-w><C-p>
 
 " resize window
-noremap <leader>s :res -5<CR>
-noremap <leader>w :res +5<CR>
-noremap <leader>a :vertical res -5<CR>
-noremap <leader>d :vertical res +5<CR>
+function! ResizeSplit(direction)
+  let l:amount = input('gap size (' . a:direction . '): ')
+  if l:amount =~ '^\d\+$'
+    if a:direction ==# 'H'
+      execute 'vertical resize -' . l:amount
+    elseif a:direction ==# 'L'
+      execute 'vertical resize +' . l:amount
+    elseif a:direction ==# 'K'
+      execute 'resize -' . l:amount
+    elseif a:direction ==# 'J'
+      execute 'resize +' . l:amount
+    endif
+  else
+    echo "Entrée invalide"
+  endif
+endfunction
+
+nnoremap <leader>H :call ResizeSplit('H')<CR>
+nnoremap <leader>L :call ResizeSplit('L')<CR>
+nnoremap <leader>K :call ResizeSplit('K')<CR>
+nnoremap <leader>J :call ResizeSplit('J')<CR>
 
 " move between tabs
 noremap + :tabn<CR>
@@ -150,6 +190,19 @@ noremap <leader>9 9gt
 
 "format json
 noremap =j :%!python -m json.tool<CR>
+
+"close
+inoremap ( ()<Esc>i
+inoremap { {}<Esc>i
+inoremap {<CR> {<CR>}<Esc>O
+inoremap [ []<Esc>i
+inoremap < <><Esc>i
+inoremap ' ''<Esc>i
+inoremap " ""<Esc>i
+
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " }}}
 
@@ -206,7 +259,10 @@ augroup kindoffile
     autocmd BufNewFile,BufRead *.scala so $_VIM_DIR/filetype/scala.vim
     autocmd FileType sh so $_VIM_DIR/filetype/sh.vim
     autocmd FileType javascript so $_VIM_DIR/filetype/javascript.vim
+    autocmd FileType typescript so $_VIM_DIR/filetype/javascript.vim
     autocmd FileType javascriptreact so $_VIM_DIR/filetype/javascript.vim
+    autocmd FileType typescriptreact so $_VIM_DIR/filetype/javascript.vim
+    autocmd FileType vue so $_VIM_DIR/filetype/javascript.vim
     autocmd FileType python so $_VIM_DIR/filetype/python.vim
     autocmd FileType cpp so $_VIM_DIR/filetype/cpp.vim
     autocmd FileType html so $_VIM_DIR/filetype/html.vim
