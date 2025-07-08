@@ -1,4 +1,8 @@
-source "$HOME/_conf/shell/var_env.sh"
+# env var
+export _CONF_DIR="$HOME/_conf"
+export _GIT_DIR="$HOME/_git"
+export _VIM_DIR="$_CONF_DIR/oblovim"
+
 
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -48,10 +52,6 @@ xterm*|rxvt*)
 *)
     ;;
 esac
-
-##ALIAS
-alias so="source $_CONF_DIR/zshrc"
-source "$_CONF_DIR/shell/alias.sh"
 
 ##FUNCTIONS
 source "$_CONF_DIR/shell/function/ll.sh"
