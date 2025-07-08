@@ -4,8 +4,8 @@ export _GIT_DIR="$HOME/_git"
 export _VIM_DIR="$_CONF_DIR/oblovim"
 
 ##COMPLETION
-autoload -U compinit
-compinit
+command -v autoload >/dev/null && autoload -U compinit
+command -v compinit >/dev/null && compinit
 
 ##HISTORY
 export PATH="$PATH:$HOME:/home/gaut/.local/bin"
@@ -22,11 +22,11 @@ export NVM_DIR="$HOME/.nvm"
 
 
 # history
-setopt inc_append_history
-setopt share_history
+command -v setopt >/dev/null && setopt inc_append_history
+command -v setopt >/dev/null && setopt share_history
 
 # color
-autoload -U colors && colors
+command -v autoload >/dev/null && autoload -U colors && colors
 
 
 ##ALIAS
@@ -45,7 +45,7 @@ alias dcback="docker-compose exec back bash"
 alias dcfront="docker-compose exec front bash"
 
 #mmv *.txt *.data
-autoload -U zmv
+command -v autoload >/dev/null && autoload -U zmv
 alias mmv='noglob zmv -W'
 
 
@@ -55,7 +55,7 @@ source "$_CONF_DIR/shell/function/lla.sh"
 source "$_CONF_DIR/shell/function/man.sh"
 source "$_CONF_DIR/shell/function/precmd.sh"
 source "$_CONF_DIR/shell/function/save-go.sh"
-source /usr/local/bin/virtualenvwrapper.sh
+[ -f /usr/local/bin/virtualenvwrapper.sh ] &&source /usr/local/bin/virtualenvwrapper.sh
 export LESS=-RFX
 
 
