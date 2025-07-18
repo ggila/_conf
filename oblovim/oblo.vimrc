@@ -1,21 +1,21 @@
-" vundle, pathogen  {{{
+" vundle  {{{
 set nocompatible
 filetype off
 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'fisadev/vim-isort'
 Plugin 'tpope/vim-surround'
 Plugin 'davidhalter/jedi-vim'
-Plugin 'psf/black'
 Plugin 'dense-analysis/ale'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-commentary'
+Plugin 'hashivim/vim-terraform'
+Plugin 'itmammoth/doorboy.vim'
 call vundle#end()
 filetype plugin indent on
 
-Bundle 'christoomey/vim-tmux-navigator'
 
-execute pathogen#infect()
 " }}}
 
 " ALE options  {{{
@@ -134,15 +134,7 @@ noremap ss :so %<CR>
 " count word under cursor
 noremap <leader>count yiw:%s/<c-r>"//gn<CR>
 
-" comment
-nnoremap C :call Comment1Line()<CR>
-vnoremap C :call CommentVisual()<CR>
-vnoremap u :call UncommentVisual()<CR>
-
-" set scratch buffer
-noremap <leader>tmp :call SetScratchBuf(expand('%'))<CR>
-noremap <SPACE> za
-noremap <leader>see zR
+" config tab
 noremap <leader>conf :call SetConfigTab()<CR>
 
 " move between windows
@@ -153,23 +145,6 @@ noremap <C-l> <C-w>l
 noremap <C-q> <C-w><C-p>
 
 " resize window
-function! ResizeSplit(direction)
-  let l:amount = input('gap size (' . a:direction . '): ')
-  if l:amount =~ '^\d\+$'
-    if a:direction ==# 'H'
-      execute 'vertical resize -' . l:amount
-    elseif a:direction ==# 'L'
-      execute 'vertical resize +' . l:amount
-    elseif a:direction ==# 'K'
-      execute 'resize -' . l:amount
-    elseif a:direction ==# 'J'
-      execute 'resize +' . l:amount
-    endif
-  else
-    echo "Entrée invalide"
-  endif
-endfunction
-
 nnoremap <leader>H :call ResizeSplit('H')<CR>
 nnoremap <leader>L :call ResizeSplit('L')<CR>
 nnoremap <leader>K :call ResizeSplit('K')<CR>
@@ -191,16 +166,6 @@ noremap <leader>9 9gt
 "format json
 noremap =j :%!python -m json.tool<CR>
 
-"close
-inoremap ( ()<Esc>i
-inoremap { {}<Esc>i
-inoremap {<CR> {<CR>}<Esc>O
-inoremap [ []<Esc>i
-inoremap < <><Esc>i
-inoremap ' ''<Esc>i
-inoremap " ""<Esc>i
-
-
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
@@ -208,46 +173,50 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Helpers  ------------------------------------------- {{{
 
-func! SetScratchBuf(bname)
-    setlocal buftype=nofile
-    setlocal bufhidden=hide
-    setlocal noswapfile
-    noremap <buffer> q :bw<CR>
-endfunc
+function! SetCommentString(lang)
+  if a:lang ==# 'python'
+    setlocal commentstring=#\ %s
+  elseif a:lang ==# 'javas<CR>ipt' || a:lang ==# 'c' || a:lang ==# 'cpp' || a:lang ==# 'java'
+    setlocal commentstring=//\ %s
+  elseif a:lang ==# 'html'
+    setlocal commentstring=<!--\ %s\ -->
+  elseif a:lang ==# 'vim'
+    setlocal commentstring=" %s
+  elseif a:lang ==# 'lua'
+    setlocal commentstring=--\ %s
+  elseif a:lang ==# 'apache'
+    setlocal commentstring=#\ %s
+  else
+    echo "Langage non reconnu : " . a:lang
+  endif
+endfunction
+command! -nargs=1 CommentLang call SetCommentString(<f-args>)
 
-func! Comment1Line()
-    let l:len = strlen(b:com) 
-    let l:line = getline('.')
-    if l:line[0:(l:len - 1)] ==# b:com
-        call setline('.', l:line[(l:len):])
-    else
-        call setline('.', b:com.l:line)
+function! ToJsonFunc()
+    exe ":%!python -m json.tool"
+endfunc
+command! -nargs=0 ToJson call ToJsonFunc(<f-args>)
+
+function! ResizeSplit(direction)
+  let l:amount = input('gap size (' . a:direction . '): ')
+  if l:amount =~ '^\d\+$'
+    if a:direction ==# 'H'
+      execute 'vertical resize -' . l:amount
+    elseif a:direction ==# 'L'
+      execute 'vertical resize +' . l:amount
+    elseif a:direction ==# 'K'
+      execute 'resize -' . l:amount
+    elseif a:direction ==# 'J'
+      execute 'resize +' . l:amount
     endif
-endfunc
-
-func! CommentVisual() range
-    let l:len = strlen(b:com) 
-    for lin in range (a:firstline, a:lastline)
-        call setline(lin, b:com.getline(lin))
-    endfor
-endfunc
-
-func! UncommentVisual() range
-    let l:len = strlen(b:com) 
-    for lin in range (a:firstline, a:lastline)
-        let l:line = getline(lin)
-        if l:line[0:(l:len - 1)] ==# b:com
-            call setline(lin, l:line[(l:len):])
-        endif
-    endfor
-endfunc
+  else
+    echo "Entrée invalide"
+  endif
+endfunction
 
 fun! SetConfigTab()
     exe ":tabnew"
-    exe ":set wrap!"
-    exe ":e $_CONF_DIR/vimrc"
-    exe ":vsp $_CONF_DIR/zshrc"
-    exe ":vsp $_CONF_DIR"
+    exe ":e $_CONF_DIR"
 endfunc
 "  ------------------------------------------- }}}
 
