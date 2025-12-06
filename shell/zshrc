@@ -16,9 +16,10 @@ export PFDC="172.31.8.109"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
-# virtual_env
-# export WORKON_HOME="$HOME/Envs"
-# source /usr/local/bin/virtualenvwrapper.sh
+# virtualenvwrapper
+export WORKON_HOME=$HOME/.virtualenvs
+export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
+source $(python3 -m site --user-base)/bin/virtualenvwrapper.sh
 
 
 # history
@@ -37,12 +38,6 @@ alias ....='cd ../../..'
 alias .....='cd ../../../..'
 alias conf="cd $_CONF_DIR"
 alias meteo='curl wttr.in'
-alias vimsess="vim -S .session.vim"
-alias dc="docker-compose"
-alias dcup="docker-compose up"
-alias dcdb="docker-compose exec db bash"
-alias dcback="docker-compose exec back bash"
-alias dcfront="docker-compose exec front bash"
 
 #mmv *.txt *.data
 command -v autoload >/dev/null && autoload -U zmv
@@ -57,10 +52,83 @@ source "$_CONF_DIR/shell/function/precmd.sh"
 source "$_CONF_DIR/shell/function/save-go.sh"
 [ -f /usr/local/bin/virtualenvwrapper.sh ] &&source /usr/local/bin/virtualenvwrapper.sh
 export LESS=-RFX
+export PATH="$HOME/.local/bin:$PATH"
 
+
+dockershell() {
+    partial_name="$1"
+
+    containers=$(docker ps --format "{{.ID}} {{.Image}} {{.Status}} {{.Names}}")
+
+    if [ -z "$partial_name" ]; then
+        echo "⚡ Aucun argument fourni, voici la liste des containers vivants :"
+        echo "$containers"
+        echo
+        echo -n "Entrez l'ID ou le numéro du container à choisir : "
+        read choice
+        echo
+    else
+        matches=$(echo "$containers" | grep "$partial_name")
+
+        if [ -z "$matches" ]; then
+            echo "⚡ Aucun container trouvé avec '$partial_name', choisissez parmi les containers vivants :"
+            echo "$containers"
+            echo -n "Entrez l'ID ou le numéro du container à choisir : "
+            read choice
+            echo
+        else
+            count=$(echo "$matches" | wc -l | tr -d ' ')
+            if [ "$count" -eq 1 ]; then
+                choice=$(echo "$matches" | awk '{print $1}')
+            else
+                echo "⚡ Plusieurs containers correspondent à '$partial_name' :"
+                echo "$matches"
+                echo -n "Entrez l'ID ou le numéro du container à choisir : "
+                read choice
+                echo
+            fi
+        fi
+    fi
+
+    if [[ "$choice" =~ ^[0-9]+$ ]]; then
+        choice=$(echo "$containers" | sed -n "${choice}p" | awk '{print $1}')
+    fi
+
+    if [ -z "$choice" ]; then
+        echo "❌ Aucun container sélectionné."
+        return 1
+    fi
+
+    container_id="$choice"
+    info=$(docker ps --format "{{.ID}} {{.Image}} {{.Status}} {{.Names}}" | grep "$container_id")
+    image_name=$(echo "$info" | awk '{print $2}')
+    uptime=$(echo "$info" | awk '{print $3" "$4" "$5}')
+    container_name=$(echo "$info" | awk '{print $NF}')
+
+    if docker exec "$container_id" which zsh >/dev/null 2>&1; then
+        shell="zsh"
+    elif docker exec "$container_id" which bash >/dev/null 2>&1; then
+        shell="bash"
+    else
+        shell="sh"
+    fi
+
+    echo "ID     : $container_id"
+    echo "Image  : $image_name"
+    echo "Uptime : $uptime"
+    echo "Shell  : $shell"
+    echo "Nom    : $container_name"
+
+    RED="\[\e[31m\]"
+    RESET="\[\e[0m\]"
+    PROMPT_COMMAND="PS1='${RED}${image_name}${RESET} \w \$ '"
+
+    docker exec -it "$container_id" $shell -c "$PROMPT_COMMAND; exec $shell"
+}
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/gauthiergilabert/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/gauthiergilabert/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/Users/gaut/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/gaut/Downloads/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/gauthiergilabert/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/gauthiergilabert/google-cloud-sdk/completion.zsh.inc'; fi
+if [ -f '/Users/gaut/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/gaut/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
