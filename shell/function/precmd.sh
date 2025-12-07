@@ -48,7 +48,14 @@ function _ps1_git()
 	fi
 };
 
+function _ps1_virtualenv()
+{
+	if [[ -n "$VIRTUAL_ENV" ]]; then
+		printf "%s" "%F{green}($(basename $VIRTUAL_ENV))%f "
+	fi
+};
+
 function precmd()
 {
-	export PROMPT="%F{blue}%m%f%F{blue} @ %f%F{cyan}%~%f `_ps1_git "%F{blue}" "%F{cyan}" "%f"`"
+	export PROMPT="%F{blue}%m%f `_ps1_virtualenv`%F{blue}@ %f%F{cyan}%~%f `_ps1_git "%F{blue}" "%F{cyan}" "%f"`"
 };

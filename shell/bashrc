@@ -59,3 +59,13 @@ source "$_CONF_DIR/shell/function/lla.sh"
 source "$_CONF_DIR/shell/function/man.sh"
 source "$_CONF_DIR/shell/function/precmd.sh"
 source "$_CONF_DIR/shell/function/save-go.sh"
+
+##ALIAS
+alias so="source $_CONF_DIR/zshrc"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+alias conf="cd $_CONF_DIR"
+alias meteo='curl wttr.in'
+
